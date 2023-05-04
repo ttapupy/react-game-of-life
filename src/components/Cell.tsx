@@ -1,37 +1,35 @@
 import React, { useState, useEffect } from 'react';
+import { ICell } from '../gameRules.js'
 
 export interface ICellProps {
   disabled?: boolean;
-  pressed?: boolean;
-  setPressed: React.Dispatch<React.SetStateAction<boolean>>;
+  pressed: boolean;
+  cell: ICell;
+  setCell: React.Dispatch<React.SetStateAction<ICell>>;
 }
 
-const Cell: React.FC<ICellProps> = ({ disabled = false, pressed = false, setPressed }) => {
-  const [value, setValue] = useState(false)
-
+const Cell: React.FC<ICellProps> = ({ disabled = false, pressed, cell, setCell }) => {
+  const [ownValue, setOwnValue] = useState(() => cell?.value)
 
   const selectCell = (justPressed = false) => {
     if (pressed || justPressed) {
-      setValue(!value)
+      console.log(ownValue)
+      console.log('cell pressed', pressed)
+      const newVal = ownValue === 0 ? 1 : 0
+      setCell({ ...cell, value: newVal })
+      setOwnValue(newVal)
     }
   }
 
-  // useEffect(() => {
-  //   console.log('pressed', pressed)
-  // }, [pressed])
 
   return (
     <>
       <button
-        className={`${value ? 'cell-button selected' : 'cell-button'}`}
+        className={`${ownValue ? 'cell-button selected' : 'cell-button'}`}
         onMouseDown={() => selectCell(true)}
-        onMouseUp={() => setPressed(false)}
         onMouseEnter={() => selectCell()}
         disabled={disabled}
-      >
-        {value}
-      </button>
-
+      />
     </>
   );
 }

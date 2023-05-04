@@ -1,13 +1,8 @@
-@mixin vertical-list {
-  display: flex;
-  align-items: center;
-  flex-direction: column;
-}
-
 @mixin cell-button {
-  width: 2ch !important;
-  height: 2ch !important;
+  width: 1rem !important;
+  height: 1rem !important;
   padding: 0;
   border: 0.5px solid gray;
   border-radius: 0;
+  font-size: inherit !important;
 }

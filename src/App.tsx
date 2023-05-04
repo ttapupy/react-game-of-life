@@ -1,28 +1,23 @@
-import React from 'react';
-import { Route, Routes, Link } from "react-router-dom"
+import React, { useState } from 'react';
+import { Route, Routes } from "react-router-dom"
 import Board from "./pages/Board"
 import Patterns from "./pages/Patterns"
 import './App.scss'
-import { useLocation } from 'react-router-dom';
+import Sidebar from './components/Sidebar';
 
 
 
 const App = () => {
-  const { pathname } = useLocation();
+
+  const [started, setStarted] = useState(false)
 
   return (
     <>
-      <div style={{ width: '15%' }}>
-        <nav>
-          <ul className='wrapper__navlinks'>
-            <li><Link className={`${pathname === '/' ? 'active-page' : 'inactive-page '}`} to="/"><button>Game Board</button></Link></li>
-            <li><Link className={`${pathname === '/patterns' ? 'active-page' : 'inactive-page '}`} to="/patterns"><button>Saved patterns</button></Link></li>
-          </ul>
-        </nav>
-        <aside>Description of the game...</aside>
+      <div className='sidebar-wrapper'>
+        <Sidebar started={started} setStarted={setStarted} />
       </div>
 
-      <div style={{ width: '85%', padding: '3em' }}>
+      <div className='board-wrapper'>
         <Routes>
           <Route path="/" element={<Board />} />
           <Route path="/patterns" element={<Patterns />} />

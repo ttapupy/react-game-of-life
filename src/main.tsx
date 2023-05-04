@@ -4,13 +4,14 @@ import App from './App.tsx'
 import './App.scss'
 import { BrowserRouter } from 'react-router-dom';
 import Spinner from './components/Spinner.tsx';
+import "./App.scss";
 
 const root = ReactDOM.createRoot(document.getElementById("root"))
 
 root.render(
   <BrowserRouter>
-        <Suspense fallback={<Spinner />}>
-          <App />
-        </Suspense>
-      </BrowserRouter>
-      )
+    <Suspense fallback={<Spinner />}>
+      <App />
+    </Suspense>
+  </BrowserRouter>
+)
