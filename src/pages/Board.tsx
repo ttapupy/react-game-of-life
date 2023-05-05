@@ -1,25 +1,33 @@
-import React, { useEffect, useState, useRef } from 'react';
-import Cell from '../components/Cell';
-import useWindowDimensions from '../hooks/useWindowDimensions.js'
-import { ICell } from '../gameRules.js'
-import useMousePress from '../hooks/useMousePress.js'
-import Spinner from '../components/Spinner.js';
+import { useEffect, useState, useRef, useContext } from 'react';
+import Cell from '../components/Cell.tsx';
+import useMousePress from '../hooks/useMousePress.ts'
+import Spinner from '../components/Spinner.tsx';
+import { BoardContext } from '../BoardContext.ts';
+import { nextValue } from '../gameRules.ts'
+import useWindowDimensions from '../hooks/useWindowDimensions.ts';
 
 
-interface IBoardProps {
-  started: boolean;
+export interface ICell {
+  row: number;
+  col: number;
+  value: 0 | 1;
 }
 
-const Board: React.FC<IBoardProps> = ({ started }) => {
+const Board = () => {
   const pressed = useMousePress('board')
-  const { width, height }: { width: number, height: number } = useWindowDimensions();
-  const [columns] = useState(() => Math.floor(0.6 * width / 15))
-  const [rows] = useState(() => Math.floor(height / 15))
-  const [board, setBoard] = useState<ICell[][]>([[]])
+  const { width, height }: { width: number, height: number } = useWindowDimensions('board-wrapper')
+  const columns = Math.floor(0.9 * width / 15)
+  const rows = Math.floor(height / 15)
+  const [round, setRound] = useState(0)
+
+  const { board, setBoard, started, setStarted }: { board: ICell[][], setBoard: React.Dispatch<React.SetStateAction<ICell[][]>>, started: boolean, setStarted: React.Dispatch<React.SetStateAction<boolean>> } = useContext(BoardContext)
   const filled = useRef(null)
 
+
+  const maxRounds = 10;
+
   const setCell = (cell: ICell) => {
-    setBoard(board => {
+    setBoard((board: ICell[][]) => {
       if (board[cell?.row]?.[cell?.col] != null) {
         board[cell?.row][cell?.col] = cell
       }
@@ -27,10 +35,11 @@ const Board: React.FC<IBoardProps> = ({ started }) => {
     })
   }
 
+  // initializing board
   useEffect(() => {
-    if (!started && !!rows && !!columns && !filled.current) {
+    if (!started && !!rows && !!columns && board?.length === 1 && !filled.current) {
       filled.current = true;
-      setBoard(board => {
+      setBoard((board: ICell[][]) => {
         for (let r = 0; r < rows; r++) {
           board[r] = []
           for (let c = 0; c < columns; c++) {
@@ -40,7 +49,42 @@ const Board: React.FC<IBoardProps> = ({ started }) => {
         return board
       })
     }
-  }, [rows, columns, started])
+  }, [rows, columns, started, setBoard, board])
+
+  // running the calculation of next cycle
+  useEffect(() => {
+    const stepper = () => {
+      setBoard((board: ICell[][]) => board.map((row: ICell[]) => {
+        return (row.map((cell: ICell) => {
+          return ({ ...cell, value: nextValue(cell, board) })
+        }))
+      }))
+    }
+
+    if (started && round <= maxRounds) {
+      const intervalId = setInterval(() => {
+        stepper()
+        setRound(round => round + 1)
+      }, 500);
+
+      return () => clearInterval(intervalId);
+    }
+  }, [started, round, setBoard, setRound]);
+
+
+  useEffect(() => {
+    if (!started) {
+      setRound(0)
+    }
+  }, [started, setRound])
+
+  useEffect(() => {
+    if (round + 1 > maxRounds) {
+      setStarted(false)
+    }
+  }, [round, setStarted])
+
+
 
   return (
     <>

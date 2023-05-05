@@ -73,6 +73,10 @@
       }
     }
   }
+
+  aside {
+    margin: 40px 0;
+  }
 }
 
 .started {
@@ -170,4 +174,10 @@
 
 .board-wrapper {
   flex-basis: 80%;
+}
+
+.description {
+  padding: 0 2em;
+  font-size: 1.2em;
+  text-align: justify;
 }

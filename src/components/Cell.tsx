@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { ICell } from '../gameRules.js'
+import { ICell } from '../pages/Board'
 
 export interface ICellProps {
   // disabled?: boolean;
@@ -11,9 +11,13 @@ export interface ICellProps {
 const Cell: React.FC<ICellProps> = ({ pressed, cell, setCell }) => {
   const [ownValue, setOwnValue] = useState(() => cell?.value)
 
+  useEffect(() => {
+    setOwnValue(() => cell?.value)
+  }, [cell])
+
   const selectCell = (justPressed = false) => {
     if (pressed || justPressed) {
-      const newVal = ownValue === 0 ? 1 : 0
+      const newVal = cell?.value === 0 ? 1 : 0
       setCell({ ...cell, value: newVal })
       setOwnValue(newVal)
     }
@@ -26,7 +30,7 @@ const Cell: React.FC<ICellProps> = ({ pressed, cell, setCell }) => {
         className={`${ownValue ? 'cell-button selected' : 'cell-button'}`}
         onMouseDown={() => selectCell(true)}
         onMouseEnter={() => selectCell()}
-        
+
       />
     </>
   );
