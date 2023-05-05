@@ -25,7 +25,7 @@ const Sidebar: React.FC<ISideBarProps> = ({ started, setStarted }) => {
         </li>
 
         {pathname === '/' &&
-          <li>
+          <li style={{ margin: '40px 0' }}>
             <button
               className={`${started ? 'started' : 'iddle'}`}
               onClick={() => setStarted(!started)}

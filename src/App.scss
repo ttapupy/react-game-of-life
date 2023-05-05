@@ -27,20 +27,22 @@
       }
 
       button {
-        min-width: 100px;
+        box-sizing: border-box;
+        opacity: 0.9;
+        transition: 0.3s;
+        min-width: 120px;
         min-height: 20px;
         max-width: $btn-width;
         max-height: $btn-height;
         font-size: $btn-font;
         max-width: 98%;
         margin: auto;
-        // margin-left: 0;
         border: 0;
         inline-size: min-content;
         white-space: nowrap;
 
-        &:hover:not(:focus) {
-          border: 1px solid $react-turkiz;
+        &:hover {
+          opacity: 1;
         }
 
         &:not(:active) {
@@ -55,6 +57,7 @@
 
       a.active-page {
         button {
+          box-sizing: border-box;
           text-decoration: underline dotted;
           background-color: $text-color;
         }
@@ -62,10 +65,9 @@
 
       a.inactive-page {
         button {
-          border: 0;
+          box-sizing: border-box;
           background-color: reset;
           position: relative;
-          padding: 0.5em 1em;
           text-decoration: underline solid;
         }
       }
@@ -150,8 +152,16 @@
   font-size: 12px;
   width: '100%';
   height: '100%';
-  display: grid;
+  border: 0;
   padding: 20px;
+
+}
+
+.board-container {
+  display: grid;
+  border: 0.25px solid gray;
+  width: fit-content;
+  height: fit-content;
 }
 
 .sidebar-wrapper {
