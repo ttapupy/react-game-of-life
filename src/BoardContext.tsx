@@ -29,7 +29,7 @@ export interface BoardAction {
   };
 }
 
-function tasksReducer(board: ICell[][] | null, action: BoardAction) {
+function boardReducer(board: ICell[][] | null, action: BoardAction) {
   const { width, height, column, row, value } = action.payload ?? {}
   switch (action.type) {
     case 'INIT': {
@@ -58,7 +58,7 @@ function tasksReducer(board: ICell[][] | null, action: BoardAction) {
 
 export const BoardProvider = ({ children }) => {
 
-  const [board, setBoard] = useReducer(tasksReducer, initialState);
+  const [board, setBoard] = useReducer(boardReducer, initialState);
 
   const [started, setStarted] = useState(false)
   const { width, height }: { width: number, height: number } = useWindowDimensions('board-wrapper')
