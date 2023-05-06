@@ -1,10 +1,18 @@
-import * as React from 'react';
+import PatternSide from '../components/PatternsSide';
+
 
 
 export default function Patterns() {
   return (
-    <div>
-      {'Coming soon...'}
-    </div>
+    <>
+      <div className='sidebar-wrapper'>
+        <PatternSide />
+      </div>
+      <div className='board-wrapper'>
+        <div>
+          {'Coming soon...'}
+        </div>
+      </div>
+    </>
   );
 }

@@ -1,15 +1,15 @@
 import React, { useState, useEffect } from 'react';
-import { ICell } from '../pages/Board'
+import { ICell } from '../pages/Board.tsx'
+import { useBoardContext, BoardAction, BoardActionKind } from '../BoardContext.tsx';
 
 export interface ICellProps {
-  // disabled?: boolean;
   pressed: boolean;
   cell: ICell;
-  setCell: React.Dispatch<React.SetStateAction<ICell>>;
 }
 
-const Cell: React.FC<ICellProps> = ({ pressed, cell, setCell }) => {
+const Cell: React.FC<ICellProps> = ({ pressed, cell }) => {
   const [ownValue, setOwnValue] = useState(() => cell?.value)
+  const { setBoard }: { setBoard: React.Dispatch<BoardAction> } = useBoardContext()
 
   useEffect(() => {
     setOwnValue(() => cell?.value)
@@ -18,8 +18,8 @@ const Cell: React.FC<ICellProps> = ({ pressed, cell, setCell }) => {
   const selectCell = (justPressed = false) => {
     if (pressed || justPressed) {
       const newVal = cell?.value === 0 ? 1 : 0
-      setCell({ ...cell, value: newVal })
       setOwnValue(newVal)
+      setBoard({ type: BoardActionKind.WRITE, payload: { row: cell['row'], column: cell['col'], value: newVal } })
     }
   }
 
