@@ -5,12 +5,15 @@ import Spinner from '../components/Spinner.tsx';
 import { useBoardContext, BoardAction, BoardActionKind } from '../BoardContext.tsx';
 import MainSide from '../components/MainSide.tsx';
 
-
+export enum CellValue {
+  ZERO = 0,
+  ONE = 1
+}
 
 export interface ICell {
   row: number;
   col: number;
-  value: 0 | 1;
+  value: CellValue;
 }
 
 const Board = () => {
@@ -24,7 +27,7 @@ const Board = () => {
 
   // initializing board
   useEffect(() => {
-    if (!started && !!rows && !!columns && board?.length === 1 && !filled.current) {
+    if (!started && !!rows && !!columns && !board?.length && !filled.current) {
       filled.current = true;
       setBoard({ type: BoardActionKind.INIT, payload: { height: rows, width: columns } })
     }
@@ -69,7 +72,7 @@ const Board = () => {
             className='board'
             id={'board'}
           >
-            {board?.length > 1 ?
+            {/* {board?.length > 1 ?
               (<div
                 className='board-container'
                 style={{ gridTemplateColumns: `repeat(${columns}, 15px)`, gridTemplateRows: `repeat(${rows}, 15px)` }}
@@ -80,6 +83,15 @@ const Board = () => {
                   }))
                 })
                 }
+              </div>) :
+              <Spinner />} */}
+            {columns && rows ?
+              (<div
+                className='board-container'
+                style={{ gridTemplateColumns: `repeat(${columns}, 15px)`, gridTemplateRows: `repeat(${rows}, 15px)` }}
+              >
+                {Array.from({ length: rows }, (_, r) => Array.from({ length: columns }, (_, c) => (<Cell row={r} column={c} key={`${r}-${c}`} pressed={pressed} />)))}
+
               </div>) :
               <Spinner />}
           </div>

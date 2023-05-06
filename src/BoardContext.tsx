@@ -1,6 +1,6 @@
 import { useState, createContext, useContext, useReducer } from 'react'
 import useWindowDimensions from './hooks/useWindowDimensions.js';
-import { ICell } from 'pages/Board.tsx'
+import { CellValue, ICell } from './pages/Board.tsx'
 import { nextValue } from './gameRules.ts'
 
 
@@ -10,7 +10,7 @@ export const useBoardContext = () => {
   return useContext(BoardContext);
 }
 
-const initialTasks: ICell | [[]] = [[]]
+const initialState: ICell[][] | null = null
 
 export enum BoardActionKind {
   INIT = 'INIT',
@@ -25,18 +25,18 @@ export interface BoardAction {
     height?: number;
     column?: number;
     row?: number;
-    value?: 0 | 1;
+    value?: CellValue;
   };
 }
 
-function tasksReducer(board: ICell[][], action: BoardAction) {
-  const { width, height, column, row, value } = action.payload ?? { width: null, height: null, column: null, row: null, value: null }
+function tasksReducer(board: ICell[][] | null, action: BoardAction) {
+  const { width, height, column, row, value } = action.payload ?? {}
   switch (action.type) {
     case 'INIT': {
-      return Array.from({ length: height || 0 }, (_, r) => Array.from({ length: width || 0 }, (_, c) => ({ row: r, col: c, value: 0 })));
+      return Array.from({ length: height || 0 }, (_, r) => Array.from({ length: width || 0 }, (_, c) => ({ row: r, col: c, value: CellValue.ZERO })));
     }
     case 'WRITE': {
-      if (row && column && value != null) {
+      if (row != null && column != null && value != null) {
         const fillCell = [...board]
         fillCell[row][column] = { ...fillCell[row][column], value }
         return fillCell;
@@ -58,10 +58,7 @@ function tasksReducer(board: ICell[][], action: BoardAction) {
 
 export const BoardProvider = ({ children }) => {
 
-  const [board, setBoard] = useReducer(
-    tasksReducer,
-    initialTasks
-  );
+  const [board, setBoard] = useReducer(tasksReducer, initialState);
 
   const [started, setStarted] = useState(false)
   const { width, height }: { width: number, height: number } = useWindowDimensions('board-wrapper')
