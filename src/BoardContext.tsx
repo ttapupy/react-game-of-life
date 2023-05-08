@@ -1,4 +1,4 @@
-import { useState, createContext, useContext, useReducer } from 'react'
+import { useState, createContext, useContext, useReducer, useEffect } from 'react'
 import useWindowDimensions from './hooks/useWindowDimensions.js';
 import { CellValue, ICell } from './pages/Board.tsx'
 import { nextValue } from './gameRules.ts'
@@ -47,7 +47,8 @@ function boardReducer(board: ICell[][] | null, action: BoardAction) {
       return board.map((currentRow: ICell[]) => {
         return (currentRow.map((cell: ICell) => {
           return ({ ...cell, value: nextValue(cell, board) })
-        }))
+        }));
+
       })
     }
     default: {
@@ -57,15 +58,23 @@ function boardReducer(board: ICell[][] | null, action: BoardAction) {
 }
 
 export const BoardProvider = ({ children }) => {
-
   const [board, setBoard] = useReducer(boardReducer, initialState);
-
   const [started, setStarted] = useState(false)
-  const { width, height }: { width: number, height: number } = useWindowDimensions('board-wrapper')
-  const columns = Math.floor(0.9 * width / 15)
-  const rows = Math.floor(height / 15)
+  const [active, setActive] = useState(false)
+  const { width, height }: { width: number, height: number } = useWindowDimensions()
+  const calcDimension = (size: number, shrink: boolean) => (Math.floor((shrink ? 0.6 : 0.8) * size / 15))
+  const [columns, setColumns] = useState(() => calcDimension(width, true))
+  const [rows, setRows] = useState(() => calcDimension(height, false))
 
-  const state = { started, setStarted, board, setBoard, columns, rows }
+  useEffect(() => {
+    setColumns(calcDimension(width, true))
+  }, [width])
+
+  useEffect(() => {
+    setRows(calcDimension(height, false))
+  }, [height])
+
+  const state = { started, active, setActive, setStarted, board, setBoard, columns, rows }
 
   return (
     <BoardContext.Provider value={state}>

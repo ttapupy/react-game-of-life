@@ -7,7 +7,7 @@ const PatternSide = () => {
   </div>
 
   return (
-    <>
+    <div className='sidebar-content'>
       <ul>
         <li style={{ margin: '40px 0' }}>
           <button>{'Load'}</button>
@@ -26,7 +26,7 @@ const PatternSide = () => {
           </Link>
         </li>
       </ul>
-    </>
+    </div>
   )
 }
 

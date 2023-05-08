@@ -1,8 +1,7 @@
 import { useEffect, useState } from "react";
 
 
-const getWindowDimensions = (defVal = '') => {
-
+const getDimensions = (defVal = '') => {
   let width: number;
   let height: number;
   let element: HTMLElement;
@@ -15,23 +14,25 @@ const getWindowDimensions = (defVal = '') => {
     width = element.offsetWidth
     height = element.offsetHeight
   } else {
-    width = window.innerWidth * 0.6
-    height = window.innerHeight * 0.8
+    width = window.innerWidth
+    height = window.innerHeight
   }
-    return {
-      width,
-      height
-    };
+    return { width, height };
   }
   
   export default (defVal = '') => {
-    const [windowDimensions, setWindowDimensions] = useState(
-      getWindowDimensions(defVal)
+    const [dimensions, setDimensions] = useState(
+      getDimensions(defVal)
     );
   
     useEffect(() => {
-      setWindowDimensions(getWindowDimensions(defVal));
+      const resize = () => {
+        setDimensions(getDimensions(defVal));
+      }
+
+      window.addEventListener('resize', resize);
+      return () => window.removeEventListener('resize', resize);
     }, [defVal]);
   
-    return windowDimensions;
+    return dimensions;
   }

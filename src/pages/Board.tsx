@@ -1,6 +1,5 @@
 import { useEffect, useState, useRef } from 'react';
 import Cell from '../components/Cell.tsx';
-import useMousePress from '../hooks/useMousePress.ts'
 import Spinner from '../components/Spinner.tsx';
 import { useBoardContext, BoardAction, BoardActionKind } from '../BoardContext.tsx';
 import MainSide from '../components/MainSide.tsx';
@@ -17,21 +16,20 @@ export interface ICell {
 }
 
 const Board = () => {
-  const pressed = useMousePress('board')
   const [round, setRound] = useState(0)
-  const { board, setBoard, started, setStarted, rows, columns }: { board: ICell[][], setBoard: React.Dispatch<BoardAction>, started: boolean, setStarted: React.Dispatch<React.SetStateAction<boolean>>, rows: number, columns: number } = useBoardContext()
+  const { setBoard, started, active, setStarted, rows, columns }: { setBoard: React.Dispatch<BoardAction>, started: boolean, active: boolean, setStarted: React.Dispatch<React.SetStateAction<boolean>>, rows: number, columns: number } = useBoardContext()
   const filled = useRef(null)
-
   const maxRounds = 10;
+
 
 
   // initializing board
   useEffect(() => {
-    if (!started && !!rows && !!columns && !board?.length && !filled.current) {
+    if (!started && !!rows && !!columns && !active) {
       filled.current = true;
       setBoard({ type: BoardActionKind.INIT, payload: { height: rows, width: columns } })
     }
-  }, [rows, columns, started, setBoard, board])
+  }, [rows, columns, started, setBoard, active])
 
   // running the calculation of next cycle
   useEffect(() => {
@@ -66,35 +64,21 @@ const Board = () => {
       <div className='sidebar-wrapper'>
         <MainSide />
       </div>
-      <div className='board-wrapper'>
+      <div className='board-wrapper' id='board-wrapper'>
         <fieldset style={{ border: '0' }} disabled={started}>
-          <div
-            className='board'
-            id={'board'}
-          >
-            {/* {board?.length > 1 ?
-              (<div
+          {columns && rows ?
+            (
+              <div
                 className='board-container'
-                style={{ gridTemplateColumns: `repeat(${columns}, 15px)`, gridTemplateRows: `repeat(${rows}, 15px)` }}
+                id={'board-container'}
+                style={{ gridTemplateColumns: `repeat(${columns}, 1fr)`, gridTemplateRows: `repeat(${rows}, 1fr)` }}
               >
-                {board.map((sor: ICell[]) => {
-                  return (sor.map((cella: ICell) => {
-                    return (<Cell cell={cella} key={`${cella?.row}-${cella?.col}`} pressed={pressed} />)
-                  }))
-                })
-                }
-              </div>) :
-              <Spinner />} */}
-            {columns && rows ?
-              (<div
-                className='board-container'
-                style={{ gridTemplateColumns: `repeat(${columns}, 15px)`, gridTemplateRows: `repeat(${rows}, 15px)` }}
-              >
-                {Array.from({ length: rows }, (_, r) => Array.from({ length: columns }, (_, c) => (<Cell row={r} column={c} key={`${r}-${c}`} pressed={pressed} />)))}
-
-              </div>) :
-              <Spinner />}
-          </div>
+                <>
+                  {Array.from({ length: rows }, (_, r) => Array.from({ length: columns }, (_, c) => (<Cell row={r} column={c} key={`${r}-${c}`} />)))}
+                </>
+              </div>
+            ) :
+            <Spinner />}
         </fieldset>
       </div>
     </>

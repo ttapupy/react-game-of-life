@@ -4,8 +4,8 @@ import { useBoardContext, BoardAction, BoardActionKind } from '../BoardContext.t
 
 
 const MainSide = () => {
-  const { started, setStarted, setBoard, rows, columns }:
-    { started: boolean, setStarted: React.Dispatch<React.SetStateAction<boolean>>, setBoard: React.Dispatch<BoardAction>, rows: number, columns: number } = useBoardContext();
+  const { started, setStarted, setActive, setBoard, rows, columns }:
+    { started: boolean, setStarted: React.Dispatch<React.SetStateAction<boolean>>, setActive: React.Dispatch<React.SetStateAction<boolean>>, setBoard: React.Dispatch<BoardAction>, rows: number, columns: number } = useBoardContext();
 
   const arrowUp = String.fromCodePoint(0x02191);
   const description = <div className='description'>
@@ -23,12 +23,15 @@ const MainSide = () => {
 
 
   return (
-    <>
+    <div className='sidebar-content'>
       <ul>
         <li style={{ margin: '40px 0' }}>
           <button
             className={`${started ? 'started' : 'iddle'}`}
-            onClick={() => setStarted(!started)}
+            onClick={() => {
+              setStarted(!started);
+              setActive(true);
+            }}
           >
             {`${started ? 'Stop' : 'Start'}`}
           </button>
@@ -42,7 +45,10 @@ const MainSide = () => {
           <button
             disabled={started}
             className={'inactive-page'}
-            onClick={() => setBoard({ type: BoardActionKind.INIT, payload: { height: rows, width: columns } })}
+            onClick={() => {
+              setBoard({ type: BoardActionKind.INIT, payload: { height: rows, width: columns } });
+              setActive(false)
+            }}
           >
             {'Clear board'}
           </button>
@@ -56,7 +62,7 @@ const MainSide = () => {
           </Link>
         </li>
       </ul>
-    </>
+    </div>
   )
 }
 
