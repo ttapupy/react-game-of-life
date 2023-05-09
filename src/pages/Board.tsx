@@ -16,10 +16,9 @@ export interface ICell {
 }
 
 const Board = () => {
-  const [round, setRound] = useState(0)
-  const { setBoard, started, active, setStarted, rows, columns }: { setBoard: React.Dispatch<BoardAction>, started: boolean, active: boolean, setStarted: React.Dispatch<React.SetStateAction<boolean>>, rows: number, columns: number } = useBoardContext()
+  const { setBoard, started, active, setStarted, rows, columns, round, setRound, maxRounds }: { setBoard: React.Dispatch<BoardAction>, started: boolean, active: boolean, setStarted: React.Dispatch<React.SetStateAction<boolean>>, rows: number, columns: number, round: number, setRound: React.Dispatch<React.SetStateAction<number>>, maxRounds: number } = useBoardContext()
   const filled = useRef(null)
-  const maxRounds = 10;
+  
 
 
 
@@ -42,7 +41,7 @@ const Board = () => {
 
       return () => clearInterval(intervalId);
     }
-  }, [started, round, setBoard, setRound]);
+  }, [started, round, setBoard, setRound, maxRounds]);
 
 
   useEffect(() => {
@@ -55,7 +54,7 @@ const Board = () => {
     if (round + 1 > maxRounds) {
       setStarted(false)
     }
-  }, [round, setStarted])
+  }, [round, setStarted, maxRounds])
 
 
 
@@ -65,19 +64,23 @@ const Board = () => {
         <MainSide />
       </div>
       <div className='board-wrapper' id='board-wrapper'>
-        <fieldset style={{ border: '0' }} disabled={started}>
+        <fieldset disabled={started}>
           {columns && rows ?
-            (
-              <div
-                className='board-container'
-                id={'board-container'}
-                style={{ gridTemplateColumns: `repeat(${columns}, 1fr)`, gridTemplateRows: `repeat(${rows}, 1fr)` }}
-              >
-                <>
-                  {Array.from({ length: rows }, (_, r) => Array.from({ length: columns }, (_, c) => (<Cell row={r} column={c} key={`${r}-${c}`} />)))}
-                </>
-              </div>
-            ) :
+            <>
+              {columns >= 10 && rows >= 10 ?
+
+                <div
+                  className='board-container'
+                  id={'board-container'}
+                  style={{ gridTemplateColumns: `repeat(${columns}, 1fr)`, gridTemplateRows: `repeat(${rows}, 1fr)` }}
+                >
+                  <>
+                    {Array.from({ length: rows }, (_, r) => Array.from({ length: columns }, (_, c) => (<Cell row={r} column={c} key={`${r}-${c}`} />)))}
+                  </>
+                </div> :
+                <div>{'Sorry, screen size is too small to play'}</div>
+              }
+            </> :
             <Spinner />}
         </fieldset>
       </div>

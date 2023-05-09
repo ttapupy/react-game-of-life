@@ -1,7 +1,9 @@
-import { useState, createContext, useContext, useReducer, useEffect } from 'react'
+import { useState, createContext, useContext, useReducer, useEffect, useCallback } from 'react'
 import useWindowDimensions from './hooks/useWindowDimensions.js';
 import { CellValue, ICell } from './pages/Board.tsx'
 import { nextValue } from './gameRules.ts'
+import useLocalStorage from './hooks/useLocalStorage.ts';
+import { calcDrawer } from './drawer.ts';
 
 
 export const BoardContext = createContext(null)
@@ -62,19 +64,38 @@ export const BoardProvider = ({ children }) => {
   const [started, setStarted] = useState(false)
   const [active, setActive] = useState(false)
   const { width, height }: { width: number, height: number } = useWindowDimensions()
-  const calcDimension = (size: number, shrink: boolean) => (Math.floor((shrink ? 0.6 : 0.8) * size / 15))
+  const calcDimension = (size: number, shrink: boolean) => (Math.floor((shrink ? 0.7 : 0.9) * size / 30) * 2)
   const [columns, setColumns] = useState(() => calcDimension(width, true))
-  const [rows, setRows] = useState(() => calcDimension(height, false))
+  const [rows] = useState(() => calcDimension(height, false))
+  const [boardToSave, setBoardToSave] = useState<ICell[][] | null>(null)
+  const [savedPatterns, setSavedPatterns] = useLocalStorage('GOLSavedPatterns', [])
+  const [round, setRound] = useState(0)
+  const maxRounds = 10;
+  const drawSize = 10;
+
+  const drawedBoard = useCallback(() => {
+    if (!active && board != null) {
+      setBoardToSave(() => calcDrawer({ table: board, rows, columns, drawSize }))
+    }
+  }, [active, board, columns, rows])
+
+  useEffect(() => {
+    if (!active) {
+      drawedBoard()
+    }
+  }, [active, drawedBoard, board])
+
+
+  const savePattern = useCallback(() => {
+    setSavedPatterns((prevCollection) => [boardToSave, ...(prevCollection || [])])
+    alert('Pattern has been saved.')
+  }, [boardToSave, setSavedPatterns])
 
   useEffect(() => {
     setColumns(calcDimension(width, true))
   }, [width])
 
-  useEffect(() => {
-    setRows(calcDimension(height, false))
-  }, [height])
-
-  const state = { started, active, setActive, setStarted, board, setBoard, columns, rows }
+  const state = { started, active, setActive, setStarted, board, setBoard, columns, rows, savePattern, savedPatterns, round, setRound, maxRounds, drawSize }
 
   return (
     <BoardContext.Provider value={state}>

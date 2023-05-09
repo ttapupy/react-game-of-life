@@ -30,8 +30,10 @@ const getDimensions = (defVal = '') => {
         setDimensions(getDimensions(defVal));
       }
 
-      window.addEventListener('resize', resize);
-      return () => window.removeEventListener('resize', resize);
+      resize()
+
+      // window.addEventListener('resize', resize);
+      // return () => window.removeEventListener('resize', resize);
     }, [defVal]);
   
     return dimensions;
