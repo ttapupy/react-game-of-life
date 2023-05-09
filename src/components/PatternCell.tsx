@@ -1,14 +1,13 @@
-import { ICell } from '../pages/Board';
 import { CellValue } from '../pages/Board';
 
 
-const PatternCell = ({ cell }: { cell: ICell }) => {
+const PatternCell = ({ value }: { value: number }) => {
 
   return (
     <>
       <button
         disabled={true}
-        className={`${cell?.value === CellValue.ONE ? 'cell-button selected' : 'cell-button'}`}
+        className={`${value === CellValue.ONE ? 'cell-button selected' : 'cell-button'}`}
       />
     </>
   )

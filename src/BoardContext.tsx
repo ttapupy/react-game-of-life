@@ -3,7 +3,7 @@ import useWindowDimensions from './hooks/useWindowDimensions.js';
 import { CellValue, ICell } from './pages/Board.tsx'
 import { nextValue } from './gameRules.ts'
 import useLocalStorage from './hooks/useLocalStorage.ts';
-import { calcDrawer } from './drawer.ts';
+import { calcDrawer, isInDrawer } from './drawer.ts';
 
 
 export const BoardContext = createContext(null)
@@ -17,7 +17,8 @@ const initialState: ICell[][] | null = null
 export enum BoardActionKind {
   INIT = 'INIT',
   WRITE = 'WRITE',
-  STEP = 'STEP'
+  STEP = 'STEP',
+  LOAD = 'LOAD',
 }
 
 export interface BoardAction {
@@ -28,14 +29,25 @@ export interface BoardAction {
     column?: number;
     row?: number;
     value?: CellValue;
+    drawSize?: number;
+    boardToLoad?: number[][];
   };
 }
 
 function boardReducer(board: ICell[][] | null, action: BoardAction) {
-  const { width, height, column, row, value } = action.payload ?? {}
+  const { width, height, column, row, value, drawSize, boardToLoad } = action.payload ?? {}
+
   switch (action.type) {
     case 'INIT': {
       return Array.from({ length: height || 0 }, (_, r) => Array.from({ length: width || 0 }, (_, c) => ({ row: r, col: c, value: CellValue.ZERO })));
+    }
+    case 'LOAD': {
+      return Array.from({ length: height || 0 }, (_, r) => Array.from({ length: width || 0 }, (_, c) => {
+        const currentValue = isInDrawer({ drawSize, side: height, index: r }) && isInDrawer({ drawSize, side: width, index: c }) ? boardToLoad[r - ((height - drawSize) / 2)][c - ((width - drawSize) / 2)] : CellValue.ZERO
+
+        return ({ row: r, col: c, value: currentValue })
+      }
+      ));
     }
     case 'WRITE': {
       if (row != null && column != null && value != null) {
@@ -63,11 +75,12 @@ export const BoardProvider = ({ children }) => {
   const [board, setBoard] = useReducer(boardReducer, initialState);
   const [started, setStarted] = useState(false)
   const [active, setActive] = useState(false)
+  const [loaded, setLoaded] = useState(false)
   const { width, height }: { width: number, height: number } = useWindowDimensions()
   const calcDimension = (size: number, shrink: boolean) => (Math.floor((shrink ? 0.7 : 0.9) * size / 30) * 2)
   const [columns, setColumns] = useState(() => calcDimension(width, true))
   const [rows] = useState(() => calcDimension(height, false))
-  const [boardToSave, setBoardToSave] = useState<ICell[][] | null>(null)
+  const [boardToSave, setBoardToSave] = useState<number[][] | null>(null)
   const [savedPatterns, setSavedPatterns] = useLocalStorage('GOLSavedPatterns', [])
   const [round, setRound] = useState(0)
   const maxRounds = 10;
@@ -91,11 +104,15 @@ export const BoardProvider = ({ children }) => {
     alert('Pattern has been saved.')
   }, [boardToSave, setSavedPatterns])
 
+  const deletePattern = useCallback((index: number) => {
+    setSavedPatterns((prevCollection) => prevCollection.filter((_, i) => i !== index ))
+  }, [setSavedPatterns])
+
   useEffect(() => {
     setColumns(calcDimension(width, true))
   }, [width])
 
-  const state = { started, active, setActive, setStarted, board, setBoard, columns, rows, savePattern, savedPatterns, round, setRound, maxRounds, drawSize }
+  const state = { started, active, setActive, setStarted, board, setBoard, columns, rows, savePattern, savedPatterns, round, setRound, maxRounds, drawSize, loaded, setLoaded, deletePattern }
 
   return (
     <BoardContext.Provider value={state}>

@@ -16,19 +16,17 @@ export interface ICell {
 }
 
 const Board = () => {
-  const { setBoard, started, active, setStarted, rows, columns, round, setRound, maxRounds }: { setBoard: React.Dispatch<BoardAction>, started: boolean, active: boolean, setStarted: React.Dispatch<React.SetStateAction<boolean>>, rows: number, columns: number, round: number, setRound: React.Dispatch<React.SetStateAction<number>>, maxRounds: number } = useBoardContext()
+  const { setBoard, started, active, setStarted, rows, columns, round, setRound, maxRounds, loaded }: { setBoard: React.Dispatch<BoardAction>, started: boolean, active: boolean, setStarted: React.Dispatch<React.SetStateAction<boolean>>, rows: number, columns: number, round: number, setRound: React.Dispatch<React.SetStateAction<number>>, maxRounds: number, loaded: boolean } = useBoardContext()
   const filled = useRef(null)
-  
-
 
 
   // initializing board
   useEffect(() => {
-    if (!started && !!rows && !!columns && !active) {
+    if (!started && !!rows && !!columns && !active && !loaded) {
       filled.current = true;
       setBoard({ type: BoardActionKind.INIT, payload: { height: rows, width: columns } })
     }
-  }, [rows, columns, started, setBoard, active])
+  }, [rows, columns, started, setBoard, active, loaded])
 
   // running the calculation of next cycle
   useEffect(() => {

@@ -20,6 +20,6 @@ export const calcDrawer = ({ table, rows, columns, drawSize }: { table: ICell[][
     return (
       isInDrawer({ drawSize, side: columns, index: columnIndex })
     )
-  }))
+  }).map(cell => cell['value']))
 
 }

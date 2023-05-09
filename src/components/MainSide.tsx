@@ -4,23 +4,30 @@ import { useBoardContext, BoardAction, BoardActionKind } from '../BoardContext.t
 
 
 const MainSide = () => {
-  const { started, setStarted, setActive, setBoard, rows, columns, savePattern, active, round, maxRounds }:
-    { started: boolean, setStarted: React.Dispatch<React.SetStateAction<boolean>>, setActive: React.Dispatch<React.SetStateAction<boolean>>, setBoard: React.Dispatch<BoardAction>, rows: number, columns: number, savePattern: () => void, active: boolean, round: number, maxRounds: number } = useBoardContext();
+  const { started, setStarted, setLoaded, setActive, setBoard, rows, columns, savePattern, active, round, maxRounds }:
+    { started: boolean, setStarted: React.Dispatch<React.SetStateAction<boolean>>, setActive: React.Dispatch<React.SetStateAction<boolean>>, setLoaded: React.Dispatch<React.SetStateAction<boolean>>, setBoard: React.Dispatch<BoardAction>, rows: number, columns: number, savePattern: () => void, active: boolean, round: number, maxRounds: number } = useBoardContext();
 
   const arrowUp = String.fromCodePoint(0x02193);
   const arrowRight = String.fromCodePoint(0x02192);
   const description = <div className='description'>
     {
-      `You can draw a shape (pattern) on the board ${arrowRight} with the mouse button pressed.
+      `You can draw a shape (pattern) in the grid ${arrowRight} with the mouse button pressed.
       When you are done, the process can be started. ${arrowUp}`}<br />
     {`It works based on the `} <b>{'Game of Life'}</b> {`rules, which you can read more about `}
     <span>
       <a style={{ textDecoration: 'underline' }} href={'https://en.wikipedia.org/wiki/Conway%27s_Game_of_Life'} target={'_blank'}>{'here'}</a>
     </span>
     {`. `}<br />
-    {'(In current version it takes 10 rounds per start.)'}<br />
+    {'In current version it takes 10 rounds per start.'}<br />
+    {'After that, the game can be continued from the existing pattern (if any), or even from a supplemented one.'}<br />
     {`Have fun!`}
   </div>
+
+  const onClear = () => {
+    setBoard({ type: BoardActionKind.INIT, payload: { height: rows, width: columns } });
+    setActive(false)
+    setLoaded(false)
+  }
 
 
   return (
@@ -52,10 +59,7 @@ const MainSide = () => {
         <li style={{ margin: '40px 0' }}>
           <button
             disabled={started}
-            onClick={() => {
-              setBoard({ type: BoardActionKind.INIT, payload: { height: rows, width: columns } });
-              setActive(false)
-            }}
+            onClick={() => onClear()}
           >
             {'Clear / reset board'}
           </button>
@@ -72,7 +76,7 @@ const MainSide = () => {
           </button>
         </li>
         <li>
-          <div style={{ textAlign: 'center'}}>
+          <div style={{ textAlign: 'center' }}>
             <span className='counter'>{maxRounds - round}</span>
           </div>
         </li>

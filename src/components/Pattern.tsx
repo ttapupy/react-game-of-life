@@ -1,24 +1,39 @@
-import { ICell } from '../pages/Board.tsx'
-import { useBoardContext } from '../BoardContext.tsx';
+import { Dispatch, SetStateAction } from 'react'
+import { useNavigate } from "react-router-dom";
+import { useBoardContext, BoardAction, BoardActionKind } from '../BoardContext.tsx';
 import PatternCell from './PatternCell.tsx';
 
 
-const Pattern = ({ pattern }: { pattern: ICell[][] }) => {
+const Pattern = ({ pattern, index }: { pattern: number[][], index: number }) => {
 
-  const { drawSize }: { drawSize: number } = useBoardContext()
+  const { drawSize, setBoard, rows, columns, setLoaded, deletePattern }: { drawSize: number, setBoard: React.Dispatch<BoardAction>, rows: number, columns: number, setLoaded: Dispatch<SetStateAction<boolean>>, deletePattern: (index: number) => void } = useBoardContext();
+
+  const navigate = useNavigate();
+
+  const loadPattern = () => {
+    setLoaded(true)
+    setBoard({ type: BoardActionKind.LOAD, payload: { boardToLoad: pattern, drawSize, height: rows, width: columns } })
+    navigate('/')
+  }
+
+  const deleteAction = () => {
+    if (window.confirm("You are to removing permanently this pattern from your collection. \n" + "Are you sure?")) {
+      deletePattern(index)
+    }
+  }
 
   return (
     <div className='pattern'>
       <div className='button-group'>
-        <button className='load'>{'Load'}</button>
-        <button className='delete'>{'Delete'}</button>
+        <button onClick={() => loadPattern()} className='load'>{'Load'}</button>
+        <button onClick={() => deleteAction()} className='delete'>{'Delete'}</button>
       </div>
       <fieldset disabled={true}>
         <div
           className='board-container'
           style={{ gridTemplateColumns: `repeat(${drawSize}, 1fr)`, gridTemplateRows: `repeat(${drawSize}, 1fr)` }}
         >
-          {pattern.map((sor, sorIndex) => sor.map((cell, oszlopIndex) => <PatternCell key={`${sorIndex}_${oszlopIndex}`} cell={cell} />))}
+          {pattern.map((sor, sorIndex) => sor.map((cellValue, oszlopIndex) => <PatternCell key={`${sorIndex}_${oszlopIndex}`} value={cellValue} />))}
 
         </div>
       </fieldset>
