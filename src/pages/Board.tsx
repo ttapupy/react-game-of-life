@@ -1,4 +1,4 @@
-import { useEffect, useState, useRef } from 'react';
+import { useEffect, useRef } from 'react';
 import Cell from '../components/Cell.tsx';
 import Spinner from '../components/Spinner.tsx';
 import { useBoardContext, BoardAction, BoardActionKind } from '../BoardContext.tsx';
