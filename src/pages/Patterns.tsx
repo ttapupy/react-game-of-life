@@ -12,10 +12,6 @@ export default function Patterns() {
     setStarted(false)
   }, [setStarted])
 
-  useEffect(() => {
-    console.log('savedPatterns:', savedPatterns);
-  }, [savedPatterns])
-
   return (
     <>
       <div className='sidebar-wrapper'>
