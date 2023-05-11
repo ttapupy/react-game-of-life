@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react';
+import { useEffect } from 'react';
 import Cell from '../components/Cell.tsx';
 import Spinner from '../components/Spinner.tsx';
 import { useBoardContext, BoardAction, BoardActionKind } from '../BoardContext.tsx';
@@ -16,43 +16,40 @@ export interface ICell {
 }
 
 const Board = () => {
-  const { setBoard, started, active, setStarted, rows, columns, round, setRound, maxRounds, loaded }: { setBoard: React.Dispatch<BoardAction>, started: boolean, active: boolean, setStarted: React.Dispatch<React.SetStateAction<boolean>>, rows: number, columns: number, round: number, setRound: React.Dispatch<React.SetStateAction<number>>, maxRounds: number, loaded: boolean } = useBoardContext()
-  const filled = useRef(null)
+  const { setBoard, started, setActive, active, setStarted, rows, columns, round, setRound, maxRounds, loaded, drawSize }: { setBoard: React.Dispatch<BoardAction>, started: boolean, active: boolean, setStarted: React.Dispatch<React.SetStateAction<boolean>>, setActive: React.Dispatch<React.SetStateAction<boolean>>, rows: number, columns: number, round: number, setRound: React.Dispatch<React.SetStateAction<number>>, maxRounds: number, loaded: boolean, drawSize: number } = useBoardContext()
 
 
   // initializing board
   useEffect(() => {
     if (!started && !!rows && !!columns && !active && !loaded) {
-      filled.current = true;
       setBoard({ type: BoardActionKind.INIT, payload: { height: rows, width: columns } })
     }
   }, [rows, columns, started, setBoard, active, loaded])
 
+
   // running the calculation of next cycle
   useEffect(() => {
 
-    if (started && round <= maxRounds) {
-      const intervalId = setInterval(() => {
+    const step = (prevRound) => {
+      if (prevRound < maxRounds) {
         setBoard({ type: BoardActionKind.STEP })
-        setRound(round => round + 1)
+        return prevRound + 1
+      } else {
+        return prevRound
+      }
+    }
+
+    if (round === maxRounds) {
+      setStarted(false)
+      setRound(0)
+    } else if (started) {
+      const intervalId = setInterval(() => {
+        setRound(prevRound => step(prevRound))
       }, 500);
 
       return () => clearInterval(intervalId);
     }
-  }, [started, round, setBoard, setRound, maxRounds]);
-
-
-  useEffect(() => {
-    if (!started) {
-      setRound(0)
-    }
-  }, [started, setRound])
-
-  useEffect(() => {
-    if (round + 1 > maxRounds) {
-      setStarted(false)
-    }
-  }, [round, setStarted, maxRounds])
+  }, [started, setBoard, round, setRound, setStarted, maxRounds]);
 
 
 
@@ -62,10 +59,21 @@ const Board = () => {
         <MainSide />
       </div>
       <div className='board-wrapper' id='board-wrapper'>
+        <div className='mobile-start'>
+          <button
+            className={`${started ? 'started' : 'iddle'}`}
+            onClick={() => {
+              setStarted(!started);
+              setActive(true);
+            }}
+          >
+            {`${started ? 'Stop' : active && !loaded ? 'Continue' : 'Start'}`}
+          </button>
+        </div>
         <fieldset disabled={started}>
           {columns && rows ?
             <>
-              {columns >= 10 && rows >= 10 ?
+              {columns >= drawSize && rows >= drawSize ?
 
                 <div
                   className='board-container'

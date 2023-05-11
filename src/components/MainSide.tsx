@@ -4,15 +4,13 @@ import { useBoardContext, BoardAction, BoardActionKind } from '../BoardContext.t
 
 
 const MainSide = () => {
-  const { started, setStarted, setLoaded, setActive, setBoard, rows, columns, savePattern, active, round, maxRounds }:
-    { started: boolean, setStarted: React.Dispatch<React.SetStateAction<boolean>>, setActive: React.Dispatch<React.SetStateAction<boolean>>, setLoaded: React.Dispatch<React.SetStateAction<boolean>>, setBoard: React.Dispatch<BoardAction>, rows: number, columns: number, savePattern: () => void, active: boolean, round: number, maxRounds: number } = useBoardContext();
+  const { started, setStarted, setRound, setLoaded, loaded, setActive, setBoard, rows, columns, savePattern, active, round, maxRounds }:
+    { started: boolean, setStarted: React.Dispatch<React.SetStateAction<boolean>>, setActive: React.Dispatch<React.SetStateAction<boolean>>, setRound: React.Dispatch<React.SetStateAction<number>>, setLoaded: React.Dispatch<React.SetStateAction<boolean>>, loaded: boolean, setBoard: React.Dispatch<BoardAction>, rows: number, columns: number, savePattern: () => void, active: boolean, round: number, maxRounds: number } = useBoardContext();
 
-  const arrowUp = String.fromCodePoint(0x02193);
-  const arrowRight = String.fromCodePoint(0x02192);
   const description = <div className='description'>
     {
-      `You can draw a shape (pattern) in the grid ${arrowRight} with the mouse button pressed.
-      When you are done, the process can be started. ${arrowUp}`}<br />
+      `You can draw a shape (pattern) in the grid with the mouse button pressed.
+      When you are done, the process can be started.`}<br />
     {`It works based on the `} <b>{'Game of Life'}</b> {`rules, which you can read more about `}
     <span>
       <a style={{ textDecoration: 'underline' }} href={'https://en.wikipedia.org/wiki/Conway%27s_Game_of_Life'} target={'_blank'}>{'here'}</a>
@@ -26,6 +24,7 @@ const MainSide = () => {
   const onClear = () => {
     setBoard({ type: BoardActionKind.INIT, payload: { height: rows, width: columns } });
     setActive(false)
+    setRound(0)
     setLoaded(false)
   }
 
@@ -42,12 +41,12 @@ const MainSide = () => {
               className={'active-page'}
               to={'/patterns'}
             >
-              <button>{'Saved patterns'}</button>
+              <button onClick={() => setStarted(false)}>{'Saved patterns'}</button>
             </Link>
           </span>
         </li>
 
-        <li style={{ margin: '40px 0' }}>
+        <li>
           <button
             disabled={started || !active}
             onClick={() => savePattern()}
@@ -56,7 +55,7 @@ const MainSide = () => {
           </button>
         </li>
 
-        <li style={{ margin: '40px 0' }}>
+        <li>
           <button
             disabled={started}
             onClick={() => onClear()}
@@ -64,22 +63,24 @@ const MainSide = () => {
             {'Clear / reset board'}
           </button>
         </li>
-        <li style={{ margin: '40px 0' }}>
-          <button
-            className={`${started ? 'started' : 'iddle'}`}
-            onClick={() => {
-              setStarted(!started);
-              setActive(true);
-            }}
-          >
-            {`${started ? 'Stop' : active ? 'Continue' : 'Start'}`}
-          </button>
-        </li>
-        <li>
-          <div style={{ textAlign: 'center' }}>
-            <span className='counter'>{maxRounds - round}</span>
-          </div>
-        </li>
+        <div className='desktop-start'>
+          <li>
+            <div style={{ textAlign: 'center' }}>
+              <span className='counter'>{round}</span>
+            </div>
+          </li>
+          <li>
+            <button
+              className={`${started ? 'started' : 'iddle'}`}
+              onClick={() => {
+                setStarted(!started);
+                setActive(true);
+              }}
+            >
+              {`${started ? 'Stop' : active && !loaded ? 'Continue' : 'Start'}`}
+            </button>
+          </li>
+        </div>
       </ul>
     </div >
   )

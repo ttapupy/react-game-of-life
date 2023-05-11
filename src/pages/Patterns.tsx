@@ -6,11 +6,15 @@ import { useEffect } from 'react';
 
 
 export default function Patterns() {
-  const { savedPatterns, setStarted }: { savedPatterns: number[][][], setStarted: React.Dispatch<React.SetStateAction<boolean>>  } = useBoardContext()
+  const { savedPatterns, setStarted }: { savedPatterns: number[][][], setStarted: React.Dispatch<React.SetStateAction<boolean>> } = useBoardContext()
 
   useEffect(() => {
     setStarted(false)
   }, [setStarted])
+
+  useEffect(() => {
+    console.log('savedPatterns:', savedPatterns);
+  }, [savedPatterns])
 
   return (
     <>

@@ -10,13 +10,14 @@ export interface ICellProps {
 
 const Cell: React.FC<ICellProps> = ({ row, column }) => {
 
-  const { board, setBoard, active, rows, columns, drawSize }: { board: ICell, setBoard: React.Dispatch<BoardAction>, drawSize: number, active: boolean, rows: number, columns: number } = useBoardContext()
+  const { board, setBoard, active, started, rows, columns, drawSize }: { board: ICell, setBoard: React.Dispatch<BoardAction>, drawSize: number, active: boolean, started: boolean, rows: number, columns: number } = useBoardContext()
 
   const value = board?.[row]?.[column] ? board[row][column]['value'] : null
   const [drawable, setDrawable] = useState(false)
 
 
   useEffect(() => {
+
     if (!active) {
       setDrawable(() => isInDrawer({ drawSize, side: rows, index: row }) && isInDrawer({ drawSize, side: columns, index: column }))
     } else {
@@ -25,7 +26,7 @@ const Cell: React.FC<ICellProps> = ({ row, column }) => {
   }, [active, column, columns, row, rows, drawSize])
 
   const selectCell = (pressure = 0) => {
-    if (drawable && pressure > 0) {
+    if (!started && drawable && pressure > 0) {
       const newVal = value === 0 ? 1 : 0
       setBoard({ type: BoardActionKind.WRITE, payload: { row, column, value: newVal } })
     }
