@@ -28,10 +28,9 @@
         display: flex;
         justify-content: center;
 
-        &>:first-child {
-          min-width: 80px;
-          min-height: 20px;
-          width: 40%;
+        &>* {
+          min-width: 164px;
+          min-height: 24px;
           height: 2rem;
           max-width: 90%;
 
@@ -162,7 +161,7 @@
   justify-content: space-around;
 
   fieldset {
-    flex: auto;
+    flex: 0 1 100%;
     border: 0;
     margin: 0;
   }
@@ -187,7 +186,6 @@
 
 
 .sidebar-wrapper {
-  flex: 25% !important;
   display: flex;
 }
 
@@ -215,7 +213,7 @@ span.counter {
   display: inline-block;
   width: 1.5rem;
   height: 1.5rem;
-  border: 0.5px solid gray;
+  border: 1px solid gray;
   text-align: center;
   border-radius: 0.25rem;
   color: gray;
@@ -260,9 +258,14 @@ span.counter {
 
   .mobile-start {
     display: flex;
+    flex-direction: column;
     min-width: 7em;
     align-items: center;
     justify-content: center;
+
+    &>:first-child {
+      margin-bottom: 3em;
+    }
   }
 
   .board-container {
@@ -274,9 +277,12 @@ span.counter {
 @media (min-width: 1025px) {
 
   .board-wrapper,
-  .sidebar-wrapper,
   .patterns-wrapper {
-    flex: 75%;
+    flex: 70%;
+  }
+
+  .sidebar-wrapper {
+    flex: 25%;
   }
 
   .mobile-start {

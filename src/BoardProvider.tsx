@@ -5,6 +5,7 @@ import { nextValue } from './gameRules.ts'
 import useLocalStorage from './hooks/useLocalStorage.ts';
 import { calcDrawer, isInDrawer } from './drawer.ts';
 import { BoardContext } from './BoardContext.ts';
+import useDebounce from './hooks/useDebounce.ts';
 
 
 
@@ -74,14 +75,16 @@ export const BoardProvider = ({ children }) => {
   const [active, setActive] = useState(false)
   const [loaded, setLoaded] = useState(false)
   const { width, height }: { width: number, height: number } = useWindowDimensions()
-  const calcDimension = (size: number, shrink: boolean) => (Math.floor((shrink ? 0.7 : 0.9) * size / 30) * 2)
-  const [columns, setColumns] = useState(() => calcDimension(width, true))
-  const [rows] = useState(() => calcDimension(height, false))
+  const calcDimension = (size: number) => (Math.floor(size / 30) * 2)
+  const columns = useDebounce(calcDimension(width), 600, !started)
+  const rows = useDebounce(calcDimension(height), 600, !started)
   const [boardToSave, setBoardToSave] = useState<number[][] | null>(null)
   const [savedPatterns, setSavedPatterns] = useLocalStorage('GOLSavedPatterns', [])
   const [round, setRound] = useState(0)
   const maxRounds = 10;
   const drawSize = 10;
+
+
 
   const drawedBoard = useCallback(() => {
     if (!active && board != null) {
@@ -105,9 +108,6 @@ export const BoardProvider = ({ children }) => {
     setSavedPatterns((prevCollection) => prevCollection.filter((_, i) => i !== index))
   }, [setSavedPatterns])
 
-  useEffect(() => {
-    setColumns(calcDimension(width, true))
-  }, [width])
 
   const state = { started, active, setActive, setStarted, board, setBoard, columns, rows, savePattern, savedPatterns, round, setRound, maxRounds, drawSize, loaded, setLoaded, deletePattern }
 

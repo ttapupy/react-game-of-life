@@ -61,17 +61,23 @@ const Board = () => {
       </div>
       <div className='board-wrapper' id='board-wrapper'>
         <div className='mobile-start'>
-          <button
-            className={`${started ? 'started' : 'iddle'}`}
-            onClick={() => {
-              setStarted(!started);
-              setActive(true);
-            }}
-          >
-            {`${started ? 'Stop' : active && !loaded ? 'Continue' : 'Start'}`}
-          </button>
+
+          <div style={{ textAlign: 'center' }}>
+            <span className='counter'>{round}</span>
+          </div>
+          <div>
+            <button
+              className={`${started ? 'started' : 'iddle'}`}
+              onClick={() => {
+                setStarted(!started);
+                setActive(true);
+              }}
+            >
+              {`${started ? 'Stop' : active && !loaded ? 'Continue' : 'Start'}`}
+            </button>
+          </div>
         </div>
-        <fieldset disabled={started}>
+        <fieldset disabled={started} id='board'>
           {columns && rows ?
             <>
               {columns >= drawSize && rows >= drawSize ?
@@ -85,7 +91,7 @@ const Board = () => {
                     {Array.from({ length: rows }, (_, r) => Array.from({ length: columns }, (_, c) => (<Cell row={r} column={c} key={`${r}-${c}`} />)))}
                   </>
                 </div> :
-                <div>{'Sorry, screen size is too small to play'}</div>
+                <div>{'Sorry, screen size is too small to play.'}</div>
               }
             </> :
             <Spinner />}

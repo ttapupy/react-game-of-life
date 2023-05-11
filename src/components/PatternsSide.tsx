@@ -13,11 +13,13 @@ const PatternSide = () => {
 
       <ul>
         <li>
-          <Link
-            to={'/'}
-          >
-            <button>{'Back to Game Board'}</button>
-          </Link>
+          <span>
+            <Link
+              to={'/'}
+            >
+              <button>{'Back to Game Board'}</button>
+            </Link>
+          </span>
         </li>
       </ul>
     </div>
