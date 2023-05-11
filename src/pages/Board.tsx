@@ -1,7 +1,8 @@
 import { useEffect } from 'react';
 import Cell from '../components/Cell.tsx';
 import Spinner from '../components/Spinner.tsx';
-import { useBoardContext, BoardAction, BoardActionKind } from '../BoardContext.tsx';
+import { BoardAction, BoardActionKind } from '../BoardProvider.tsx';
+import { useBoardContext } from '../BoardContext.ts';
 import MainSide from '../components/MainSide.tsx';
 
 export enum CellValue {

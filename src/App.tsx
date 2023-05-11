@@ -2,7 +2,7 @@ import { Route, Routes } from "react-router-dom"
 import Patterns from "./pages/Patterns"
 import './App.scss'
 import Board from './pages/Board';
-import { BoardProvider } from './BoardContext.tsx';
+import { BoardProvider } from './BoardProvider.tsx';
 
 
 const App = () => {

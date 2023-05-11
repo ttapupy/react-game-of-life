@@ -1,11 +1,12 @@
 import { Link } from 'react-router-dom';
-import { useBoardContext, BoardAction, BoardActionKind } from '../BoardContext.tsx';
+import { BoardAction, BoardActionKind } from '../BoardProvider.tsx';
+import { useBoardContext } from '../BoardContext.ts';
 
 
 
 const MainSide = () => {
-  const { started, setStarted, setRound, setLoaded, loaded, setActive, setBoard, rows, columns, savePattern, active, round, maxRounds }:
-    { started: boolean, setStarted: React.Dispatch<React.SetStateAction<boolean>>, setActive: React.Dispatch<React.SetStateAction<boolean>>, setRound: React.Dispatch<React.SetStateAction<number>>, setLoaded: React.Dispatch<React.SetStateAction<boolean>>, loaded: boolean, setBoard: React.Dispatch<BoardAction>, rows: number, columns: number, savePattern: () => void, active: boolean, round: number, maxRounds: number } = useBoardContext();
+  const { started, setStarted, setRound, setLoaded, loaded, setActive, setBoard, rows, columns, savePattern, active, round }:
+    { started: boolean, setStarted: React.Dispatch<React.SetStateAction<boolean>>, setActive: React.Dispatch<React.SetStateAction<boolean>>, setRound: React.Dispatch<React.SetStateAction<number>>, setLoaded: React.Dispatch<React.SetStateAction<boolean>>, loaded: boolean, setBoard: React.Dispatch<BoardAction>, rows: number, columns: number, savePattern: () => void, active: boolean, round: number } = useBoardContext();
 
   const description = <div className='description'>
     {

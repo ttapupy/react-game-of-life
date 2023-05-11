@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { ICell, CellValue } from '../pages/Board.tsx'
-import { useBoardContext, BoardAction, BoardActionKind } from '../BoardContext.tsx';
+import { BoardAction, BoardActionKind } from '../BoardProvider.tsx';
 import { isInDrawer } from '../drawer.ts';
+import { useBoardContext } from '../BoardContext.ts';
 
 export interface ICellProps {
   row: number;

@@ -1,6 +1,7 @@
 import { Dispatch, SetStateAction } from 'react'
 import { useNavigate } from "react-router-dom";
-import { useBoardContext, BoardAction, BoardActionKind } from '../BoardContext.tsx';
+import { BoardAction, BoardActionKind } from '../BoardProvider.tsx';
+import { useBoardContext } from '../BoardContext.ts';
 import PatternCell from './PatternCell.tsx';
 
 

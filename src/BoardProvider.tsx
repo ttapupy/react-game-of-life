@@ -1,16 +1,13 @@
-import { useState, createContext, useContext, useReducer, useEffect, useCallback } from 'react'
-import useWindowDimensions from './hooks/useWindowDimensions.js';
+import { useState, useReducer, useEffect, useCallback } from 'react'
+import useWindowDimensions from './hooks/useWindowDimensions.ts';
 import { CellValue, ICell } from './pages/Board.tsx'
 import { nextValue } from './gameRules.ts'
 import useLocalStorage from './hooks/useLocalStorage.ts';
 import { calcDrawer, isInDrawer } from './drawer.ts';
+import { BoardContext } from './BoardContext.ts';
 
 
-export const BoardContext = createContext(null)
 
-export const useBoardContext = () => {
-  return useContext(BoardContext);
-}
 
 const initialState: ICell[][] | null = null
 
@@ -105,7 +102,7 @@ export const BoardProvider = ({ children }) => {
   }, [boardToSave, setSavedPatterns])
 
   const deletePattern = useCallback((index: number) => {
-    setSavedPatterns((prevCollection) => prevCollection.filter((_, i) => i !== index ))
+    setSavedPatterns((prevCollection) => prevCollection.filter((_, i) => i !== index))
   }, [setSavedPatterns])
 
   useEffect(() => {

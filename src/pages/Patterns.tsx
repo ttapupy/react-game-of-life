@@ -1,5 +1,5 @@
 import PatternSide from '../components/PatternsSide';
-import { useBoardContext } from '../BoardContext.tsx';
+import { useBoardContext } from '../BoardContext.ts';
 import Pattern from '../components/Pattern';
 import { useEffect } from 'react';
 
