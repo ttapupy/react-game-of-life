@@ -1,10 +1,4 @@
-// export interface ICell {
-//   row: number;
-//   col: number;
-//   value: 0 | 1;
-// }
-
-import {ICell} from './pages/Board.tsx';
+import { ICell } from './pages/Board.tsx';
 
 const adjacent = (ref: ICell, other: ICell): boolean => {
   const colAdj = Math.abs(ref.col - other.col)
@@ -14,7 +8,13 @@ const adjacent = (ref: ICell, other: ICell): boolean => {
 
 
 const adjacentValues = (cell: ICell, table: ICell[][]): number => {
-  const adjacents = table.flat().filter(tc => adjacent(tc, cell))
+  const flattenedTable = [];
+  for (let i = 0; i < table.length; i++) {
+    const current = table[i];
+    for (let j = 0; j < current.length; j++)
+      flattenedTable.push(current[j]);
+  }
+  const adjacents = flattenedTable.filter(tc => adjacent(tc, cell))
   return adjacents.reduce((prev, curr) => prev + curr['value'], 0)
 }
 
