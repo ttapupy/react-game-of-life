@@ -88,6 +88,7 @@ export const BoardProvider = ({ children }) => {
 
   const drawedBoard = useCallback(() => {
     if (!active && board != null) {
+      console.log('board:', board);
       setBoardToSave(() => calcDrawer({ table: board, rows, columns, drawSize }))
     }
   }, [active, board, columns, rows])
