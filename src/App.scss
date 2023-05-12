@@ -139,7 +139,7 @@
   }
 
   &.non-drawable {
-    border: 0.25px solid $background-color;
+    border: 1px solid $background-color;
   }
 }
 
@@ -294,6 +294,6 @@ span.counter {
   }
 
   .board-container {
-    border: 0.25px solid gray;
+    border: 1px solid gray;
   }
 }

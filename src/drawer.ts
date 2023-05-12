@@ -1,7 +1,8 @@
 import { ICell } from "./pages/Board"
 
-
+// Returns whether an element index is inside drawer canvas
 export const isInDrawer = ({ drawSize, side, index }: { drawSize: number, side: number, index: number }) => {
+
   const margin = (side - drawSize) / 2
 
   if (index < margin || index >= side - margin) {

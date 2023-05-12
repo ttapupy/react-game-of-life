@@ -1,6 +1,8 @@
 import { render, screen } from '@testing-library/react';
-import Cell from '../Cell.tsx';
-import { BoardContext } from '../../BoardContext.ts';
+import Cell from '../../components/Cell.tsx';
+import { BoardContext } from '../../BoardContext';
+
+
 
 // 10rows * 15cells; row i7-cell i7 value:1, other values:0
 const board = [
