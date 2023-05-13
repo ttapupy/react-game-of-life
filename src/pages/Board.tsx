@@ -46,7 +46,7 @@ const Board = () => {
     } else if (started) {
       const intervalId = setInterval(() => {
         setRound(prevRound => step(prevRound))
-      }, 300);
+      }, 500);
 
       return () => clearInterval(intervalId);
     }

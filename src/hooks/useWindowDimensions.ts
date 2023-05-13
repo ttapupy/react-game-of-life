@@ -35,6 +35,8 @@ export default (defVal = '') => {
 
     resize()
 
+    screen.orientation.addEventListener("change", resize)
+
     window.addEventListener('resize', resize);
     return () => window.removeEventListener('resize', resize);
   }, [defVal]);
