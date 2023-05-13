@@ -18,10 +18,6 @@ const getDimensions = (defVal = '') => {
     width = window.innerWidth * 0.7
     height = window.innerHeight * 0.9
   }
-  console.log('element:', element?.id);
-  console.log('window height:', window?.innerHeight);
-  console.log('width:', width);
-  console.log('height:', height);
 
   return { width, height };
 }
