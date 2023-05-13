@@ -1,9 +1,7 @@
 import { ICell } from './pages/Board.tsx';
 
 const adjacent = (ref: ICell, other: ICell): boolean => {
-  const colAdj = Math.abs(ref.col - other.col)
-  const rowAdj = Math.abs(ref.row - other.row)
-  return (colAdj + rowAdj === 1) || (colAdj === 1 && rowAdj === 1)
+  return (ref.col !== other.col || ref.row !== other.row)
 }
 
 
