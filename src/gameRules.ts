@@ -7,14 +7,19 @@ const adjacent = (ref: ICell, other: ICell): boolean => {
 }
 
 
-const adjacentValues = (cell: ICell, table: ICell[][]): number => {
-  const flattenedTable = [];
-  for (let i = 0; i < table.length; i++) {
-    const current = table[i];
-    for (let j = 0; j < current.length; j++)
-      flattenedTable.push(current[j]);
+export const adjacentValues = (cell: ICell, table: ICell[][]): number => {
+  const flattenedSlice = [];
+  const { row, col } = cell;
+  const rowMin = Math.max(row - 1, 0)
+  const rowMax = Math.min(row + 1, table.length - 1)
+  const colMin = Math.max(col - 1, 0)
+  const colMax = Math.min(col + 1, table[0]?.length - 1)
+  for (let r = rowMin; r <= rowMax; r++) {
+    const current = table[r];
+    for (let c = colMin; c <= colMax; c++)
+      flattenedSlice.push(current[c]);
   }
-  const adjacents = flattenedTable.filter(tc => adjacent(tc, cell))
+  const adjacents = flattenedSlice.filter(tc => adjacent(tc, cell))
   return adjacents.reduce((prev, curr) => prev + curr['value'], 0)
 }
 
