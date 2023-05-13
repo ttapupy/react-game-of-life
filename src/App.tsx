@@ -3,6 +3,7 @@ import Patterns from "./pages/Patterns"
 import './App.scss'
 import Board from './pages/Board';
 import { BoardProvider } from './BoardProvider.tsx';
+import Footer from "./components/Footer.tsx";
 
 
 const App = () => {
@@ -15,6 +16,7 @@ const App = () => {
           <Route path="/patterns" element={<Patterns />} />
         </Routes>
       </BoardProvider>
+      <Footer />
     </>
   )
 }

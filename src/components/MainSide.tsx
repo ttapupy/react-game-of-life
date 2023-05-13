@@ -76,6 +76,7 @@ const MainSide = () => {
               onClick={() => {
                 setStarted(!started);
                 setActive(true);
+                setLoaded(false)
               }}
             >
               {`${started ? 'Stop' : active && !loaded ? 'Continue' : 'Start'}`}
