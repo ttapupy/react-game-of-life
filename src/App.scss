@@ -6,14 +6,15 @@
 .wrapper {
   display: flex;
   flex-wrap: wrap;
+  padding: 5px;
   justify-content: center;
+  align-items: start;
   background-color: $background-color;
   color: $text-color;
   width: 100%;
   overflow-x: hidden;
   position: relative !important;
-  max-width: 2048px;
-  margin: auto;
+  max-width: min(95vw, 2048px);
 
   .sidebar-content {
     max-width: 568px;
@@ -50,8 +51,6 @@
           margin: auto;
           text-align: center;
         }
-
-
 
         a.active-page {
           button {
@@ -139,32 +138,33 @@
   }
 
   &.non-drawable {
-    border: 1px solid $background-color;
+    background-color: #616161;
+    border: 0;
   }
 }
 
+.board-wrapper {
+  font-size: 12px;
+  border: 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  height: 90vh;
+
+  fieldset {
+    border: 0;
+    margin: 0;
+  }
+}
 
 .board-container {
   display: grid;
   grid-gap: 0 0;
   width: fit-content;
   height: fit-content;
-  margin: auto;
-}
+  border-right: 1px solid #616161;
+  border-bottom: 1px solid #616161;
 
-.board-wrapper {
-  flex: 75%;
-  font-size: 12px;
-  border: 0;
-  display: flex;
-  align-items: stretch;
-  justify-content: space-around;
-
-  fieldset {
-    flex: 0 1 100%;
-    border: 0;
-    margin: 0;
-  }
 }
 
 .patterns-wrapper {
@@ -179,7 +179,6 @@
 
 .pattern {
   flex: 0 0 auto;
-  width: auto;
   max-width: 100%;
 }
 
@@ -194,7 +193,7 @@
   margin: 0.5em;
   font-size: 1.2em;
   text-align: justify;
-  border: 2px solid gray;
+  border: 2px solid #616161;
   border-radius: 15px;
 
   &.selection {
@@ -213,10 +212,10 @@ span.counter {
   display: inline-block;
   width: 1.5rem;
   height: 1.5rem;
-  border: 1px solid gray;
+  border: 1px solid #616161;
   text-align: center;
   border-radius: 0.25rem;
-  color: gray;
+  color: #616161;
   padding: 2px;
 }
 
@@ -250,6 +249,16 @@ span.counter {
   .sidebar-wrapper,
   .patterns-wrapper {
     flex: 100%;
+
+    fieldset {
+      flex: 80%;
+      height: 100%;
+    }
+
+  }
+
+  .board-wrapper {
+    flex-wrap: nowrap;
   }
 
   .desktop-start {
@@ -257,19 +266,28 @@ span.counter {
   }
 
   .mobile-start {
+    margin: 5px;
     display: flex;
     flex-direction: column;
     min-width: 7em;
     align-items: center;
-    justify-content: center;
-
-    &>:first-child {
-      margin-bottom: 3em;
-    }
+    justify-content: space-evenly;
+    flex: 20%;
+    height: 100%;
   }
+}
 
-  .board-container {
-    border: 0;
+@media (max-width: 1024px) and (orientation: landscape) {
+  .board-wrapper {
+    min-height: 200px;
+    flex-direction: row;
+  }
+}
+
+@media (max-width: 1024px) and (orientation: portrait) {
+  .board-wrapper {
+    min-height: 240px;
+    flex-direction: column;
   }
 }
 
@@ -279,6 +297,15 @@ span.counter {
   .board-wrapper,
   .patterns-wrapper {
     flex: 70%;
+  }
+
+  .board-wrapper {
+    flex-direction: row;
+
+    fieldset {
+      flex: 100%;
+      height: 100%;
+    }
   }
 
   .sidebar-wrapper {
@@ -291,9 +318,5 @@ span.counter {
 
   .desktop-start {
     display: block;
-  }
-
-  .board-container {
-    border: 1px solid gray;
   }
 }

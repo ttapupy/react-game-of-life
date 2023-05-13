@@ -36,7 +36,7 @@ export const BoardProvider = ({ children }) => {
   const [started, setStarted] = useState(false)
   const [active, setActive] = useState(false)
   const [loaded, setLoaded] = useState(false)
-  const { width, height }: { width: number, height: number } = useWindowDimensions()
+  const { width, height }: { width: number, height: number } = useWindowDimensions('board')
   const calcDimension = (size: number) => (Math.floor(size / 30) * 2)
   const columns = useDebounce(calcDimension(width), 600, !started)
   const rows = useDebounce(calcDimension(height), 600, !started)

@@ -1,10 +1,11 @@
 @mixin cell-button {
-  width: 1rem !important;
-  height: 1rem !important;
+  width: 15px;
+  height: 15px;
   padding: 0;
-  border: 0.25px solid gray;
+  margin: 0;
+  border-left: 1px solid gray;
+  border-top: 1px solid gray;
   border-radius: 0;
-  font-size: inherit !important;
 }
 
 @mixin button-3d {
