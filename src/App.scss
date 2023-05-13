@@ -12,7 +12,7 @@
   background-color: $background-color;
   color: $text-color;
   width: 100%;
-  overflow-x: hidden;
+  overflow: hidden;
   position: relative !important;
   max-width: min(95vw, 2048px);
 
@@ -139,7 +139,6 @@
 
   &.non-drawable {
     background-color: #616161;
-    border: 0;
   }
 }
 
