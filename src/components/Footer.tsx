@@ -5,7 +5,7 @@ const Footer = () => {
   const copyright = String.fromCodePoint(0x00A9);
   const year = new Date()
 
-  const notice = `${copyright} Kristian${"\u00A0"}Kourtis ${year.getFullYear()} All${"\u00A0"}Rights${"\u00A0"}Reserved.`
+  const notice = `${copyright} ttapu ${year.getFullYear()} All${"\u00A0"}Rights${"\u00A0"}Reserved.`
 
   const Logo = (props) => (
     <svg xmlns="http://www.w3.org/2000/svg" width={200} height={160} viewBox="0 -218 512 512" {...props}>
