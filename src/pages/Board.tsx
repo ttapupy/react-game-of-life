@@ -19,7 +19,7 @@ export interface ICell {
 const Board = () => {
   const { setBoard, started, setActive, active, setStarted, rows, columns, round, setRound, maxRounds, loaded, drawSize }: { setBoard: React.Dispatch<BoardAction>, started: boolean, active: boolean, setStarted: React.Dispatch<React.SetStateAction<boolean>>, setActive: React.Dispatch<React.SetStateAction<boolean>>, rows: number, columns: number, round: number, setRound: React.Dispatch<React.SetStateAction<number>>, maxRounds: number, loaded: boolean, drawSize: number } = useBoardContext()
 
-  
+
   // initializing board
   useEffect(() => {
     if (!started && !!rows && !!columns && !active && !loaded) {
@@ -46,7 +46,7 @@ const Board = () => {
     } else if (started) {
       const intervalId = setInterval(() => {
         setRound(prevRound => step(prevRound))
-      }, 500);
+      }, 400);
 
       return () => clearInterval(intervalId);
     }
