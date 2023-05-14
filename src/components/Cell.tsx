@@ -40,8 +40,8 @@ const Cell: React.FC<ICellProps> = ({ row, column }) => {
         <button
           disabled={!drawable}
           className={`${!drawable ? 'cell-button non-drawable' : value === CellValue.ONE ? 'cell-button selected' : 'cell-button'}`}
-          onPointerDown={e => selectCell(e?.pressure)}
-          onPointerEnter={e => selectCell(e?.pressure)}
+          onPointerDown={(e) => selectCell(e?.pressure)}
+          onPointerEnter={(e) => selectCell(e?.pressure)}
         />}
     </>
   );
