@@ -1,5 +1,4 @@
-import { fireEvent, render, screen } from '@testing-library/react';
-import userEvent from '@testing-library/user-event'
+import { render, screen } from '@testing-library/react';
 import Cell from '../../components/Cell.tsx';
 import { BoardContext } from '../../BoardContext';
 
@@ -796,7 +795,6 @@ function renderCell(cellContext, row, column) {
 test('renders cell out of drawer canvas', () => {
   renderCell(cellBoardContext, 1, 1)
   expect(screen.getByRole('button')).toBeDisabled()
-
 })
 
 test('renders an empty cell inside drawer canvas', () => {
