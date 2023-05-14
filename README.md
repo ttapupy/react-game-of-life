@@ -6,6 +6,7 @@ It's just a pet project for practicing frontend development and of course for fu
 
 Online available: https://game-of-life-nl7x.onrender.com/
 
-![kép](https://github.com/ttapupy/react-game-of-life/assets/23095938/65dd2c68-0533-4cd3-ae30-35f24f1079f7)
+![kép](https://github.com/ttapupy/react-game-of-life/assets/23095938/f0e1eed4-a6a5-4a7c-b7b6-674791730e10)
+
 
 
