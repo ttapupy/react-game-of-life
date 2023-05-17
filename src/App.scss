@@ -140,7 +140,6 @@
 }
 
 .board-wrapper {
-  height: 90vh !important;
   width: 100%;
 
   fieldset {
@@ -292,12 +291,14 @@ span.counter {
 @media (max-width: 991px) and (orientation: landscape) {
   .board-wrapper {
     min-height: 200px;
+    height: 90vh;
   }
 }
 
 @media (max-width: 991px) and (orientation: portrait) {
   .board-wrapper {
     min-height: 240px;
+    height: 65vh;
   }
 }
 
@@ -310,6 +311,7 @@ span.counter {
   }
 
   .board-wrapper {
+    height: 90vh;
     flex-direction: row;
     border: 0;
     padding: 0;

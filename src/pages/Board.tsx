@@ -65,13 +65,13 @@ const Board = () => {
           </Col>
         </Row>
 
-        <Row className='board-wrapper' id='board-wrapper'>
+        <Row className='board-wrapper gx-1' id='board-wrapper'>
           <Col xs={3}>
 
             <MainSide />
 
           </Col>
-          <Col xs={9} style={{height: "100%"}}>
+          <Col xs={9} style={{ height: "100%" }}>
 
             <fieldset disabled={started} id='board'>
               {columns && rows ?
