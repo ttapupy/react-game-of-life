@@ -1,7 +1,14 @@
 @import "./styles/variables";
 @import "./styles/mixins";
 @import "./styles/spinner";
-@import "index.scss";
+@import "./index.scss";
+
+.root {
+  overflow: hidden;
+  padding: 0;
+  margin: 0;
+  background-color: $background-color;
+}
 
 .wrapper {
   display: flex;
@@ -15,66 +22,56 @@
   overflow: hidden;
   position: relative !important;
   max-width: min(98vw, 2048px);
+}
 
-  .sidebar-content {
-    max-width: 568px;
-    margin: 2rem auto 0;
+#main-side {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  height: 100%;
+}
 
-    ul {
-      margin: 0;
-      padding: 0;
+.sidebar-content {
+  margin: 2rem auto 0;
+  max-width: 240px;
+  font-size: 14px;
+  height: 90%;
+  width: 100%;
 
-      li {
-        margin: 3em 0;
-        display: flex;
-        justify-content: center;
+  div {
+    width: 100%;
+    text-align: center;
 
-        &>* {
-          min-width: 164px;
-          min-height: 24px;
-          height: 2rem;
-          max-width: 90%;
+    button {
+      @include button-3d;
+      background-color: whitesmoke;
+    }
 
-          button {
-            width: 100%;
-          }
-        }
+    a {
+      display: inline-block;
+      width: 100%;
+      margin: auto;
+      text-align: center;
+    }
 
-        button {
-          @include button-3d;
-          background-color: whitesmoke;
-        }
+    a.active-page {
+      button {
+        box-sizing: border-box;
+        text-decoration: underline dotted;
+        background-color: $text-color;
+      }
+    }
 
-        a {
-          display: inline-block;
-          width: 100%;
-          margin: auto;
-          text-align: center;
-        }
-
-        a.active-page {
-          button {
-            box-sizing: border-box;
-            text-decoration: underline dotted;
-            background-color: $text-color;
-          }
-        }
-
-        a.inactive-page {
-          button {
-            box-sizing: border-box;
-            position: relative;
-            text-decoration: underline solid;
-          }
-        }
+    a.inactive-page {
+      button {
+        box-sizing: border-box;
+        position: relative;
+        text-decoration: underline solid;
       }
     }
   }
-
-  aside {
-    margin: 40px 0;
-  }
 }
+
 
 .started {
   background-color: #f7a2c8 !important;
@@ -143,14 +140,13 @@
 }
 
 .board-wrapper {
-  font-size: 12px;
-  border: 0;
-  display: flex;
-  align-items: center;
-  justify-content: space-around;
-  height: 90vh;
+  height: 90vh !important;
+  width: 100%;
 
   fieldset {
+    font-size: 12px;
+    height: 100%;
+    width: 100%;
     border: 0;
     margin: 0;
   }
@@ -170,6 +166,7 @@
   display: flex;
   flex-wrap: wrap;
   margin-bottom: 4rem;
+  justify-content: center;
 
   fieldset {
     border: 0;
@@ -186,7 +183,15 @@
 
 
 .sidebar-wrapper {
+  aside {
+    margin: 40px 0;
+  }
+
   display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
+  flex: 2 1 auto;
 }
 
 .description {
@@ -196,10 +201,12 @@
   text-align: justify;
   border: 2px solid $my-gray;
   border-radius: 15px;
+  max-width: 360px;
 
   &.selection {
-    max-width: 60%;
+    max-width: 90%;
     margin: auto;
+    color: $text-color;
   }
 
   span {
@@ -218,6 +225,8 @@ span.counter {
   border-radius: 0.25rem;
   color: $my-gray;
   padding: 2px;
+  vertical-align: middle;
+  line-height: 1rem;
 }
 
 .button-group {
@@ -244,10 +253,9 @@ span.counter {
 
 }
 
-@media (max-width: 1024px) {
+@media (max-width: 991px),
+(max-height: 722px) {
 
-  .board-wrapper,
-  .sidebar-wrapper,
   .patterns-wrapper {
     flex: 100%;
 
@@ -260,40 +268,41 @@ span.counter {
 
   .board-wrapper {
     flex-wrap: nowrap;
+    padding: 5px 2px;
+    border: 2px solid $my-gray;
+    border-radius: 15px;
   }
 
-  .desktop-start {
-    display: none;
+  .desktop-desc {
+    display: none !important;
   }
 
-  .mobile-start {
+  .mobile-desc {
     margin: 5px;
-    display: flex;
+    display: block;
     flex-direction: column;
-    min-width: 7em;
+    min-width: 20em;
     align-items: center;
     justify-content: space-evenly;
-    flex: 20%;
-    height: 100%;
+    color: $text-color;
+
   }
 }
 
-@media (max-width: 1024px) and (orientation: landscape) {
+@media (max-width: 991px) and (orientation: landscape) {
   .board-wrapper {
     min-height: 200px;
-    flex-direction: row;
   }
 }
 
-@media (max-width: 1024px) and (orientation: portrait) {
+@media (max-width: 991px) and (orientation: portrait) {
   .board-wrapper {
     min-height: 240px;
-    flex-direction: column;
   }
 }
 
 
-@media (min-width: 1025px) {
+@media (min-width: 992px) {
 
   .board-wrapper,
   .patterns-wrapper {
@@ -302,6 +311,8 @@ span.counter {
 
   .board-wrapper {
     flex-direction: row;
+    border: 0;
+    padding: 0;
 
     fieldset {
       flex: 100%;
@@ -313,12 +324,14 @@ span.counter {
     flex: 25%;
   }
 
-  .mobile-start {
-    display: none;
+  .mobile-desc {
+    display: none !important;
   }
 
-  .desktop-start {
+  .desktop-desc {
     display: block;
+    color: $text-color;
+    flex: 1 2 auto;
   }
 }
 

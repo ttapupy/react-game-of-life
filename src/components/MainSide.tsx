@@ -1,90 +1,24 @@
-import { Link } from 'react-router-dom';
-import { BoardAction, BoardActionKind } from '../BoardProvider.tsx';
-import { useBoardContext } from '../BoardContext.ts';
+import { Row, Col } from 'react-bootstrap';
+import ButtonGroup from './ButtonGroup.tsx';
+import Description from './Description.tsx';
 
 
 
 const MainSide = () => {
-  const { started, setStarted, setRound, setLoaded, loaded, setActive, setBoard, rows, columns, savePattern, active, round }:
-    { started: boolean, setStarted: React.Dispatch<React.SetStateAction<boolean>>, setActive: React.Dispatch<React.SetStateAction<boolean>>, setRound: React.Dispatch<React.SetStateAction<number>>, setLoaded: React.Dispatch<React.SetStateAction<boolean>>, loaded: boolean, setBoard: React.Dispatch<BoardAction>, rows: number, columns: number, savePattern: () => void, active: boolean, round: number } = useBoardContext();
-
-  const description = <div className='description'>
-    {
-      `You can draw a shape (initial pattern) in the grid with the mouse button pressed or tapping on cells one by one on mobile.
-      When you are done, the process can be started.`}<br />
-    {`It works based on the `} <b>{'Game of Life'}</b> {`rules, which you can read more about `}
-    <span>
-      <a style={{ textDecoration: 'underline' }} href={'https://en.wikipedia.org/wiki/Conway%27s_Game_of_Life'} target={'_blank'}>{'here'}</a>
-    </span>
-    {`. `}<br />
-    {'In current version it takes 10 rounds per start.'}<br />
-    {'After that, the game can be continued from the existing pattern (if any), or even from a supplemented one.'}<br />
-    {`Have fun!`}
-  </div>
-
-  const onClear = () => {
-    setBoard({ type: BoardActionKind.INIT, payload: { height: rows, width: columns } });
-    setActive(false)
-    setRound(0)
-    setLoaded(false)
-  }
-
 
   return (
-    <div className='sidebar-content'>
-
-      <aside><small>{description}</small></aside>
-
-      <ul>
-        <li>
-          <span>
-            <Link
-              className={'active-page'}
-              to={'/patterns'}
-            >
-              <button onClick={() => setStarted(false)}>{'Saved patterns'}</button>
-            </Link>
-          </span>
-        </li>
-
-        <li>
-          <button
-            disabled={started || !active}
-            onClick={() => savePattern()}
-          >
-            {'Save your initial pattern'}
-          </button>
-        </li>
-
-        <li>
-          <button
-            disabled={started}
-            onClick={() => onClear()}
-          >
-            {'Clear / reset board'}
-          </button>
-        </li>
-        <div className='desktop-start'>
-          <li>
-            <div style={{ textAlign: 'center' }}>
-              <span className='counter'>{round}</span>
-            </div>
-          </li>
-          <li>
-            <button
-              className={`${started ? 'started' : 'iddle'}`}
-              onClick={() => {
-                setStarted(!started);
-                setActive(true);
-                setLoaded(false)
-              }}
-            >
-              {`${started ? 'Stop' : active && !loaded ? 'Continue' : 'Start'}`}
-            </button>
-          </li>
-        </div>
-      </ul>
-    </div >
+    <div id='main-side'>
+      <Row className='desktop-desc'>
+        <Col className='d-flex justify-content-center'>
+          <Description />
+        </Col>
+      </Row>
+      <Row className='sidebar-wrapper gx-0'>
+        <Col className='sidebar-content d-flex flex-column align-items-center justify-content-center' sx={{ span: 10, offset: 1 }} sm={{ span: 8, offset: 2 }} md={{ span: 6, offset: 3 }}>
+          <ButtonGroup />
+        </Col>
+      </Row >
+    </div>
   )
 }
 

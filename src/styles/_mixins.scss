@@ -9,16 +9,22 @@
 }
 
 @mixin button-3d {
-  margin: auto;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
+  font-size: 0.9em;
+  margin: 1em 2px;
+  padding: 2px;
+  width: 90%;
+  height: auto;
+  min-width: 4vw !important;
+  min-height: 2vw !important;
+  display: inline;
+  text-align: center;
   box-sizing: border-box;
   opacity: 0.9;
   transition: 0.3s;
-  font-size: 0.8em;
-  white-space: nowrap;
-  border: 0;
+  overflow: nowrap;
+  overflow-wrap: normal;
+  white-space: pre-line;
+  border-radius: 5px;
 
   &:hover {
     opacity: 1;

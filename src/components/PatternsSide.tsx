@@ -7,21 +7,19 @@ const PatternSide = () => {
   </div>
 
   return (
-    <div className='sidebar-content'>
+    <div className='sidebar-content d-flex flex-column align-items-center justify-content-center'>
 
       <aside><small>{selection}</small></aside>
 
-      <ul>
-        <li>
-          <span>
-            <Link
-              to={'/'}
-            >
-              <button>{'Back to Game Board'}</button>
-            </Link>
-          </span>
-        </li>
-      </ul>
+      <div>
+        <span>
+          <Link
+            to={'/'}
+          >
+            <button>{'Back to Game Board'}</button>
+          </Link>
+        </span>
+      </div>
     </div>
   )
 }
