@@ -7,6 +7,7 @@ import MainSide from '../components/MainSide.tsx';
 import { Row, Col } from 'react-bootstrap';
 import Description from '../components/Description.tsx';
 
+
 export enum CellValue {
   ZERO = 0,
   ONE = 1
@@ -53,7 +54,6 @@ const Board = () => {
       return () => clearInterval(intervalId);
     }
   }, [started, setBoard, round, setRound, setStarted, maxRounds]);
-
 
 
   return (

@@ -284,7 +284,11 @@ span.counter {
     align-items: center;
     justify-content: space-evenly;
     color: $text-color;
+  }
 
+  .cell-button {
+    width: $cell_size_small_screen;
+    height: $cell_size_small_screen;
   }
 }
 

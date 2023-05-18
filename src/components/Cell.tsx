@@ -18,7 +18,6 @@ const Cell: React.FC<ICellProps> = ({ row, column }) => {
 
 
   useEffect(() => {
-
     if (!active && !loaded) {
       setDrawable(() => isInDrawer({ drawSize, side: rows, index: row }) && isInDrawer({ drawSize, side: columns, index: column }))
     } else {
@@ -26,10 +25,14 @@ const Cell: React.FC<ICellProps> = ({ row, column }) => {
     }
   }, [active, column, columns, row, rows, drawSize, loaded])
 
-  const selectCell = (pressure = 0) => {
+
+  const selectCell = (pressure = 0, pressEvent = null) => {
     if (!started && drawable && pressure > 0) {
-      const newVal = value === 0 ? 1 : 0
-      setBoard({ type: BoardActionKind.WRITE, payload: { row, column, value: newVal } })
+      setBoard({ type: BoardActionKind.WRITE, payload: { row, column } })
+    }
+
+    if (pressEvent) {
+      pressEvent.target.releasePointerCapture(pressEvent.pointerId)
     }
   }
 
@@ -38,11 +41,11 @@ const Cell: React.FC<ICellProps> = ({ row, column }) => {
     <>
       {value != null &&
         <button
+          id={`${row}-${column}`}
           disabled={!drawable}
           className={`${!drawable ? 'cell-button non-drawable' : value === CellValue.ONE ? 'cell-button selected' : 'cell-button'}`}
-          onPointerDown={(e) => selectCell(e?.pressure)}
-          onPointerEnter={(e) => selectCell(e?.pressure)}
-          onTouchMove={() => selectCell(1)}
+          onPointerDown={(e) => selectCell(e.pressure, e)}
+          onPointerEnter={(e) => selectCell(e.pressure)}
         />}
     </>
   );

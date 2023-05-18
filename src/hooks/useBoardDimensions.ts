@@ -10,16 +10,23 @@ const getDimensions = (defVal = '') => {
     element = document.getElementById(defVal)
   }
 
+  const windowWidth = window.innerWidth
+  const windowHeight = window.innerHeight
+
 
   if (element) {
-    width = Math.min(element.offsetWidth, window.innerWidth * 0.7)
-    height = Math.min(element.offsetHeight, window.innerHeight * 0.9)
+    width = Math.min(element.offsetWidth, windowWidth * 0.7)
+    height = Math.min(element.offsetHeight, windowHeight * 0.9)
   } else {
-    width = window.innerWidth * 0.7
-    height = window.innerHeight * 0.9
+    width = windowWidth * 0.7
+    height = windowHeight * 0.9
   }
 
-  return { width, height };
+  const cellSize = windowWidth > 991 ? 16 : 18
+
+  const calcDimension = (size: number): number => (Math.floor(size / (2 * cellSize)) * 2)
+
+  return { width: calcDimension(width), height: calcDimension(height) };
 }
 
 export default (defVal = '') => {

@@ -1,5 +1,5 @@
 import { useState, useReducer, useEffect, useCallback } from 'react'
-import useWindowDimensions from './hooks/useWindowDimensions.ts';
+import useBoardDimensions from './hooks/useBoardDimensions.ts';
 import { CellValue, ICell } from './pages/Board.tsx'
 import useLocalStorage from './hooks/useLocalStorage.ts';
 import { calcDrawer } from './drawer.ts';
@@ -36,10 +36,9 @@ export const BoardProvider = ({ children }) => {
   const [started, setStarted] = useState(false)
   const [active, setActive] = useState(false)
   const [loaded, setLoaded] = useState(false)
-  const { width, height }: { width: number, height: number } = useWindowDimensions('board')
-  const calcDimension = (size: number) => (Math.floor(size / 30) * 2)
-  const columns = useDebounce(calcDimension(width), 600, !active)
-  const rows = useDebounce(calcDimension(height), 600, !active)
+  const { width, height }: { width: number, height: number } = useBoardDimensions('board')
+  const columns = useDebounce(width, 600, !active)
+  const rows = useDebounce(height, 600, !active)
   const [boardToSave, setBoardToSave] = useState<number[][] | null>(null)
   const [savedPatterns, setSavedPatterns] = useLocalStorage('GOLSavedPatterns', [])
   const [round, setRound] = useState(0)

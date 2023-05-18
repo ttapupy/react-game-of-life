@@ -5,7 +5,7 @@ import { nextValue } from "./gameRules";
 
 
 export default function boardReducer(board: ICell[][] | null, action: BoardAction) {
-  const { width, height, column, row, value, drawSize, boardToLoad } = action.payload ?? {}
+  const { width, height, column, row, drawSize, boardToLoad } = action.payload ?? {}
 
   switch (action.type) {
     case 'INIT': {
@@ -20,9 +20,10 @@ export default function boardReducer(board: ICell[][] | null, action: BoardActio
       ));
     }
     case 'WRITE': {
-      if (row != null && column != null && value != null) {
+      if (row != null && column != null) {
         const fillCell = [...board]
-        fillCell[row][column] = { ...fillCell[row][column], value }
+        const newVal = fillCell[row][column].value === 0 ? 1 : 0
+        fillCell[row][column] = { ...fillCell[row][column], value: newVal }
         return fillCell;
       }
       return board;

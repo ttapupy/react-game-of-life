@@ -1,6 +1,6 @@
 @mixin cell-button {
-  width: 15px;
-  height: 15px;
+  width: $cell_size;
+  height: $cell_size;
   padding: 0;
   margin: 0;
   border-left: 1px solid $my-gray;
