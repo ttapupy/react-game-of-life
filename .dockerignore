@@ -1,0 +1,12 @@
+node_modules
+pnpm-lock.yaml
+.git
+dist
+dist-ssr
+*.local
+
+# Editor directories and files
+.vscode/*
+!.vscode/extensions.json
+.idea
+.DS_Store
