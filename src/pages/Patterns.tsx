@@ -14,15 +14,17 @@ export default function Patterns() {
   }, [setStarted])
 
   return (
-    <Row>
-      <Col xs={12} lg={3} className='sidebar-wrapper'>
-        <PatternSide />
-      </Col>
-      <Col xs={12} lg={9} className='patterns-wrapper'>
+    <main>
+      <Row>
+        <Col xs={12} lg={3} className='sidebar-wrapper'>
+          <PatternSide />
+        </Col>
+        <Col xs={12} lg={9} className='patterns-wrapper'>
 
-        {savedPatterns.map((pattern, index) => <Pattern key={index} pattern={pattern} index={index} />)}
+          {savedPatterns.map((pattern, index) => <Pattern key={index} pattern={pattern} index={index} />)}
 
-      </Col>
-    </Row>
+        </Col>
+      </Row>
+    </main>
   );
 }

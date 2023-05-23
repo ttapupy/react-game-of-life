@@ -20,14 +20,14 @@ const Footer = () => {
   )
 
   return (
-    <div className="footer">
+    <footer className="footer">
       <div>
         {notice}
       </div>
       <div>
         <a href='https://github.com/ttapupy' target='_blank'><Logo /></a>
       </div>
-    </div>
+    </footer>
   )
 }
 

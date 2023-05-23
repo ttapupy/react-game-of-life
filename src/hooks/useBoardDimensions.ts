@@ -13,16 +13,22 @@ const getDimensions = (defVal = '') => {
   const windowWidth = window.innerWidth
   const windowHeight = window.innerHeight
 
+  const largeWidth = windowWidth > 991
+  const largeHeight = windowHeight > 772
+  const portrait = windowHeight > windowWidth
+  const heightMultiplier = portrait && !largeHeight ? 0.6 : 1
+  const widthMultiplier = portrait && !largeWidth ? 0.9 : 0.7
+
 
   if (element) {
-    width = Math.min(element.offsetWidth, windowWidth * 0.7)
-    height = Math.min(element.offsetHeight, windowHeight * 0.9)
+    width = element.offsetWidth
+    height = heightMultiplier * element.offsetHeight
   } else {
-    width = windowWidth * 0.7
-    height = windowHeight * 0.9
+    width = windowWidth * widthMultiplier
+    height = windowHeight * heightMultiplier
   }
 
-  const cellSize = windowWidth > 991 ? 16 : 18
+  const cellSize = largeWidth && largeHeight ? 16 : 18
 
   const calcDimension = (size: number): number => (Math.floor(size / (2 * cellSize)) * 2)
 

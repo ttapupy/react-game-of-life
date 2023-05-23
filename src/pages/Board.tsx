@@ -58,7 +58,7 @@ const Board = () => {
 
   return (
     <>
-      <div className='wrapper' >
+      <main className='wrapper' >
         <Row className='mobile-desc'>
           <Col className='d-flex justify-content-center'>
             <Description />
@@ -66,12 +66,12 @@ const Board = () => {
         </Row>
 
         <Row className='board-wrapper gx-1' id='board-wrapper'>
-          <Col xs={3}>
+          <Col xs={12} sm={3}>
 
             <MainSide />
 
           </Col>
-          <Col xs={9} style={{ height: "100%" }}>
+          <Col xs={12} sm={9} style={{ height: "100%" }}>
 
             <fieldset disabled={started} id='board'>
               {columns && rows ?
@@ -94,7 +94,7 @@ const Board = () => {
             </fieldset>
 
           </Col></Row>
-      </div>
+      </main>
     </>
   );
 }

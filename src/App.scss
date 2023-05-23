@@ -38,7 +38,8 @@
   height: 90%;
   width: 100%;
 
-  div {
+  div,
+  nav {
     width: 100%;
     text-align: center;
 
@@ -158,6 +159,7 @@
   height: fit-content;
   border-right: 1px solid $my-gray;
   border-bottom: 1px solid $my-gray;
+  margin: auto;
 
 }
 
@@ -302,7 +304,7 @@ span.counter {
 @media (max-width: 991px) and (orientation: portrait) {
   .board-wrapper {
     min-height: 240px;
-    height: 65vh;
+    height: 80vh;
   }
 }
 
