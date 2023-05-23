@@ -306,6 +306,12 @@ span.counter {
     min-height: 240px;
     height: 80vh;
   }
+
+  .sidebar-content {
+    button {
+      height: 5rem !important;
+    }
+  }
 }
 
 

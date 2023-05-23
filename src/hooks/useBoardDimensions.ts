@@ -16,7 +16,7 @@ const getDimensions = (defVal = '') => {
   const largeWidth = windowWidth > 991
   const largeHeight = windowHeight > 772
   const portrait = windowHeight > windowWidth
-  const heightMultiplier = portrait && !largeHeight ? 0.6 : 1
+  const heightMultiplier = portrait && !largeHeight ? 0.8 : 1
   const widthMultiplier = portrait && !largeWidth ? 0.9 : 0.7
 
 
