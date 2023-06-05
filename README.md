@@ -3,6 +3,8 @@
 A personal tone React implementation of Conway's cellular automata, called: Game of Life.
 
 It's just a pet project for practicing frontend development and of course for fun too.
+It based on an old project of mine, which was written in VBA for excel. It occurred to me while writing the javascript code that it would be nice if it could work on mobiles too.
+So towards the end I tried to make it responsive as possible, but ehm... :)
 
 Online available: https://game-of-life-nl7x.onrender.com/
 
