@@ -1,10 +1,11 @@
+import { memo } from 'react';
 import { Row, Col } from 'react-bootstrap';
-import ButtonGroup from './ButtonGroup.tsx';
-import Description from './Description.tsx';
+import ButtonGroup from './ButtonGroup';
+import Description from './Description';
 
 
 
-const MainSide = () => {
+const MainSide = memo(() => {
 
   return (
     <div id='main-side'>
@@ -20,6 +21,6 @@ const MainSide = () => {
       </Row >
     </div>
   )
-}
+})
 
 export default MainSide;

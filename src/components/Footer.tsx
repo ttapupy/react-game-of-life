@@ -1,6 +1,6 @@
+import { memo } from 'react';
 
-
-const Footer = () => {
+const Footer = memo(() => {
 
   const copyright = String.fromCodePoint(0x00A9);
   const year = new Date()
@@ -29,6 +29,6 @@ const Footer = () => {
       </div>
     </footer>
   )
-}
+})
 
 export default Footer;

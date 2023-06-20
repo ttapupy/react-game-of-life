@@ -2,8 +2,8 @@ import { useEffect, useState } from "react";
 
 
 const getDimensions = (defVal = '') => {
-  let width: number;
-  let height: number;
+  let width: number | null;
+  let height: number | null;
   let element: HTMLElement;
 
   if (defVal?.length) {
@@ -12,13 +12,11 @@ const getDimensions = (defVal = '') => {
 
   const windowWidth = window.innerWidth
   const windowHeight = window.innerHeight
-
   const largeWidth = windowWidth > 991
   const largeHeight = windowHeight > 772
   const portrait = windowHeight > windowWidth
   const heightMultiplier = portrait && !largeHeight ? 0.8 : 1
   const widthMultiplier = portrait && !largeWidth ? 0.9 : 0.7
-
 
   if (element) {
     width = element.offsetWidth
@@ -36,22 +34,21 @@ const getDimensions = (defVal = '') => {
 }
 
 export default (defVal = '') => {
-  const [dimensions, setDimensions] = useState(
-    getDimensions(defVal)
-  );
+  const [dimensions, setDimensions] = useState({ width: null, height: null });
 
   useEffect(() => {
     const resize = () => {
-
       setDimensions(getDimensions(defVal));
     }
 
-    resize()
-
-    screen.orientation.addEventListener("change", resize)
-
+    resize();
+    screen.orientation.addEventListener("change", resize);
     window.addEventListener('resize', resize);
-    return () => window.removeEventListener('resize', resize);
+
+    return () => {
+      window.removeEventListener('resize', resize);
+      screen.orientation.removeEventListener("change", resize)
+    }
   }, [defVal]);
 
   return dimensions;

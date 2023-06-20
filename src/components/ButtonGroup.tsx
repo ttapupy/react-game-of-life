@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
-import { BoardAction, BoardActionKind } from '../BoardProvider.tsx';
-import { useBoardContext } from '../BoardContext.ts';
+import { BoardAction, BoardActionKind } from '../BoardProvider';
+import { useBoardContext } from '../BoardContext';
 
 const ButtonGroup = () => {
 

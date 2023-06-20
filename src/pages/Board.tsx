@@ -1,11 +1,12 @@
-import { useEffect } from 'react';
-import Cell from '../components/Cell.tsx';
-import Spinner from '../components/Spinner.tsx';
-import { BoardAction, BoardActionKind } from '../BoardProvider.tsx';
-import { useBoardContext } from '../BoardContext.ts';
-import MainSide from '../components/MainSide.tsx';
+import { useEffect, useCallback } from 'react';
+import Cell from '../components/Cell';
+import Spinner from '../components/Spinner';
+import { BoardAction, BoardActionKind } from '../BoardProvider';
+import { useBoardContext } from '../BoardContext';
+import MainSide from '../components/MainSide';
 import { Row, Col } from 'react-bootstrap';
-import Description from '../components/Description.tsx';
+import Description from '../components/Description';
+import { isInDrawer } from '../drawer';
 
 
 export enum CellValue {
@@ -20,8 +21,7 @@ export interface ICell {
 }
 
 const Board = () => {
-  const { setBoard, started, active, setStarted, rows, columns, round, setRound, maxRounds, loaded, drawSize }: { setBoard: React.Dispatch<BoardAction>, started: boolean, active: boolean, setStarted: React.Dispatch<React.SetStateAction<boolean>>, rows: number, columns: number, round: number, setRound: React.Dispatch<React.SetStateAction<number>>, maxRounds: number, loaded: boolean, drawSize: number } = useBoardContext()
-
+  const { board, setBoard, started, active, setStarted, rows, columns, round, setRound, maxRounds, loaded, drawSize }: { board: ICell[][], setBoard: React.Dispatch<BoardAction>, started: boolean, active: boolean, setStarted: React.Dispatch<React.SetStateAction<boolean>>, rows: number, columns: number, round: number, setRound: React.Dispatch<React.SetStateAction<number>>, maxRounds: number, loaded: boolean, drawSize: number } = useBoardContext()
 
   // initializing board
   useEffect(() => {
@@ -33,7 +33,6 @@ const Board = () => {
 
   // running the calculation of next cycle
   useEffect(() => {
-
     const step = (prevRound) => {
       if (prevRound < maxRounds) {
         setBoard({ type: BoardActionKind.STEP })
@@ -55,6 +54,15 @@ const Board = () => {
     }
   }, [started, setBoard, round, setRound, setStarted, maxRounds]);
 
+  const handleSetBoard = ({ row, column }: { row: number, column: number }) => setBoard({ type: BoardActionKind.WRITE, payload: { row, column } })
+
+  const handleDrawable = useCallback(({ row, column }: { row: number, column: number }) => {
+    if (!active && !loaded) {
+      return isInDrawer({ drawSize, side: rows, index: row }) && isInDrawer({ drawSize, side: columns, index: column })
+    }
+    return true;
+  }, [active, loaded, drawSize, rows, columns])
+
 
   return (
     <>
@@ -64,27 +72,33 @@ const Board = () => {
             <Description />
           </Col>
         </Row>
-
         <Row className='board-wrapper gx-1' id='board-wrapper'>
           <Col xs={12} sm={3}>
-
             <MainSide />
-
           </Col>
           <Col xs={12} sm={9} style={{ height: "100%" }}>
-
             <fieldset disabled={started} id='board'>
-              {columns && rows ?
+              {!!board?.length && !!board[0].length && drawSize && !!columns && !!rows ?
                 <>
                   {columns >= drawSize && rows >= drawSize ?
-
                     <div
                       className='board-container'
                       id={'board-container'}
                       style={{ gridTemplateColumns: `repeat(${columns}, 1fr)`, gridTemplateRows: `repeat(${rows}, 1fr)` }}
                     >
                       <>
-                        {Array.from({ length: rows }, (_, r) => Array.from({ length: columns }, (_, c) => (<Cell row={r} column={c} key={`${r}-${c}`} />)))}
+                        {board.map(sor => (
+                            sor.map(cella => (
+                                <Cell
+                                    key={`${cella.row}-${cella.col}`}
+                                    handleSetBoard={() => handleSetBoard({ row: cella.row, column: cella.col })}
+                                    value={cella.value}
+                                    drawable={handleDrawable({ row: cella.row, column: cella.col })}
+                                />
+                            )
+                          )
+                            ))
+                        }
                       </>
                     </div> :
                     <div>{'Sorry, screen size is too small to play.'}</div>
@@ -92,7 +106,6 @@ const Board = () => {
                 </> :
                 <Spinner />}
             </fieldset>
-
           </Col></Row>
       </main>
     </>

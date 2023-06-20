@@ -1,4 +1,4 @@
-import { ICell } from './pages/Board.tsx';
+import { ICell } from './pages/Board';
 
 const adjacent = (ref: ICell, other: ICell): boolean => {
   return (ref.col !== other.col || ref.row !== other.row)

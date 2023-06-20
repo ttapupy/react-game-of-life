@@ -1,8 +1,8 @@
 import { Dispatch, SetStateAction } from 'react'
 import { useNavigate } from "react-router-dom";
-import { BoardAction, BoardActionKind } from '../BoardProvider.tsx';
-import { useBoardContext } from '../BoardContext.ts';
-import PatternCell from './PatternCell.tsx';
+import { BoardAction, BoardActionKind } from '../BoardProvider';
+import { useBoardContext } from '../BoardContext';
+import PatternCell from './PatternCell';
 
 
 const Pattern = ({ pattern, index }: { pattern: number[][], index: number }) => {

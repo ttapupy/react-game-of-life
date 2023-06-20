@@ -1,11 +1,11 @@
 import { useState, useReducer, useEffect, useCallback } from 'react'
-import useBoardDimensions from './hooks/useBoardDimensions.ts';
-import { CellValue, ICell } from './pages/Board.tsx'
-import useLocalStorage from './hooks/useLocalStorage.ts';
-import { calcDrawer } from './drawer.ts';
-import { BoardContext } from './BoardContext.ts';
-import useDebounce from './hooks/useDebounce.ts';
-import boardReducer from './boardReducer.ts';
+import useBoardDimensions from './hooks/useBoardDimensions';
+import { CellValue, ICell } from './pages/Board'
+import useLocalStorage from './hooks/useLocalStorage';
+import { calcDrawer } from './drawer';
+import { BoardContext } from './BoardContext';
+import useDebounce from './hooks/useDebounce';
+import boardReducer from './boardReducer';
 
 
 const initialState: ICell[][] | null = null
@@ -36,9 +36,9 @@ export const BoardProvider = ({ children }) => {
   const [started, setStarted] = useState(false)
   const [active, setActive] = useState(false)
   const [loaded, setLoaded] = useState(false)
-  const { width, height }: { width: number, height: number } = useBoardDimensions('board')
-  const columns = useDebounce(width, 600, !active)
-  const rows = useDebounce(height, 600, !active)
+  const { width, height }: { width: number | null, height: number | null } = useBoardDimensions('board')
+  const columns: number | null = useDebounce(width, 600, !active)
+  const rows: number | null = useDebounce(height, 600, !active)
   const [boardToSave, setBoardToSave] = useState<number[][] | null>(null)
   const [savedPatterns, setSavedPatterns] = useLocalStorage('GOLSavedPatterns', [])
   const [round, setRound] = useState(0)
@@ -47,7 +47,7 @@ export const BoardProvider = ({ children }) => {
 
 
   const drawedBoard = useCallback(() => {
-    if (!active && board != null) {
+    if (!active && [board, rows, columns].every(e => e != null)) {
       setBoardToSave(() => calcDrawer({ table: board, rows, columns, drawSize }))
     }
   }, [active, board, columns, rows])

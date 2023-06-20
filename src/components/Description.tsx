@@ -1,4 +1,6 @@
-const Description = () => {
+import { memo } from 'react';
+
+const Description = memo(() => {
   return (
     <aside><small>
       <div className='description'>
@@ -17,6 +19,6 @@ const Description = () => {
     </small>
     </aside>
   )
-}
+})
 
 export default Description;
