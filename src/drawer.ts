@@ -1,4 +1,5 @@
 import { ICell } from "./pages/Board"
+import { CellValue } from "./pages/Board"
 
 // Returns whether an element index is inside drawer canvas
 export const isInDrawer = ({ drawSize, side, index }: { drawSize: number, side: number, index: number }) => {
@@ -11,10 +12,10 @@ export const isInDrawer = ({ drawSize, side, index }: { drawSize: number, side: 
 }
 
 
-export const calcDrawer = ({ table, rows, columns, drawSize }: { table: ICell[][], rows: number, columns: number, drawSize: number }) => {
-  const sorok = table.filter((_, rowIndex) => isInDrawer({ drawSize, side: rows, index: rowIndex }))
+export const calcDrawer = ({ table, rows, columns, drawSize }: { table: ICell[][], rows: number, columns: number, drawSize: number }): CellValue[][] => {
+  const tableRows = table.filter((_, rowIndex) => isInDrawer({ drawSize, side: rows, index: rowIndex }))
 
-  return sorok.map(sor => sor.filter((_, columnIndex) => {
+  return tableRows.map(tableRow => tableRow.filter((_, columnIndex) => {
     return (
       isInDrawer({ drawSize, side: columns, index: columnIndex })
     )

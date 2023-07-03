@@ -20,7 +20,20 @@ export interface ICell {
 }
 
 const Board = () => {
-  const { board, setBoard, started, active, setStarted, rows, columns, round, setRound, maxRounds, loaded, drawSize }: { board: ICell[][], setBoard: React.Dispatch<BoardAction>, started: boolean, active: boolean, setStarted: React.Dispatch<React.SetStateAction<boolean>>, rows: number, columns: number, round: number, setRound: React.Dispatch<React.SetStateAction<number>>, maxRounds: number, loaded: boolean, drawSize: number } = useBoardContext()
+  const { board, setBoard, started, active, setStarted, rows, columns, round, setRound, maxRounds, loaded, drawSize }: {
+    board: ICell[][],
+    setBoard: React.Dispatch<BoardAction>,
+    started: boolean,
+    active: boolean,
+    setStarted: React.Dispatch<React.SetStateAction<boolean>>,
+    rows: number,
+    columns: number,
+    round: number,
+    setRound: React.Dispatch<React.SetStateAction<number>>,
+    maxRounds: number,
+    loaded: boolean,
+    drawSize: number
+  } = useBoardContext()
 
   // initializing board
   useEffect(() => {
@@ -88,13 +101,13 @@ const Board = () => {
                       style={{ gridTemplateColumns: `repeat(${columns}, 1fr)`, gridTemplateRows: `repeat(${rows}, 1fr)` }}
                     >
                       <>
-                        {board.map(sor => (
-                          sor.map(cella => (
+                        {board.map(row => (
+                          row.map(cell => (
                             <Cell
-                              key={`${cella.row}-${cella.col}`}
-                              handleSetBoard={() => handleSetBoard({ row: cella.row, column: cella.col })}
-                              value={cella.value}
-                              drawable={handleDrawable({ row: cella.row, column: cella.col })}
+                              key={`${cell.row}-${cell.col}`}
+                              handleSetBoard={() => handleSetBoard({ row: cell.row, column: cell.col })}
+                              value={cell.value}
+                              drawable={handleDrawable({ row: cell.row, column: cell.col })}
                             />
                           )
                           )

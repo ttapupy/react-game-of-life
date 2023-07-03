@@ -45,10 +45,10 @@ const Pattern: FC<IPatternProps> = ({ pattern, index }) => {
           className='board-container'
           style={{ gridTemplateColumns: `repeat(${drawSize}, 1fr)`, gridTemplateRows: `repeat(${drawSize}, 1fr)` }}
         >
-          {pattern.map((sor, sorIndex) => sor.map((cellValue, oszlopIndex) => {
+          {pattern.map((row, rowIndex) => row.map((cellValue, columnIndex) => {
             return (
               <button
-                key={`${sorIndex}_${oszlopIndex}`}
+                key={`${rowIndex}_${columnIndex}`}
                 disabled={true}
                 className={`${cellValue === CellValue.ONE ? 'cell-button selected' : 'cell-button'}`}
               />

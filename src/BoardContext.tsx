@@ -81,7 +81,11 @@ const BoardProvider = ({ children }: { children: React.ReactNode }) => {
 }
 
 const useBoardContext = () => {
-  return useContext(BoardContext);
+  const context = useContext(BoardContext);
+  if (context === undefined) {
+    throw new Error('useBoardContext must be used within a BoardProvider')
+  }
+  return context;
 }
 const initBoard = (dispatch: React.Dispatch<BoardAction>, payload: BoardAction["payload"]) => {
   dispatch({ type: BoardActionKind.INIT, payload })
