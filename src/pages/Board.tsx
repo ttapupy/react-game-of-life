@@ -1,8 +1,7 @@
 import { useEffect, useCallback } from 'react';
 import Cell from '../components/Cell';
 import Spinner from '../components/Spinner';
-import { BoardAction, BoardActionKind } from '../BoardProvider';
-import { useBoardContext } from '../BoardContext';
+import { BoardAction, useBoardContext, initBoard, stepBoard, writeBoard } from '../BoardContext';
 import MainSide from '../components/MainSide';
 import { Row, Col } from 'react-bootstrap';
 import Description from '../components/Description';
@@ -26,7 +25,7 @@ const Board = () => {
   // initializing board
   useEffect(() => {
     if (!started && !!rows && !!columns && !active && !loaded) {
-      setBoard({ type: BoardActionKind.INIT, payload: { height: rows, width: columns } })
+      initBoard(setBoard, { height: rows, width: columns })
     }
   }, [rows, columns, started, setBoard, active, loaded])
 
@@ -35,7 +34,7 @@ const Board = () => {
   useEffect(() => {
     const step = (prevRound) => {
       if (prevRound < maxRounds) {
-        setBoard({ type: BoardActionKind.STEP })
+        stepBoard(setBoard)
         return prevRound + 1
       } else {
         return prevRound
@@ -54,7 +53,9 @@ const Board = () => {
     }
   }, [started, setBoard, round, setRound, setStarted, maxRounds]);
 
-  const handleSetBoard = ({ row, column }: { row: number, column: number }) => setBoard({ type: BoardActionKind.WRITE, payload: { row, column } })
+  const handleSetBoard = ({ row, column }: { row: number, column: number }) => {
+    writeBoard(setBoard, { row, column })
+  }
 
   const handleDrawable = useCallback(({ row, column }: { row: number, column: number }) => {
     if (!active && !loaded) {
@@ -88,16 +89,16 @@ const Board = () => {
                     >
                       <>
                         {board.map(sor => (
-                            sor.map(cella => (
-                                <Cell
-                                    key={`${cella.row}-${cella.col}`}
-                                    handleSetBoard={() => handleSetBoard({ row: cella.row, column: cella.col })}
-                                    value={cella.value}
-                                    drawable={handleDrawable({ row: cella.row, column: cella.col })}
-                                />
-                            )
+                          sor.map(cella => (
+                            <Cell
+                              key={`${cella.row}-${cella.col}`}
+                              handleSetBoard={() => handleSetBoard({ row: cella.row, column: cella.col })}
+                              value={cella.value}
+                              drawable={handleDrawable({ row: cella.row, column: cella.col })}
+                            />
                           )
-                            ))
+                          )
+                        ))
                         }
                       </>
                     </div> :

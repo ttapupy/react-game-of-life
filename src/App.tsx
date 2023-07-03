@@ -2,7 +2,7 @@ import { Route, Routes } from "react-router-dom"
 import Patterns from "./pages/Patterns"
 import './App.scss'
 import Board from './pages/Board';
-import { BoardProvider } from './BoardProvider.tsx';
+import { BoardProvider } from './BoardContext.tsx';
 import Footer from "./components/Footer.tsx";
 
 

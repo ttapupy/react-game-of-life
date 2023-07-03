@@ -38,6 +38,7 @@ export default (defVal = '') => {
 
   useEffect(() => {
     const resize = () => {
+
       setDimensions(getDimensions(defVal));
     }
 

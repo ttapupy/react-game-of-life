@@ -1,16 +1,16 @@
-import { useState, useReducer, useEffect, useCallback } from 'react'
+import { useState, useReducer, useEffect, useCallback, createContext, useContext } from 'react'
 import useBoardDimensions from './hooks/useBoardDimensions';
 import { CellValue, ICell } from './pages/Board'
 import useLocalStorage from './hooks/useLocalStorage';
 import { calcDrawer } from './drawer';
-import { BoardContext } from './BoardContext';
 import useDebounce from './hooks/useDebounce';
 import boardReducer from './boardReducer';
+import * as React from "react";
 
 
 const initialState: ICell[][] | null = null
 
-export enum BoardActionKind {
+enum BoardActionKind {
   INIT = 'INIT',
   WRITE = 'WRITE',
   STEP = 'STEP',
@@ -30,8 +30,10 @@ export interface BoardAction {
   };
 }
 
+const BoardContext = createContext(null)
 
-export const BoardProvider = ({ children }) => {
+
+const BoardProvider = ({ children }: { children: React.ReactNode }) => {
   const [board, setBoard] = useReducer(boardReducer, initialState);
   const [started, setStarted] = useState(false)
   const [active, setActive] = useState(false)
@@ -77,3 +79,21 @@ export const BoardProvider = ({ children }) => {
     </BoardContext.Provider>
   );
 }
+
+const useBoardContext = () => {
+  return useContext(BoardContext);
+}
+const initBoard = (dispatch: React.Dispatch<BoardAction>, payload: BoardAction["payload"]) => {
+  dispatch({ type: BoardActionKind.INIT, payload })
+}
+const stepBoard = (dispatch: React.Dispatch<BoardAction>) => {
+  dispatch({ type: BoardActionKind.STEP })
+}
+const writeBoard = (dispatch: React.Dispatch<BoardAction>, payload: BoardAction["payload"]) => {
+  dispatch({ type: BoardActionKind.WRITE, payload })
+}
+const loadBoard = (dispatch: React.Dispatch<BoardAction>, payload: BoardAction["payload"]) => {
+  dispatch({ type: BoardActionKind.LOAD, payload })
+}
+
+export { BoardProvider, useBoardContext, initBoard, stepBoard, writeBoard, loadBoard }

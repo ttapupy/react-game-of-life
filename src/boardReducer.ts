@@ -1,5 +1,5 @@
 import { ICell, CellValue } from "./pages/Board";
-import { BoardAction } from "./BoardProvider";
+import { BoardAction } from "./BoardContext";
 import { isInDrawer } from "./drawer";
 import { nextValue } from "./gameRules";
 

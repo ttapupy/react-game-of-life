@@ -1,12 +1,14 @@
-import { Dispatch, SetStateAction } from 'react'
+import { Dispatch, SetStateAction, FC } from 'react'
 import { useNavigate } from "react-router-dom";
-import { BoardAction, BoardActionKind } from '../BoardProvider';
-import { useBoardContext } from '../BoardContext';
+import { BoardAction, useBoardContext, loadBoard } from '../BoardContext';
 import PatternCell from './PatternCell';
 
+interface IPatternProps {
+  pattern: number[][];
+  index: number;
+}
 
-const Pattern = ({ pattern, index }: { pattern: number[][], index: number }) => {
-
+const Pattern: FC<IPatternProps> = ({ pattern, index }: { pattern: number[][], index: number }) => {
   const { drawSize, setBoard, setRound, rows, columns, setLoaded, deletePattern }: { drawSize: number, setBoard: React.Dispatch<BoardAction>, setRound: React.Dispatch<React.SetStateAction<number>>, rows: number, columns: number, setLoaded: Dispatch<SetStateAction<boolean>>, deletePattern: (index: number) => void } = useBoardContext();
 
   const navigate = useNavigate();
@@ -14,7 +16,7 @@ const Pattern = ({ pattern, index }: { pattern: number[][], index: number }) => 
   const loadPattern = () => {
     setLoaded(true)
     setRound(0)
-    setBoard({ type: BoardActionKind.LOAD, payload: { boardToLoad: pattern, drawSize, height: rows, width: columns } })
+    loadBoard(setBoard, { boardToLoad: pattern, drawSize, height: rows, width: columns })
     navigate('/')
   }
 

@@ -1,14 +1,13 @@
 import { Link } from 'react-router-dom';
-import { BoardAction, BoardActionKind } from '../BoardProvider';
-import { useBoardContext } from '../BoardContext';
+import { BoardAction, useBoardContext, initBoard } from '../BoardContext';
+
 
 const ButtonGroup = () => {
-
   const { started, setStarted, setRound, setLoaded, loaded, setActive, setBoard, rows, columns, savePattern, active, round }:
     { started: boolean, setStarted: React.Dispatch<React.SetStateAction<boolean>>, setActive: React.Dispatch<React.SetStateAction<boolean>>, setRound: React.Dispatch<React.SetStateAction<number>>, setLoaded: React.Dispatch<React.SetStateAction<boolean>>, loaded: boolean, setBoard: React.Dispatch<BoardAction>, rows: number, columns: number, savePattern: () => void, active: boolean, round: number } = useBoardContext();
 
   const onClear = () => {
-    setBoard({ type: BoardActionKind.INIT, payload: { height: rows, width: columns } });
+    initBoard(setBoard, { height: rows, width: columns });
     setActive(false)
     setRound(0)
     setLoaded(false)

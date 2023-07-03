@@ -1,4 +1,5 @@
-import { CellValue } from '../pages/Board'
+import { FC } from 'react';
+import { CellValue } from '../pages/Board';
 import { useBoardContext } from '../BoardContext';
 
 export interface ICellProps {
@@ -7,7 +8,7 @@ export interface ICellProps {
   value: 0 | 1;
 }
 
-const Cell: React.FC<ICellProps> = ({ drawable, handleSetBoard, value }) => {
+const Cell: FC<ICellProps> = ({ drawable, handleSetBoard, value }) => {
   const { started }: { started: boolean } = useBoardContext();
 
   const selectCell = (pressure = 0, pressEvent = null) => {
