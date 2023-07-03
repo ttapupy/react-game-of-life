@@ -2,10 +2,11 @@ import { FC } from 'react';
 import { CellValue } from '../pages/Board';
 import { useBoardContext } from '../BoardContext';
 
+
 export interface ICellProps {
   drawable: boolean;
   handleSetBoard: () => void;
-  value: 0 | 1;
+  value: CellValue;
 }
 
 const Cell: FC<ICellProps> = ({ drawable, handleSetBoard, value }) => {

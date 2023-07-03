@@ -1,15 +1,23 @@
 import { Dispatch, SetStateAction, FC } from 'react'
 import { useNavigate } from "react-router-dom";
 import { BoardAction, useBoardContext, loadBoard } from '../BoardContext';
-import PatternCell from './PatternCell';
+import { CellValue } from '../pages/Board';
 
 interface IPatternProps {
-  pattern: number[][];
+  pattern: CellValue[][];
   index: number;
 }
 
-const Pattern: FC<IPatternProps> = ({ pattern, index }: { pattern: number[][], index: number }) => {
-  const { drawSize, setBoard, setRound, rows, columns, setLoaded, deletePattern }: { drawSize: number, setBoard: React.Dispatch<BoardAction>, setRound: React.Dispatch<React.SetStateAction<number>>, rows: number, columns: number, setLoaded: Dispatch<SetStateAction<boolean>>, deletePattern: (index: number) => void } = useBoardContext();
+const Pattern: FC<IPatternProps> = ({ pattern, index }) => {
+  const { drawSize, setBoard, setRound, rows, columns, setLoaded, deletePattern }: {
+    drawSize: number,
+    setBoard: React.Dispatch<BoardAction>,
+    setRound: React.Dispatch<React.SetStateAction<number>>,
+    rows: number,
+    columns: number,
+    setLoaded: Dispatch<SetStateAction<boolean>>,
+    deletePattern: (index: number) => void
+  } = useBoardContext();
 
   const navigate = useNavigate();
 
@@ -37,8 +45,15 @@ const Pattern: FC<IPatternProps> = ({ pattern, index }: { pattern: number[][], i
           className='board-container'
           style={{ gridTemplateColumns: `repeat(${drawSize}, 1fr)`, gridTemplateRows: `repeat(${drawSize}, 1fr)` }}
         >
-          {pattern.map((sor, sorIndex) => sor.map((cellValue, oszlopIndex) => <PatternCell key={`${sorIndex}_${oszlopIndex}`} value={cellValue} />))}
-
+          {pattern.map((sor, sorIndex) => sor.map((cellValue, oszlopIndex) => {
+            return (
+              <button
+                key={`${sorIndex}_${oszlopIndex}`}
+                disabled={true}
+                className={`${cellValue === CellValue.ONE ? 'cell-button selected' : 'cell-button'}`}
+              />
+            )
+          }))}
         </div>
       </fieldset>
     </div>
