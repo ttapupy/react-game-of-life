@@ -96,4 +96,4 @@ const loadBoard = (dispatch: React.Dispatch<BoardAction>, payload: BoardAction["
   dispatch({ type: BoardActionKind.LOAD, payload })
 }
 
-export { BoardProvider, useBoardContext, initBoard, stepBoard, writeBoard, loadBoard }
+export { BoardContext, BoardProvider, useBoardContext, initBoard, stepBoard, writeBoard, loadBoard }

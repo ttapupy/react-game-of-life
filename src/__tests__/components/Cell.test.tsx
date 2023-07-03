@@ -2,24 +2,23 @@ import { render, screen } from '@testing-library/react';
 import Cell from '../../components/Cell';
 import { BoardContext } from '../../BoardContext';
 
-
-const cellBoardContext = {started: false}
+const cellBoardContext = { started: false }
 
 function renderCell(cellContext, value, handleSetBoard, drawable) {
   return render(
     <div data-testid='container'>
       <BoardContext.Provider value={cellContext}>
         <Cell
-            handleSetBoard={handleSetBoard}
-            value={value}
-            drawable={drawable}
+          handleSetBoard={handleSetBoard}
+          value={value}
+          drawable={drawable}
         />
       </BoardContext.Provider>
     </div>
   );
 }
 
-const handleSetBoard = () => {console.log('setBoard')};
+const handleSetBoard = () => { console.log('setBoard') };
 
 test('renders cell out of drawer canvas', () => {
   renderCell(cellBoardContext, 0, handleSetBoard, false)
