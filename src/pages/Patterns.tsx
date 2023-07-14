@@ -1,7 +1,6 @@
 import PatternSide from '../components/PatternsSide';
 import { useBoardContext } from "../BoardContext.tsx";
 import Pattern from '../components/Pattern';
-import { useEffect } from 'react';
 import { Row, Col } from 'react-bootstrap';
 
 
@@ -9,9 +8,7 @@ import { Row, Col } from 'react-bootstrap';
 export default function Patterns() {
   const { savedPatterns, setStarted }: { savedPatterns: number[][][], setStarted: React.Dispatch<React.SetStateAction<boolean>> } = useBoardContext()
 
-  useEffect(() => {
-    setStarted(false)
-  }, [setStarted])
+  setStarted(false)
 
   return (
     <main>
