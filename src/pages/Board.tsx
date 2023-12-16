@@ -71,11 +71,11 @@ const Board = () => {
   }
 
   const handleDrawable = useCallback(({ row, column }: { row: number, column: number }) => {
-    if (!active && !loaded) {
+    if (!active) {
       return isInDrawer({ drawSize, side: rows, index: row }) && isInDrawer({ drawSize, side: columns, index: column })
     }
     return true;
-  }, [active, loaded, drawSize, rows, columns])
+  }, [active, drawSize, rows, columns])
 
 
   return (
