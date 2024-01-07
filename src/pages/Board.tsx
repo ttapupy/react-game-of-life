@@ -45,7 +45,7 @@ const Board = () => {
 
   // running the calculation of next cycle
   useEffect(() => {
-    const step = (prevRound) => {
+    const step = (prevRound: number) => {
       if (prevRound < maxRounds) {
         stepBoard(setBoard)
         return prevRound + 1
@@ -96,7 +96,7 @@ const Board = () => {
                 <>
                   {columns >= drawSize && rows >= drawSize ?
                     <div
-                      className='board-container'
+                      className='board-container main'
                       id={'board-container'}
                       style={{ gridTemplateColumns: `repeat(${columns}, 1fr)`, gridTemplateRows: `repeat(${rows}, 1fr)` }}
                     >
@@ -104,9 +104,9 @@ const Board = () => {
                         {board.map(row => (
                           row.map(cell => (
                             <Cell
+                              cell={cell}
                               key={`${cell.row}-${cell.col}`}
                               handleSetBoard={() => handleSetBoard({ row: cell.row, column: cell.col })}
-                              value={cell.value}
                               drawable={handleDrawable({ row: cell.row, column: cell.col })}
                             />
                           )

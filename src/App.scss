@@ -24,6 +24,13 @@
   max-width: min(98vw, 2048px);
 }
 
+.patterns {
+  padding: 5px;
+  margin: 5px;
+  border: 2px solid $my-gray;
+  border-radius: 15px;
+}
+
 #main-side {
   display: flex;
   flex-direction: column;
@@ -73,7 +80,6 @@
   }
 }
 
-
 .started {
   background-color: #f7a2c8 !important;
 }
@@ -112,7 +118,6 @@
     animation: logo-spin infinite 20s linear;
   }
 }
-
 
 .card {
   padding: 2em;
@@ -157,10 +162,35 @@
   grid-gap: 0 0;
   width: fit-content;
   height: fit-content;
-  border-right: 1px solid $my-gray;
-  border-bottom: 1px solid $my-gray;
+  border-style: solid;
+  border-width: 1px 2px 2px 1px;
   margin: auto;
+  margin-top: 5px;
 
+  &.main {
+    border-color: orange;
+    border-radius: 15px;
+
+    button:first-child {
+      border-top-left-radius: 15px;
+    }
+
+    button:last-child {
+      border-bottom-right-radius: 15px;
+    }
+
+    .top-right-cell {
+      border-top-right-radius: 15px;
+    }
+
+    .bottom-left-cell {
+      border-bottom-left-radius: 15px;
+    }
+  }
+
+  &:not(.main) {
+    border-color: $my-gray;
+  }
 }
 
 .patterns-wrapper {
@@ -181,8 +211,6 @@
   max-width: 100%;
 }
 
-
-
 .sidebar-wrapper {
   aside {
     margin: 40px 0;
@@ -198,7 +226,7 @@
 .description {
   padding: 1em 2em;
   margin: 0.5em;
-  font-size: 1.2em;
+  font-size: min(2vw, 1.1em);
   text-align: justify;
   border: 2px solid $my-gray;
   border-radius: 15px;
@@ -251,12 +279,10 @@ span.counter {
       background-color: #f0d4e8ea;
     }
   }
-
 }
 
 @media (max-width: 991px),
 (max-height: 722px) {
-
   .patterns-wrapper {
     flex: 100%;
 
@@ -264,7 +290,6 @@ span.counter {
       flex: 80%;
       height: 100%;
     }
-
   }
 
   .board-wrapper {
@@ -314,7 +339,6 @@ span.counter {
   }
 }
 
-
 @media (min-width: 992px) {
 
   .board-wrapper,
@@ -323,7 +347,7 @@ span.counter {
   }
 
   .board-wrapper {
-    height: 90vh;
+    height: 100vh;
     flex-direction: row;
     border: 0;
     padding: 0;
@@ -345,7 +369,7 @@ span.counter {
   .desktop-desc {
     display: block;
     color: $text-color;
-    flex: 1 2 auto;
+    flex: 1 2 1;
   }
 }
 
@@ -365,6 +389,5 @@ span.counter {
     display: flex;
     flex-wrap: wrap;
     align-content: center;
-
   }
 }

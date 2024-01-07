@@ -1,16 +1,25 @@
 import { FC } from 'react';
-import { CellValue } from '../pages/Board';
+import { ICell, CellValue } from '../pages/Board';
 import { useBoardContext } from '../BoardContext';
 
 
 export interface ICellProps {
   drawable: boolean;
   handleSetBoard: () => void;
-  value: CellValue;
+  cell: ICell;
 }
 
-const Cell: FC<ICellProps> = ({ drawable, handleSetBoard, value }) => {
-  const { started }: { started: boolean } = useBoardContext();
+const Cell: FC<ICellProps> = ({ drawable, handleSetBoard, cell }) => {
+  const { started, rows, columns }: { started: boolean, rows: number, columns: number, } = useBoardContext();
+  const { value, row, col } = cell
+
+  let className = `${!drawable ? 'cell-button non-drawable' : value === CellValue.ONE ? 'cell-button selected' : 'cell-button'}`
+
+  if (row === 0 && col + 1 === columns) {
+    className = `${className} top-right-cell`
+  } else if (col === 0 && row + 1 === rows) {
+    className = `${className} bottom-left-cell`
+  }
 
   const selectCell = (pressure = 0, pressEvent = null) => {
     if (!started && drawable && pressure > 0) {
@@ -26,7 +35,7 @@ const Cell: FC<ICellProps> = ({ drawable, handleSetBoard, value }) => {
     <>
       <button
         disabled={!drawable}
-        className={`${!drawable ? 'cell-button non-drawable' : value === CellValue.ONE ? 'cell-button selected' : 'cell-button'}`}
+        className={className}
         onPointerDown={(e) => selectCell(e.pressure, e)}
         onPointerEnter={(e) => selectCell(e.pressure)}
       />

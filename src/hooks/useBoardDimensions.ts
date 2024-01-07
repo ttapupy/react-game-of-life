@@ -1,5 +1,9 @@
 import { useEffect, useState } from "react";
 
+export type DimensionsType = {
+  width: number | null;
+  height: number | null;
+}
 
 const getDimensions = (defVal = '') => {
   let width: number | null;
@@ -33,13 +37,13 @@ const getDimensions = (defVal = '') => {
   return { width: calcDimension(width), height: calcDimension(height) };
 }
 
-export default (defVal = '') => {
-  const [dimensions, setDimensions] = useState({ width: null, height: null });
+export default (defVal = '', active = true) => {
+  const [dimensions, setDimensions] = useState<DimensionsType>({ width: null, height: null });
+  const [disabledDimensions, setDisabledDimensions] = useState(!active)
 
   useEffect(() => {
-    const resize = () => {
-
-      setDimensions(getDimensions(defVal));
+    function resize() {
+      !disabledDimensions && setDimensions(getDimensions(defVal));
     }
 
     resize();
@@ -50,7 +54,7 @@ export default (defVal = '') => {
       window.removeEventListener('resize', resize);
       screen.orientation.removeEventListener("change", resize)
     }
-  }, [defVal]);
+  }, [defVal, disabledDimensions]);
 
-  return dimensions;
+  return { dimensions, setDisabledDimensions };
 }
