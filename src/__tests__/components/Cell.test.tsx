@@ -4,13 +4,13 @@ import { BoardContext } from '../../BoardContext';
 
 const cellBoardContext = { started: false }
 
-function renderCell(cellContext, value, handleSetBoard, drawable) {
+function renderCell(cellContext, cell, handleSetBoard, drawable) {
   return render(
     <div data-testid='container'>
       <BoardContext.Provider value={cellContext}>
         <Cell
           handleSetBoard={handleSetBoard}
-          value={value}
+          cell={cell}
           drawable={drawable}
         />
       </BoardContext.Provider>
@@ -21,17 +21,20 @@ function renderCell(cellContext, value, handleSetBoard, drawable) {
 const handleSetBoard = () => { console.log('setBoard') };
 
 test('renders cell out of drawer canvas', () => {
-  renderCell(cellBoardContext, 0, handleSetBoard, false)
+  const cell = { value: 0, row: 1, col: 1 }
+  renderCell(cellBoardContext, cell, handleSetBoard, false)
   expect(screen.getByRole('button')).toBeDisabled()
 })
 
 test('renders an empty cell inside drawer canvas', () => {
-  renderCell(cellBoardContext, 0, handleSetBoard, true)
+  const cell = { value: 0, row: 1, col: 1 }
+  renderCell(cellBoardContext, cell, handleSetBoard, true)
   expect(screen.getByRole('button')).not.toBeDisabled()
   expect(screen.getByTestId('container').getElementsByClassName('cell-button selected').length).toBe(0);
 })
 
 test('renders a cell with value=1 inside drawer canvas', () => {
-  renderCell(cellBoardContext, 1, handleSetBoard, true)
+  const cell = { value: 1, row: 1, col: 1 }
+  renderCell(cellBoardContext, cell, handleSetBoard, true)
   expect(screen.getByTestId('container').getElementsByClassName('cell-button selected').length).toBe(1);
 })
