@@ -347,7 +347,7 @@ span.counter {
   }
 
   .board-wrapper {
-    height: 100vh;
+    height: calc(100vh - 5px);
     flex-direction: row;
     border: 0;
     padding: 0;
