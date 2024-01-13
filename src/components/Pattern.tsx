@@ -54,7 +54,7 @@ const Pattern: FC<IPatternProps> = ({ pattern, index }) => {
               <button
                 key={`${rowIndex}_${columnIndex}`}
                 disabled={true}
-                className={`${cellValue === CellValue.ONE ? 'cell-button selected' : 'cell-button'}`}
+                className={`${cellValue === CellValue.ONE ? 'cell-button alive' : 'cell-button'}`}
               />
             )
           }))}

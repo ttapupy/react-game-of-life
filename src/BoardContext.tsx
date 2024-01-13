@@ -4,7 +4,7 @@ import { CellValue, ICell } from "./pages/Board";
 import useLocalStorage from "./hooks/useLocalStorage";
 import { calcDrawer } from "./drawer";
 import boardReducer from "./boardReducer";
-
+import usePrevious from "./hooks/usePrevious";
 
 const initialState: ICell[][] | null = null;
 
@@ -35,6 +35,7 @@ const BoardProvider = ({ children }: { children: React.ReactNode }) => {
   const [started, setStarted] = React.useState(false);
   const [active, setActive] = React.useState(false);
   const [loaded, setLoaded] = React.useState(false);
+  const previousLoaded = usePrevious(loaded);
   const {
     dimensions,
     setDisabledDimensions,
@@ -64,12 +65,14 @@ const BoardProvider = ({ children }: { children: React.ReactNode }) => {
   }, [active, drawedBoard, board]);
 
   React.useEffect(() => {
-    if (started || loaded || active) {
+    console.log('loaded:', loaded);
+    console.log('previousLoaded:', previousLoaded);
+    if (started || (loaded && previousLoaded) || active) {
       setDisabledDimensions(true);
     } else {
       setDisabledDimensions(false);
     }
-  }, [started, active, loaded, setDisabledDimensions]);
+  }, [started, active, loaded, previousLoaded, setDisabledDimensions]);
 
   const savePattern = React.useCallback(() => {
     setSavedPatterns((prevCollection) => [boardToSave, ...(prevCollection || [])]);

@@ -1,4 +1,4 @@
-import {useState, useLayoutEffect, useRef} from "react";
+import { useState, useLayoutEffect, useRef } from "react";
 import { useDebounce } from 'use-debounce';
 
 export type DimensionsType = {
@@ -13,20 +13,23 @@ export default (fixed = true) => {
   const boardRef = useRef<HTMLDivElement | HTMLFieldSetElement>(null)
 
   useLayoutEffect(() => {
-    console.log('BEJÖN')
     const observer = new ResizeObserver(([entry]) => {
-      const {innerWidth, innerHeight} = window
+      const { innerWidth, innerHeight } = window
       const largeWidth = innerWidth > 991
       const largeHeight = innerHeight > 772
 
       let width: number | null;
       let height: number | null;
-      if (boardRef && boardRef.current) {
+      if ((boardRef && boardRef.current)) {
+        console.log('bejön')
         width = entry.contentRect.width
         height = entry.contentRect.height
+        // } else if (dimensions.width && dimensions.height) {
+        //   return
       } else {
-        width = innerWidth
-        height = innerHeight
+        return
+        // width = innerWidth
+        // height = innerHeight
       }
 
       const calcDimension = (size: number): number => {
@@ -34,7 +37,7 @@ export default (fixed = true) => {
         return (Math.floor(size / (2 * cellSize)) * 2)
       }
 
-      !disabledDimensions && setDimensions({width: calcDimension(width), height: calcDimension(height)});
+      !disabledDimensions && setDimensions({ width: calcDimension(width), height: calcDimension(height) });
     });
 
     observer.observe(boardRef.current);
@@ -42,7 +45,7 @@ export default (fixed = true) => {
     return () => {
       observer.disconnect();
     };
-  }, [disabledDimensions]);
+  }, [disabledDimensions, boardRef]);
 
   return { dimensions: debouncedDimensions, setDisabledDimensions, boardRef };
 }

@@ -171,7 +171,7 @@
   &.main {
     border-color: orange;
     border-radius: 15px;
-    //background-image: url("./assets/street-night.jpg");
+    // background-image: url("./assets/street-night.jpg");
     background-image: url("./assets/klondike.jpg");
     background-size: cover;
     background-repeat: no-repeat;
@@ -232,7 +232,7 @@
 .description {
   padding: 1em 2em;
   margin: 0.5em;
-  font-size: min(2vw, 1.1em);
+  font-size: min(2vw, 1em);
   text-align: justify;
   border: 2px solid $my-gray;
   border-radius: 15px;
@@ -329,10 +329,10 @@ span.counter {
 @media (max-width: 991px) and (orientation: landscape) {
   .board-wrapper {
     min-height: 200px;
-    height: 90vh;
+    height: 75vh;
 
     fieldset {
-      height: 80vh;
+      height: 60vh;
     }
   }
 }
@@ -341,6 +341,7 @@ span.counter {
   .wrapper {
     max-height: 100vh;
   }
+
   .board-wrapper {
     min-height: 240px;
     height: 65vh;
