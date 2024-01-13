@@ -10,7 +10,7 @@ const MainSide = memo(() => {
   return (
     <div id='main-side'>
       <Row className='desktop-desc'>
-        <Col className='d-flex justify-content-center'>
+        <Col>
           <Description />
         </Col>
       </Row>

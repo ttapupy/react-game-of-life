@@ -1,11 +1,10 @@
-import { useState, useReducer, useCallback, createContext, useContext, useEffect } from "react";
-import useBoardDimensions, { DimensionsType } from "./hooks/useBoardDimensions";
+import * as React from "react";
+import useBoardRect, { DimensionsType } from "./hooks/useBoardRect";
 import { CellValue, ICell } from "./pages/Board";
 import useLocalStorage from "./hooks/useLocalStorage";
 import { calcDrawer } from "./drawer";
-import useDebounce from "./hooks/useDebounce";
 import boardReducer from "./boardReducer";
-import * as React from "react";
+
 
 const initialState: ICell[][] | null = null;
 
@@ -29,55 +28,55 @@ export interface BoardAction {
   };
 }
 
-const BoardContext = createContext(null);
+const BoardContext = React.createContext(null);
 
 const BoardProvider = ({ children }: { children: React.ReactNode }) => {
-  const [board, setBoard] = useReducer(boardReducer, initialState);
-  const [started, setStarted] = useState(false);
-  const [active, setActive] = useState(false);
-  const [loaded, setLoaded] = useState(false);
+  const [board, setBoard] = React.useReducer(boardReducer, initialState);
+  const [started, setStarted] = React.useState(false);
+  const [active, setActive] = React.useState(false);
+  const [loaded, setLoaded] = React.useState(false);
   const {
     dimensions,
     setDisabledDimensions,
+    boardRef,
   }: {
     dimensions: DimensionsType;
     setDisabledDimensions: React.Dispatch<React.SetStateAction<boolean>>;
-  } = useBoardDimensions("board", false);
-  const { width, height } = dimensions;
-  const columns: number | null = useDebounce(width, 600, !active);
-  const rows: number | null = useDebounce(height, 600, !active);
-  const [boardToSave, setBoardToSave] = useState<number[][] | null>(null);
+    boardRef: React.MutableRefObject<HTMLDivElement | HTMLFieldSetElement>;
+  } = useBoardRect(active);
+  const { width: columns, height: rows } = dimensions;
+  const [boardToSave, setBoardToSave] = React.useState<number[][] | null>(null);
   const [savedPatterns, setSavedPatterns] = useLocalStorage("GOLSavedPatterns", []);
-  const [round, setRound] = useState(0);
+  const [round, setRound] = React.useState(0);
   const maxRounds = 10;
   const drawSize = 10;
 
-  const drawedBoard = useCallback(() => {
+  const drawedBoard = React.useCallback(() => {
     if (!active && [board, rows, columns].every((e) => e != null)) {
       setBoardToSave(() => calcDrawer({ table: board, rows, columns, drawSize }));
     }
   }, [active, board, columns, rows]);
 
-  useEffect(() => {
+  React.useEffect(() => {
     if (!active) {
       drawedBoard();
     }
   }, [active, drawedBoard, board]);
 
-  useEffect(() => {
-    if (started || loaded) {
+  React.useEffect(() => {
+    if (started || loaded || active) {
       setDisabledDimensions(true);
     } else {
       setDisabledDimensions(false);
     }
-  }, [started, loaded, setDisabledDimensions]);
+  }, [started, active, loaded, setDisabledDimensions]);
 
-  const savePattern = useCallback(() => {
+  const savePattern = React.useCallback(() => {
     setSavedPatterns((prevCollection) => [boardToSave, ...(prevCollection || [])]);
     alert("Pattern has been saved.");
   }, [boardToSave, setSavedPatterns]);
 
-  const deletePattern = useCallback(
+  const deletePattern = React.useCallback(
     (index: number) => {
       setSavedPatterns((prevCollection) => prevCollection.filter((_, i) => i !== index));
     },
@@ -85,6 +84,7 @@ const BoardProvider = ({ children }: { children: React.ReactNode }) => {
   );
 
   const state = {
+    boardRef,
     started,
     active,
     setActive,
@@ -108,7 +108,7 @@ const BoardProvider = ({ children }: { children: React.ReactNode }) => {
 };
 
 const useBoardContext = () => {
-  const context = useContext(BoardContext);
+  const context = React.useContext(BoardContext);
   if (context === undefined) {
     throw new Error("useBoardContext must be used within a BoardProvider");
   }

@@ -30,11 +30,11 @@ test('renders an empty cell inside drawer canvas', () => {
   const cell = { value: 0, row: 1, col: 1 }
   renderCell(cellBoardContext, cell, handleSetBoard, true)
   expect(screen.getByRole('button')).not.toBeDisabled()
-  expect(screen.getByTestId('container').getElementsByClassName('cell-button selected').length).toBe(0);
+  expect(screen.getByTestId('container').getElementsByClassName('cell-button alive').length).toBe(0);
 })
 
 test('renders a cell with value=1 inside drawer canvas', () => {
   const cell = { value: 1, row: 1, col: 1 }
   renderCell(cellBoardContext, cell, handleSetBoard, true)
-  expect(screen.getByTestId('container').getElementsByClassName('cell-button selected').length).toBe(1);
+  expect(screen.getByTestId('container').getElementsByClassName('cell-button alive').length).toBe(1);
 })
