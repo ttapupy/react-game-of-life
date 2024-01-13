@@ -1,4 +1,4 @@
-import { useEffect, useCallback } from 'react';
+import { useEffect, useCallback, MutableRefObject, Dispatch, SetStateAction } from 'react';
 import Cell from '../components/Cell';
 import Spinner from '../components/Spinner';
 import { BoardAction, useBoardContext, initBoard, stepBoard, writeBoard } from '../BoardContext';
@@ -20,16 +20,17 @@ export interface ICell {
 }
 
 const Board = () => {
-  const { board, setBoard, started, active, setStarted, rows, columns, round, setRound, maxRounds, loaded, drawSize }: {
+  const { boardRef, board, setBoard, started, active, setStarted, rows, columns, round, setRound, maxRounds, loaded, drawSize }: {
+    boardRef: MutableRefObject<HTMLDivElement | HTMLFieldSetElement>,
     board: ICell[][],
-    setBoard: React.Dispatch<BoardAction>,
+    setBoard: Dispatch<BoardAction>,
     started: boolean,
     active: boolean,
-    setStarted: React.Dispatch<React.SetStateAction<boolean>>,
+    setStarted: Dispatch<SetStateAction<boolean>>,
     rows: number,
     columns: number,
     round: number,
-    setRound: React.Dispatch<React.SetStateAction<number>>,
+    setRound: Dispatch<SetStateAction<number>>,
     maxRounds: number,
     loaded: boolean,
     drawSize: number
@@ -81,17 +82,17 @@ const Board = () => {
   return (
     <>
       <main className='wrapper' >
-        <Row className='mobile-desc'>
+        <Row className='mobile-desc gx-0'>
           <Col className='d-flex justify-content-center'>
             <Description />
           </Col>
         </Row>
         <Row className='board-wrapper gx-1' id='board-wrapper'>
-          <Col xs={12} sm={3}>
+          <Col xs={12} sm={2} md={3}>
             <MainSide />
           </Col>
-          <Col xs={12} sm={9} style={{ height: "100%" }}>
-            <fieldset disabled={started} id='board'>
+          <Col xs={12} sm={10} md={9}>
+            <fieldset disabled={started} id='board' ref={boardRef as MutableRefObject<HTMLFieldSetElement>}>
               {!!board?.length && !!board[0].length && drawSize && !!columns && !!rows ?
                 <>
                   {columns >= drawSize && rows >= drawSize ?
