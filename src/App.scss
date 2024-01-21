@@ -134,13 +134,14 @@
   @include cell-button;
 
   &:not(.alive) {
+    filter: opacity(95%);
     background-color: $background-color;
   }
 
   &.alive {
     background-color: $react-turkiz;
     backdrop-filter: blur(4px);
-    filter: opacity(50%);
+    filter: opacity(35%);
   }
 
   &.non-drawable {
@@ -161,7 +162,7 @@
 
 .board-container {
   display: grid;
-  grid-gap: 0 0;
+  grid-gap: 0px 0px;
   width: fit-content;
   height: fit-content;
   border-style: solid;
@@ -170,7 +171,7 @@
 
   &.main {
     border-color: orange;
-    border-radius: 15px;
+    border-radius: 10px;
     // background-image: url("./assets/street-night.jpg");
     background-image: url("./assets/klondike.jpg");
     background-size: cover;
@@ -178,19 +179,19 @@
     background-position: center;
 
     button:first-child {
-      border-top-left-radius: 15px;
+      border-top-left-radius: 10px;
     }
 
     button:last-child {
-      border-bottom-right-radius: 15px;
+      border-bottom-right-radius: 10px;
     }
 
     .top-right-cell {
-      border-top-right-radius: 15px;
+      border-top-right-radius: 10px;
     }
 
     .bottom-left-cell {
-      border-bottom-left-radius: 15px;
+      border-bottom-left-radius: 10px;
     }
   }
 

@@ -1,7 +1,9 @@
 import { memo } from 'react';
-
+import { useBoardContext } from '../BoardContext';
 
 const Description = memo(() => {
+  const { maxRounds }: { maxRounds: number } = useBoardContext();
+
   return (
     <aside><small>
       <div className='description'>
@@ -13,7 +15,7 @@ const Description = memo(() => {
           <a style={{ textDecoration: 'underline' }} href={'https://en.wikipedia.org/wiki/Conway%27s_Game_of_Life'} target={'_blank'} rel="noreferrer">{'here'}</a>
         </span>
         {`. `}<br />
-        {'In current version it takes 10 rounds per start.'}<br />
+        {`In current version it takes ${maxRounds} rounds per start.`}<br />
         {'After that, the game can be continued from the existing pattern (if any), or even from a supplemented one.'}<br />
         {`Have fun!`}
       </div>

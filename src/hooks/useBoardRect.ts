@@ -21,26 +21,21 @@ export default (fixed = true) => {
       let width: number | null;
       let height: number | null;
       if ((boardRef && boardRef.current)) {
-        console.log('bejön')
         width = entry.contentRect.width
         height = entry.contentRect.height
-        // } else if (dimensions.width && dimensions.height) {
-        //   return
       } else {
         return
-        // width = innerWidth
-        // height = innerHeight
       }
 
       const calcDimension = (size: number): number => {
-        const cellSize = largeWidth && largeHeight ? 16 : 18
+        const cellSize = largeWidth && largeHeight ? 12 : 16
         return (Math.floor(size / (2 * cellSize)) * 2)
       }
 
       !disabledDimensions && setDimensions({ width: calcDimension(width), height: calcDimension(height) });
     });
 
-    observer.observe(boardRef.current);
+    boardRef?.current && observer.observe(boardRef.current);
 
     return () => {
       observer.disconnect();
