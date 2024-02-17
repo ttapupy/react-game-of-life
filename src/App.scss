@@ -233,7 +233,7 @@
 .description {
   padding: 1em 2em;
   margin: 0.5em;
-  font-size: min(2vw, 1em);
+  font-size: min(4vw, 0.9em);
   text-align: justify;
   border: 2px solid $my-gray;
   border-radius: 15px;
@@ -336,11 +336,16 @@ span.counter {
       height: 60vh;
     }
   }
+
+  .mobile-desc {
+    display: none !important;
+  }
 }
 
 @media (max-width: 991px) and (orientation: portrait) {
   .wrapper {
-    max-height: 100vh;
+    max-height: 140vh;
+    flex-direction: column-reverse;
   }
 
   .board-wrapper {
@@ -364,6 +369,10 @@ span.counter {
 }
 
 @media (min-width: 992px) {
+  .wrapper {
+    max-height: 140vh;
+    flex-direction: column-reverse;
+  }
 
   .board-wrapper,
   .patterns-wrapper {
@@ -378,7 +387,7 @@ span.counter {
 
     fieldset {
       flex: 100%;
-      height: 90vh;
+      height: 100vh;
     }
   }
 

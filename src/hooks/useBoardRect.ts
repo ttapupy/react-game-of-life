@@ -28,7 +28,7 @@ export default (fixed = true) => {
       }
 
       const calcDimension = (size: number): number => {
-        const cellSize = largeWidth && largeHeight ? 12 : 16
+        const cellSize = largeWidth && largeHeight ? 15 : 18
         return (Math.floor(size / (2 * cellSize)) * 2)
       }
 

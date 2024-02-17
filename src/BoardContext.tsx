@@ -37,7 +37,7 @@ const BoardProvider = ({ children }: { children: React.ReactNode }) => {
   const [loaded, setLoaded] = React.useState(false);
   const previousLoaded = usePrevious(loaded);
   const {
-    dimensions,
+    dimensions: { width: columns, height: rows },
     setDisabledDimensions,
     boardRef,
   }: {
@@ -45,12 +45,12 @@ const BoardProvider = ({ children }: { children: React.ReactNode }) => {
     setDisabledDimensions: React.Dispatch<React.SetStateAction<boolean>>;
     boardRef: React.MutableRefObject<HTMLDivElement | HTMLFieldSetElement>;
   } = useBoardRect(active);
-  const { width: columns, height: rows } = dimensions;
+
   const [boardToSave, setBoardToSave] = React.useState<number[][] | null>(null);
   const [savedPatterns, setSavedPatterns] = useLocalStorage("GOLSavedPatterns", []);
   const [round, setRound] = React.useState(0);
   const maxRounds = 20;
-  const drawSize = 20;
+  const drawSize = 16;
 
   const drawedBoard = React.useCallback(() => {
     if (!active && [board, rows, columns].every((e) => e != null)) {

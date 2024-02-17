@@ -5,7 +5,7 @@ const Description = memo(() => {
   const { maxRounds }: { maxRounds: number } = useBoardContext();
 
   return (
-    <aside><small>
+    <aside>
       <div className='description'>
         {
           `You can draw a shape (initial pattern) in the grid.
@@ -17,9 +17,10 @@ const Description = memo(() => {
         {`. `}<br />
         {`In current version it takes ${maxRounds} rounds per start.`}<br />
         {'After that, the game can be continued from the existing pattern (if any), or even from a supplemented one.'}<br />
+        {`Please note, that a board can be resized only when it is inactive (at the very beginning or after pressing `} <strong>{`clear/reset`} </strong>{`).`}
+        <br />
         {`Have fun!`}
       </div>
-    </small>
     </aside>
   )
 })

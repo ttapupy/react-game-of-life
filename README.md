@@ -4,7 +4,7 @@ A personal tone React implementation of Conway's cellular automata, called: Game
 
 It's just a pet project for practicing frontend development and of course for fun too.
 It based on an old project of mine, which was written in VBA for excel.
-Towards the end I tried to make it responsive as possible, but ehm... :)
+Towards the end I tried to make it responsive as possible.
 Users can choose to save their own drawed initial pattern if afterwards it seems it's worth it. These patterns are saved to localStorage.
 
 Online available: https://game-of-life-nl7x.onrender.com/
