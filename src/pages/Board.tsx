@@ -79,6 +79,19 @@ const Board = () => {
   }, [active, drawSize, rows, columns])
 
 
+  const whatIsClass = ({ row, column }) => {
+    let className = 'cell-button'
+
+    if (row === 0 && column + 1 === columns) {
+      className = `${className} top-right-cell`
+    } else if (column === 0 && row + 1 === rows) {
+      className = `${className} bottom-left-cell`
+    }
+
+    return className
+  }
+
+
   return (
     <>
       <main className='wrapper' >
@@ -103,14 +116,19 @@ const Board = () => {
                     >
                       <>
                         {board.map(row => (
-                          row.map(cell => (
-                            <Cell
-                              cell={cell}
-                              key={`${cell.row}-${cell.col}`}
-                              handleSetBoard={() => handleSetBoard({ row: cell.row, column: cell.col })}
-                              drawable={handleDrawable({ row: cell.row, column: cell.col })}
-                            />
-                          )
+                          row.map(cell => {
+                            const { row, col: column, value } = cell;
+                            const classNames = whatIsClass({ row, column })
+                            return (
+                              <Cell
+                                value={value}
+                                key={`${row}-${column}`}
+                                classNames={classNames}
+                                handleSetBoard={() => handleSetBoard({ row, column })}
+                                drawable={handleDrawable({ row, column })}
+                              />
+                            )
+                          }
                           )
                         ))
                         }

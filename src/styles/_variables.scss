@@ -1,7 +1,10 @@
+$small-cell: 15;
+$big-cell: 18;
+
 $background-color: #05070d;
 $text-color: #fbf3aa;
 $react-turkiz: rgb(33, 134, 168);
 $block-padding: 0 15px;
 $my-gray: rgb(81, 83, 91);
-$cell_size: 15px;
-$cell_size_small_screen: 18px;
+$cell_size: calc($small-cell * 1px);
+$cell_size_small_screen: calc($big-cell * 1px);

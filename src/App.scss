@@ -133,24 +133,24 @@
 .cell-button {
   @include cell-button;
 
-  &:not(.alive) {
+  &[data-state='0'] {
     filter: opacity(95%);
     background-color: $background-color;
   }
 
-  &.alive {
+  &[data-state='1'] {
     background-color: $react-turkiz;
     backdrop-filter: blur(4px);
     filter: opacity(75%);
-  }
-
-  &.non-drawable {
-    background-color: $my-gray;
   }
 }
 
 .board-wrapper {
   width: 100%;
+
+  .cell-button[data-state='-1'] {
+    background-color: $my-gray;
+  }
 
   fieldset {
     font-size: 12px;
