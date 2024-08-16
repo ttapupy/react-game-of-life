@@ -1,4 +1,4 @@
-import {useEffect, useState, Dispatch, SetStateAction,} from 'react';
+import { useEffect, useState, Dispatch, SetStateAction, } from 'react';
 
 type SetValue<T> = Dispatch<SetStateAction<T>>
 

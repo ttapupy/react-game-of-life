@@ -8,8 +8,8 @@ interface IPatternProps {
   index: number;
 }
 
-const Pattern: FC<IPatternProps> = ({ pattern, index }) => {
-  const { drawSize, setBoard, setRound, rows, columns, setLoaded, deletePattern, setActive, setStarted }: {
+const Pattern: FC<IPatternProps> = ({pattern, index}) => {
+  const {drawSize, setBoard, setRound, rows, columns, setLoaded, deletePattern, setActive, setStarted}: {
     drawSize: number,
     setBoard: React.Dispatch<BoardAction>,
     setRound: React.Dispatch<React.SetStateAction<number>>,
@@ -28,7 +28,7 @@ const Pattern: FC<IPatternProps> = ({ pattern, index }) => {
     setActive(false)
     setStarted(false)
     setRound(0)
-    loadBoard(setBoard, { boardToLoad: pattern, drawSize, height: rows, width: columns })
+    loadBoard(setBoard, {boardToLoad: pattern, drawSize, height: rows, width: columns})
     navigate('/')
   }
 
@@ -47,7 +47,7 @@ const Pattern: FC<IPatternProps> = ({ pattern, index }) => {
       <fieldset disabled={true}>
         <div
           className='board-container'
-          style={{ gridTemplateColumns: `repeat(${drawSize}, 1fr)`, gridTemplateRows: `repeat(${drawSize}, 1fr)` }}
+          style={{gridTemplateColumns: `repeat(${drawSize}, 1fr)`, gridTemplateRows: `repeat(${drawSize}, 1fr)`}}
         >
           {pattern.map((row, rowIndex) => row.map((cellValue, columnIndex) => {
             return (

@@ -1,3 +1,4 @@
+import { useCallback } from "react";
 import { FC } from 'react';
 import { CellValue } from '../pages/Board';
 import { useBoardContext } from '../BoardContext';
@@ -10,10 +11,10 @@ export interface ICellProps {
   value: CellValue;
 }
 
-const Cell: FC<ICellProps> = ({ drawable, handleSetBoard, classNames, value }) => {
-  const { started }: { started: boolean } = useBoardContext();
+const Cell: FC<ICellProps> = ({drawable, handleSetBoard, classNames, value}) => {
+  const {started}: { started: boolean } = useBoardContext();
 
-  const selectCell = (pressure = 0, pressEvent = null) => {
+  const selectCell = useCallback((pressure = 0, pressEvent = null) => {
     if (!started && drawable && pressure > 0) {
       handleSetBoard()
     }
@@ -21,7 +22,7 @@ const Cell: FC<ICellProps> = ({ drawable, handleSetBoard, classNames, value }) =
     if (pressEvent) {
       pressEvent.target.releasePointerCapture(pressEvent.pointerId)
     }
-  }
+  }, [drawable, handleSetBoard, started])
 
   return (
     <>

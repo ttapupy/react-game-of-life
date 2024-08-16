@@ -1,4 +1,5 @@
 import { useEffect, useCallback, MutableRefObject, Dispatch, SetStateAction } from 'react';
+import usePrevious from "../hooks/usePrevious";
 import Cell from '../components/Cell';
 import Spinner from '../components/Spinner';
 import { BoardAction, useBoardContext, initBoard, stepBoard, writeBoard } from '../BoardContext';
@@ -20,7 +21,21 @@ export interface ICell {
 }
 
 const Board = () => {
-  const { boardRef, board, setBoard, started, active, setStarted, rows, columns, round, setRound, maxRounds, loaded, drawSize }: {
+  const {
+    boardRef,
+    board,
+    setBoard,
+    started,
+    active,
+    setStarted,
+    rows,
+    columns,
+    round,
+    setRound,
+    maxRounds,
+    loaded,
+    drawSize
+  }: {
     boardRef: MutableRefObject<HTMLDivElement | HTMLFieldSetElement>,
     board: ICell[][],
     setBoard: Dispatch<BoardAction>,
@@ -36,10 +51,12 @@ const Board = () => {
     drawSize: number
   } = useBoardContext()
 
+  const previousStarted = usePrevious(started)
+
   // initializing board
   useEffect(() => {
     if (!started && !!rows && !!columns && !active && !loaded) {
-      initBoard(setBoard, { height: rows, width: columns })
+      initBoard(setBoard, {height: rows, width: columns})
     }
   }, [rows, columns, started, setBoard, active, loaded])
 
@@ -61,25 +78,25 @@ const Board = () => {
     } else if (started) {
       const intervalId = setInterval(() => {
         setRound(prevRound => step(prevRound))
-      }, 400);
+      }, started === previousStarted ? 400 : 700);
 
       return () => clearInterval(intervalId);
     }
-  }, [started, setBoard, round, setRound, setStarted, maxRounds]);
+  }, [started, setBoard, round, setRound, setStarted, maxRounds, previousStarted]);
 
-  const handleSetBoard = ({ row, column }: { row: number, column: number }) => {
-    writeBoard(setBoard, { row, column })
+  const handleSetBoard = ({row, column}: { row: number, column: number }) => {
+    writeBoard(setBoard, {row, column})
   }
 
-  const handleDrawable = useCallback(({ row, column }: { row: number, column: number }) => {
+  const handleDrawable = useCallback(({row, column}: { row: number, column: number }) => {
     if (!active) {
-      return isInDrawer({ drawSize, side: rows, index: row }) && isInDrawer({ drawSize, side: columns, index: column })
+      return isInDrawer({drawSize, side: rows, index: row}) && isInDrawer({drawSize, side: columns, index: column})
     }
     return true;
   }, [active, drawSize, rows, columns])
 
 
-  const whatIsClass = ({ row, column }) => {
+  const whatIsClass = ({row, column}) => {
     let className = 'cell-button'
 
     if (row === 0 && column + 1 === columns) {
@@ -94,15 +111,15 @@ const Board = () => {
 
   return (
     <>
-      <main className='wrapper' >
+      <main className='wrapper'>
         <Row className='mobile-desc gx-0'>
           <Col className='d-flex justify-content-center'>
-            <Description />
+            <Description/>
           </Col>
         </Row>
         <Row className='board-wrapper gx-1' id='board-wrapper'>
           <Col xs={12} sm={2} md={3}>
-            <MainSide />
+            <MainSide/>
           </Col>
           <Col xs={12} sm={10} md={9}>
             <fieldset disabled={started} id='board' ref={boardRef as MutableRefObject<HTMLFieldSetElement>}>
@@ -112,23 +129,23 @@ const Board = () => {
                     <div
                       className='board-container main'
                       id={'board-container'}
-                      style={{ gridTemplateColumns: `repeat(${columns}, 1fr)`, gridTemplateRows: `repeat(${rows}, 1fr)` }}
+                      style={{gridTemplateColumns: `repeat(${columns}, 1fr)`, gridTemplateRows: `repeat(${rows}, 1fr)`}}
                     >
                       <>
                         {board.map(row => (
                           row.map(cell => {
-                            const { row, col: column, value } = cell;
-                            const classNames = whatIsClass({ row, column })
-                            return (
-                              <Cell
-                                value={value}
-                                key={`${row}-${column}`}
-                                classNames={classNames}
-                                handleSetBoard={() => handleSetBoard({ row, column })}
-                                drawable={handleDrawable({ row, column })}
-                              />
-                            )
-                          }
+                              const {row, col: column, value} = cell;
+                              const classNames = whatIsClass({row, column})
+                              return (
+                                <Cell
+                                  value={value}
+                                  key={`${row}-${column}`}
+                                  classNames={classNames}
+                                  handleSetBoard={() => handleSetBoard({row, column})}
+                                  drawable={handleDrawable({row, column})}
+                                />
+                              )
+                            }
                           )
                         ))
                         }
@@ -137,7 +154,7 @@ const Board = () => {
                     <div>{'Sorry, screen size is too small to play.'}</div>
                   }
                 </> :
-                <Spinner />}
+                <Spinner/>}
             </fieldset>
           </Col></Row>
       </main>

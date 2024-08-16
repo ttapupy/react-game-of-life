@@ -25,7 +25,7 @@ const Footer = memo(() => {
         {notice}
       </div>
       <div>
-        <a href='https://github.com/ttapupy' target='_blank' rel="noreferrer"><Logo /></a>
+        <a href='https://github.com/ttapupy' target='_blank' rel="noreferrer"><Logo/></a>
       </div>
     </footer>
   )

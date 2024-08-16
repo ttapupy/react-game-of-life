@@ -15,11 +15,11 @@ export default function Patterns() {
     <main className='patterns'>
       <Row>
         <Col xs={12} lg={3} className='sidebar-wrapper'>
-          <PatternSide />
+          <PatternSide/>
         </Col>
         <Col xs={12} lg={9} className='patterns-wrapper'>
           {savedPatterns.map((pattern, index) => (
-            <Pattern key={index} pattern={pattern} index={index} />
+            <Pattern key={index} pattern={pattern} index={index}/>
           ))}
         </Col>
       </Row>

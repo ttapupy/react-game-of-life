@@ -9,16 +9,16 @@ export type DimensionsType = {
 
 export default (fixed = true) => {
   const [disabledDimensions, setDisabledDimensions] = useState(fixed);
-  const [dimensions, setDimensions] = useState<DimensionsType>({ width: null, height: null });
+  const [dimensions, setDimensions] = useState<DimensionsType>({width: null, height: null});
   const [debouncedDimensions] = useDebounce(dimensions, 1000);
   const boardRef = useRef<HTMLDivElement | HTMLFieldSetElement>(null)
-  const { smallCell, bigCell } = scssVariables;
+  const {smallCell, bigCell} = scssVariables;
   const widthThreshold = 991;
   const heightThreshold = 772;
 
   useLayoutEffect(() => {
     const observer = new ResizeObserver(([entry]) => {
-      const { innerWidth, innerHeight } = window
+      const {innerWidth, innerHeight} = window
       const largeWidth = innerWidth > widthThreshold
       const largeHeight = innerHeight > heightThreshold
 
@@ -36,15 +36,18 @@ export default (fixed = true) => {
         return (Math.floor(size / (2 * cellSize)) * 2)
       }
 
-      !disabledDimensions && setDimensions({ width: calcDimension(width), height: calcDimension(height) });
+      if (!disabledDimensions) {
+        setDimensions({width: calcDimension(width), height: calcDimension(height)});
+      }
     });
-
-    boardRef?.current && observer.observe(boardRef.current);
+    if (boardRef?.current) {
+      observer.observe(boardRef.current);
+    }
 
     return () => {
       observer.disconnect();
     };
   }, [disabledDimensions, boardRef, smallCell, bigCell]);
 
-  return { dimensions: debouncedDimensions, setDisabledDimensions, boardRef };
+  return {dimensions: debouncedDimensions, setDisabledDimensions, boardRef};
 }

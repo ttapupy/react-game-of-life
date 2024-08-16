@@ -12,11 +12,11 @@ const App = () => {
     <>
       <BoardProvider>
         <Routes>
-          <Route path="/" element={<Board />} />
-          <Route path="/patterns" element={<Patterns />} />
+          <Route path="/" element={<Board/>}/>
+          <Route path="/patterns" element={<Patterns/>}/>
         </Routes>
       </BoardProvider>
-      <Footer />
+      <Footer/>
     </>
   )
 }
