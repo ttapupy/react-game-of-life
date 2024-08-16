@@ -1,5 +1,4 @@
-import { useEffect, useCallback, MutableRefObject, Dispatch, SetStateAction } from 'react';
-import usePrevious from "../hooks/usePrevious";
+import { useEffect, useCallback, MutableRefObject, Dispatch, SetStateAction, useRef } from 'react';
 import Cell from '../components/Cell';
 import Spinner from '../components/Spinner';
 import { BoardAction, useBoardContext, initBoard, stepBoard, writeBoard } from '../BoardContext';
@@ -34,7 +33,7 @@ const Board = () => {
     setRound,
     maxRounds,
     loaded,
-    drawSize
+    drawSize,
   }: {
     boardRef: MutableRefObject<HTMLDivElement | HTMLFieldSetElement>,
     board: ICell[][],
@@ -48,10 +47,10 @@ const Board = () => {
     setRound: Dispatch<SetStateAction<number>>,
     maxRounds: number,
     loaded: boolean,
-    drawSize: number
+    drawSize: number,
   } = useBoardContext()
 
-  const previousStarted = usePrevious(started)
+  const delay = useRef(true)
 
   // initializing board
   useEffect(() => {
@@ -74,15 +73,17 @@ const Board = () => {
 
     if (round === maxRounds) {
       setStarted(false)
+      delay.current = true
       setRound(0)
     } else if (started) {
       const intervalId = setInterval(() => {
         setRound(prevRound => step(prevRound))
-      }, started === previousStarted ? 400 : 700);
+      }, delay.current ? 800 : 500);
+      delay.current = false
 
       return () => clearInterval(intervalId);
     }
-  }, [started, setBoard, round, setRound, setStarted, maxRounds, previousStarted]);
+  }, [started, setBoard, round, setRound, setStarted, maxRounds]);
 
   const handleSetBoard = ({row, column}: { row: number, column: number }) => {
     writeBoard(setBoard, {row, column})
@@ -122,7 +123,7 @@ const Board = () => {
             <MainSide/>
           </Col>
           <Col xs={12} sm={10} md={9}>
-            <fieldset disabled={started} id='board' ref={boardRef as MutableRefObject<HTMLFieldSetElement>}>
+            <fieldset id='board' ref={boardRef as MutableRefObject<HTMLFieldSetElement>}>
               {!!board?.length && !!board[0].length && drawSize && !!columns && !!rows ?
                 <>
                   {columns >= drawSize && rows >= drawSize ?
