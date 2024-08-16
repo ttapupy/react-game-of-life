@@ -13,6 +13,12 @@ const ButtonGroup = () => {
     setLoaded(false)
   }
 
+  const runner = () => {
+    setStarted(!started);
+    setActive(true);
+    setLoaded(false)
+  }
+
 
   return (
     <>
@@ -45,13 +51,9 @@ const ButtonGroup = () => {
       <div>
         <button
           className={`${started ? 'started' : 'iddle'}`}
-          onClick={() => {
-            setStarted(!started);
-            setActive(true);
-            setLoaded(false)
-          }}
+          onClick={runner}
         >
-          {`${started ? 'Stop' : active && !loaded ? 'Continue' : 'Start'}`}
+          {`${started ? 'Pause' : active && !loaded ? 'Continue' : 'Start'}`}
         </button>
       </div>
       <div style={{ textAlign: 'center' }}>

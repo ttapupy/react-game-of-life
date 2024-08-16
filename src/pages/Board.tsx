@@ -1,4 +1,5 @@
 import { useEffect, useCallback, MutableRefObject, Dispatch, SetStateAction } from 'react';
+import usePrevious from "../hooks/usePrevious";
 import Cell from '../components/Cell';
 import Spinner from '../components/Spinner';
 import { BoardAction, useBoardContext, initBoard, stepBoard, writeBoard } from '../BoardContext';
@@ -36,6 +37,8 @@ const Board = () => {
     drawSize: number
   } = useBoardContext()
 
+  const previousStarted = usePrevious(started)
+
   // initializing board
   useEffect(() => {
     if (!started && !!rows && !!columns && !active && !loaded) {
@@ -61,11 +64,11 @@ const Board = () => {
     } else if (started) {
       const intervalId = setInterval(() => {
         setRound(prevRound => step(prevRound))
-      }, 400);
+      }, started === previousStarted ? 400 : 700);
 
       return () => clearInterval(intervalId);
     }
-  }, [started, setBoard, round, setRound, setStarted, maxRounds]);
+  }, [started, setBoard, round, setRound, setStarted, maxRounds, previousStarted]);
 
   const handleSetBoard = ({ row, column }: { row: number, column: number }) => {
     writeBoard(setBoard, { row, column })
