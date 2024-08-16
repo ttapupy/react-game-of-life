@@ -23,7 +23,7 @@ const setLoaded = jest.fn();
 const setBoard = jest.fn();
 const setRound = jest.fn();
 
-const patternContext = { setStarted, setActive, setLoaded, setBoard, setRound, rows: 60, columns: 54, drawSize: 10 };
+const patternContext = {setStarted, setActive, setLoaded, setBoard, setRound, rows: 60, columns: 54, drawSize: 10};
 
 const mockedUsedNavigate = jest.fn();
 
@@ -36,7 +36,7 @@ function renderPattern(patternContext) {
   return render(
     <BrowserRouter>
       <BoardContext.Provider value={patternContext}>
-        <Pattern pattern={pattern} index={0} />
+        <Pattern pattern={pattern} index={0}/>
       </BoardContext.Provider>
     </BrowserRouter>
   );
@@ -46,7 +46,7 @@ describe("Pattern", () => {
   it("renders the saved pattern and navigates to the main page on click", async () => {
     renderPattern(patternContext);
 
-    const loadButton = screen.getByRole("button", { name: /Load/i });
+    const loadButton = screen.getByRole("button", {name: /Load/i});
     expect(loadButton).toBeInTheDocument();
 
     await userEvent.click(loadButton);

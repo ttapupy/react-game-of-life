@@ -6,10 +6,10 @@ interface ValueWithAntecedent<T> {
 }
 
 export default function usePrevious<T>(value: T) {
-  const [values, setValues] = React.useState<ValueWithAntecedent<T>>({ previous: null, current: value })
+  const [values, setValues] = React.useState<ValueWithAntecedent<T>>({previous: null, current: value})
 
   if (values.current !== value) {
-    setValues({ previous: values.current, current: value })
+    setValues({previous: values.current, current: value})
   }
 
   return values.previous;

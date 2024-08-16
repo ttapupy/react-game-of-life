@@ -30,14 +30,14 @@ export interface BoardAction {
 
 const BoardContext = React.createContext(null);
 
-const BoardProvider = ({ children }: { children: React.ReactNode }) => {
+const BoardProvider = ({children}: { children: React.ReactNode }) => {
   const [board, setBoard] = React.useReducer(boardReducer, initialState);
   const [started, setStarted] = React.useState(false);
   const [active, setActive] = React.useState(false);
   const [loaded, setLoaded] = React.useState(false);
   const previousLoaded = usePrevious(loaded);
   const {
-    dimensions: { width: columns, height: rows },
+    dimensions: {width: columns, height: rows},
     setDisabledDimensions,
     boardRef,
   }: {
@@ -54,7 +54,7 @@ const BoardProvider = ({ children }: { children: React.ReactNode }) => {
 
   const drawedBoard = React.useCallback(() => {
     if (!active && [board, rows, columns].every((e) => e != null)) {
-      setBoardToSave(() => calcDrawer({ table: board, rows, columns, drawSize }));
+      setBoardToSave(() => calcDrawer({table: board, rows, columns, drawSize}));
     }
   }, [active, board, columns, rows]);
 
@@ -116,16 +116,16 @@ const useBoardContext = () => {
   return context;
 };
 const initBoard = (dispatch: React.Dispatch<BoardAction>, payload: BoardAction["payload"]) => {
-  dispatch({ type: BoardActionKind.INIT, payload });
+  dispatch({type: BoardActionKind.INIT, payload});
 };
 const stepBoard = (dispatch: React.Dispatch<BoardAction>) => {
-  dispatch({ type: BoardActionKind.STEP });
+  dispatch({type: BoardActionKind.STEP});
 };
 const writeBoard = (dispatch: React.Dispatch<BoardAction>, payload: BoardAction["payload"]) => {
-  dispatch({ type: BoardActionKind.WRITE, payload });
+  dispatch({type: BoardActionKind.WRITE, payload});
 };
 const loadBoard = (dispatch: React.Dispatch<BoardAction>, payload: BoardAction["payload"]) => {
-  dispatch({ type: BoardActionKind.LOAD, payload });
+  dispatch({type: BoardActionKind.LOAD, payload});
 };
 
 export { BoardContext, BoardProvider, useBoardContext, initBoard, stepBoard, writeBoard, loadBoard };
