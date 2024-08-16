@@ -9,8 +9,5 @@ Users can choose to save their own drawed initial pattern if afterwards it seems
 
 Online available: https://game-of-life-nl7x.onrender.com/
 
-![kép](https://github.com/ttapupy/react-game-of-life/assets/23095938/53f1c734-79a7-4377-89f5-d422f7aa5843)
-
-
-
+![Screenshot 2024-08-16 at 21 31 03](https://github.com/user-attachments/assets/727b7310-bcc9-4495-82bb-f1141809b0d9)
 
