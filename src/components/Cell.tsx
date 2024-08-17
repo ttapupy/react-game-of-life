@@ -1,6 +1,6 @@
 import { useCallback } from "react";
 import { FC } from 'react';
-import { CellValue } from '../pages/Board';
+import { CellValue, ICell } from '../pages/Board';
 import { useBoardContext } from '../BoardContext';
 
 
@@ -9,10 +9,15 @@ export interface ICellProps {
   handleSetBoard: () => void;
   classNames: string;
   value: CellValue;
+  cell: ICell;
 }
 
-const Cell: FC<ICellProps> = ({drawable, handleSetBoard, classNames, value}) => {
+const Cell: FC<ICellProps> = ({drawable, handleSetBoard, classNames, value, cell}) => {
   const {started}: { started: boolean } = useBoardContext();
+  if (cell.row == 1 && cell.col == 1) {
+    console.log("cellácska")
+
+  }
 
   const selectCell = useCallback((pressure = 0, pressEvent = null) => {
     if (!started && drawable && pressure > 0) {

@@ -1,7 +1,8 @@
 import { Route, Routes } from "react-router-dom"
 import Patterns from "./pages/Patterns"
 import './App.scss'
-import Board from './pages/Board';
+// import Board from './pages/Board';
+import SmartBoard from "./pages/SmartBoard.tsx";
 import { BoardProvider } from './BoardContext.tsx';
 import Footer from "./components/Footer.tsx";
 
@@ -12,7 +13,7 @@ const App = () => {
     <>
       <BoardProvider>
         <Routes>
-          <Route path="/" element={<Board/>}/>
+          <Route path="/" element={<SmartBoard/>}/>
           <Route path="/patterns" element={<Patterns/>}/>
         </Routes>
       </BoardProvider>

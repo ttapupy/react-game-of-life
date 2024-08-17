@@ -1,11 +1,10 @@
-import { useEffect, useCallback, MutableRefObject, Dispatch, SetStateAction, useRef } from 'react';
-import Cell from '../components/Cell';
+import { useEffect, MutableRefObject, Dispatch, SetStateAction, useRef, useMemo } from 'react';
 import Spinner from '../components/Spinner';
-import { BoardAction, useBoardContext, initBoard, stepBoard, writeBoard } from '../BoardContext';
+import { BoardAction, useBoardContext, initBoard, stepBoard } from '../BoardContext';
 import MainSide from '../components/MainSide';
 import { Row, Col } from 'react-bootstrap';
 import Description from '../components/Description';
-import { isInDrawer } from '../drawer';
+import SmartCell from "../components/SmartCell.tsx";
 
 
 export enum CellValue {
@@ -19,10 +18,9 @@ export interface ICell {
   value: CellValue;
 }
 
-const Board = () => {
+const SmartBoard = () => {
   const {
     boardRef,
-    board,
     setBoard,
     started,
     active,
@@ -36,7 +34,6 @@ const Board = () => {
     drawSize,
   }: {
     boardRef: MutableRefObject<HTMLDivElement | HTMLFieldSetElement>,
-    board: ICell[][],
     setBoard: Dispatch<BoardAction>,
     started: boolean,
     active: boolean,
@@ -51,6 +48,8 @@ const Board = () => {
   } = useBoardContext()
 
   const delay = useRef(true)
+
+  console.log('smartboard')
 
   // initializing board
   useEffect(() => {
@@ -85,30 +84,12 @@ const Board = () => {
     }
   }, [started, setBoard, round, setRound, setStarted, maxRounds]);
 
-  const handleSetBoard = ({row, column}: { row: number, column: number }) => {
-    writeBoard(setBoard, {row, column})
-  }
-
-  const handleDrawable = useCallback(({row, column}: { row: number, column: number }) => {
-    if (!active) {
-      return isInDrawer({drawSize, side: rows, index: row}) && isInDrawer({drawSize, side: columns, index: column})
-    }
-    return true;
-  }, [active, drawSize, rows, columns])
-
-
-  const whatIsClass = ({row, column}) => {
-    let className = 'cell-button'
-
-    if (row === 0 && column + 1 === columns) {
-      className = `${className} top-right-cell`
-    } else if (column === 0 && row + 1 === rows) {
-      className = `${className} bottom-left-cell`
-    }
-
-    return className
-  }
-
+  const boardLengthArray = useMemo(() => {
+    return (
+      Array.from({length: rows}, (_, r) => Array.from({length: columns}, (_, c) => (
+        <SmartCell rowIndex={r} columnIndex={c} key={`${r}-${c}`}/>)))
+    )
+  }, [columns, rows])
 
   return (
     <>
@@ -124,7 +105,7 @@ const Board = () => {
           </Col>
           <Col xs={12} sm={10} md={9}>
             <fieldset id='board' ref={boardRef as MutableRefObject<HTMLFieldSetElement>}>
-              {!!board?.length && !!board[0].length && drawSize && !!columns && !!rows ?
+              {drawSize ?
                 <>
                   {columns >= drawSize && rows >= drawSize ?
                     <div
@@ -132,36 +113,18 @@ const Board = () => {
                       id={'board-container'}
                       style={{gridTemplateColumns: `repeat(${columns}, 1fr)`, gridTemplateRows: `repeat(${rows}, 1fr)`}}
                     >
-                      <>
-                        {board.map(row => (
-                          row.map(cell => {
-                              const {row, col: column, value} = cell;
-                              const classNames = whatIsClass({row, column})
-                              return (
-                                <Cell
-                                  value={value}
-                                  key={`${row}-${column}`}
-                                  classNames={classNames}
-                                  handleSetBoard={() => handleSetBoard({row, column})}
-                                  drawable={handleDrawable({row, column})}
-                                  cell={cell}
-                                />
-                              )
-                            }
-                          )
-                        ))
-                        }
-                      </>
+                      {boardLengthArray}
                     </div> :
                     <div>{'Sorry, screen size is too small to play.'}</div>
                   }
                 </> :
                 <Spinner/>}
             </fieldset>
-          </Col></Row>
+          </Col>
+        </Row>
       </main>
     </>
   );
 }
 
-export default Board;
+export default SmartBoard;

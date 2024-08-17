@@ -49,7 +49,7 @@ const BoardProvider = ({children}: { children: React.ReactNode }) => {
   const [boardToSave, setBoardToSave] = React.useState<number[][] | null>(null);
   const [savedPatterns, setSavedPatterns] = useLocalStorage("GOLSavedPatterns", []);
   const [round, setRound] = React.useState(0);
-  const maxRounds = 20;
+  const maxRounds = 5; // ToDo: visszaírni 20-ra
   const drawSize = 16;
 
   const drawedBoard = React.useCallback(() => {
