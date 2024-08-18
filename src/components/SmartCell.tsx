@@ -1,7 +1,9 @@
-import { Dispatch, FC, useCallback, useMemo } from "react";
-import { BoardAction, useBoardContext, writeBoard } from '../BoardContext';
-import { ICell } from "../pages/SmartBoard.tsx";
-import { isInDrawer } from "../drawer.ts";
+import { FC, useCallback, useEffect, useMemo, useState } from "react";
+import { writeBoard } from "../store/BoardSlice";
+import { isInDrawer } from "../drawer";
+import { useBoundStore } from '../store/useBoundStore'
+import { drawSize } from "../constants";
+import { CellValue } from "../pages/Board";
 
 
 export interface ISmartCellProps {
@@ -9,23 +11,27 @@ export interface ISmartCellProps {
   columnIndex: number;
 }
 
-const SmartCell: FC<ISmartCellProps> = ({rowIndex, columnIndex}) => {
-  const {board, setBoard, started, active, rows, columns, drawSize}: {
-    board: ICell[][],
-    setBoard: Dispatch<BoardAction>,
-    started: boolean,
-    active: boolean,
-    rows: number,
-    columns: number,
-    drawSize: number,
-  } = useBoardContext()
+const SmartCell: FC<ISmartCellProps> = ({ rowIndex, columnIndex }) => {
+  const [cell, setCell] = useState({ row: 0, col: 0, value: CellValue.NONE })
+  const { row, col, value } = cell;
+  const { active, started, columns, rows } = useBoundStore(state => state)
+  const setBoard = useBoundStore(state => state.dispatchBoard)
 
-  const {row, col, value} = useMemo(() => board[rowIndex][columnIndex], [board, rowIndex, columnIndex])
+  const unsub = useBoundStore.subscribe(
+    state => {
+      if (state.board?.[rowIndex] != null && state.board[rowIndex][columnIndex] != null) {
+        return state.board[rowIndex][columnIndex]
+      }
+      return { row: 0, col: 0, value: CellValue.NONE }
+    } ,
+    (state) => {
+      setCell(state)
+    },
+  )
 
-  if (row == 1 && col == 1) {
-    console.log("okos cellácska", value)
-
-  }
+  useEffect(()=> {
+    return () => unsub();
+  }, [unsub]);
 
   const whatIsClass = useMemo(() => {
     let className = 'cell-button'
@@ -38,26 +44,27 @@ const SmartCell: FC<ISmartCellProps> = ({rowIndex, columnIndex}) => {
   }, [columns, rows, row, col])
 
   const isDrawable = useMemo(() => {
+
     if (!active) {
-      return isInDrawer({drawSize, side: rows, index: rowIndex}) && isInDrawer({
+      return isInDrawer({ drawSize, side: rows, index: rowIndex }) && isInDrawer({
         drawSize,
         side: columns,
         index: columnIndex
       })
     }
     return true;
-  }, [active, drawSize, rows, columns])
+  }, [row, col, active, rows, columns, rowIndex, columnIndex])
 
   const selectCell = useCallback((pressure = 0, pressEvent = null) => {
     if (!started && isDrawable && pressure > 0) {
-      writeBoard(setBoard, {row, column: col})
+      writeBoard(setBoard, { row: row, column: col })
     }
     if (pressEvent) {
       pressEvent.target.releasePointerCapture(pressEvent.pointerId)
     }
-  }, [isDrawable, started])
+  }, [started, isDrawable, setBoard, row, col])
 
-  if (!board?.length || !board[0].length ) {
+  if (row == null || col == null) {
     return null
   }
 

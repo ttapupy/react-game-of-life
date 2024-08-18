@@ -2,10 +2,11 @@ import { ICell, CellValue } from "./pages/Board";
 import { BoardAction } from "./BoardContext";
 import { isInDrawer } from "./drawer";
 import { nextValue } from "./gameRules";
+import {drawSize} from "./constants";
 
 
-export default function boardReducer(board: ICell[][] | null, action: BoardAction) {
-  const {width, height, column, row, drawSize, boardToLoad} = action.payload ?? {}
+export default function boardReducer(board: ICell[][] | null, action: BoardAction): ICell[][] {
+  const {width, height, column, row, boardToLoad} = action.payload ?? {}
 
   switch (action.type) {
     case 'INIT': {

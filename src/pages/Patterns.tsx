@@ -1,15 +1,17 @@
 import PatternSide from "../components/PatternsSide";
-import { useBoardContext } from "../BoardContext.tsx";
 import Pattern from "../components/Pattern";
 import { Row, Col } from "react-bootstrap";
+import useLocalStorage from "../hooks/useLocalStorage";
+import { useBoundStore } from "../store/useBoundStore";
+import { useLayoutEffect } from "react";
 
 export default function Patterns() {
-  const {
-    savedPatterns,
-    setStarted,
-  }: { savedPatterns: number[][][]; setStarted: React.Dispatch<React.SetStateAction<boolean>> } = useBoardContext();
+  const [savedPatterns] = useLocalStorage("GOLSavedPatterns", []);
+  const setStarted = useBoundStore(state => state.setStarted)
 
-  setStarted(false);
+  useLayoutEffect(() => {
+    setStarted(false);
+  }, [setStarted]);
 
   return (
     <main className='patterns'>
@@ -19,7 +21,9 @@ export default function Patterns() {
         </Col>
         <Col xs={12} lg={9} className='patterns-wrapper'>
           {savedPatterns.map((pattern, index) => (
-            <Pattern key={index} pattern={pattern} index={index}/>
+            pattern ?
+              <Pattern key={index} pattern={pattern} index={index}/> :
+              null
           ))}
         </Col>
       </Row>

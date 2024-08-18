@@ -1,9 +1,7 @@
 import { memo } from 'react';
-import { useBoardContext } from '../BoardContext';
+import { maxRounds } from "../constants";
 
 const Description = memo(() => {
-  const {maxRounds}: { maxRounds: number } = useBoardContext();
-
   return (
     <aside>
       <div className='description'>

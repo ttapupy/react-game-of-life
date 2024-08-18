@@ -1,36 +1,13 @@
 import { Link } from 'react-router-dom';
-import { BoardAction, useBoardContext, initBoard } from '../BoardContext';
+import { initBoard } from '../store/BoardSlice';
+import { useGameRunner } from "../hooks/usegameRunner";
+import { useBoundStore } from "../store/useBoundStore";
 
 
 const ButtonGroup = () => {
-  const {
-    started,
-    setStarted,
-    setRound,
-    setLoaded,
-    loaded,
-    setActive,
-    setBoard,
-    rows,
-    columns,
-    savePattern,
-    active,
-    round
-  }:
-    {
-      started: boolean,
-      setStarted: React.Dispatch<React.SetStateAction<boolean>>,
-      setActive: React.Dispatch<React.SetStateAction<boolean>>,
-      setRound: React.Dispatch<React.SetStateAction<number>>,
-      setLoaded: React.Dispatch<React.SetStateAction<boolean>>,
-      loaded: boolean,
-      setBoard: React.Dispatch<BoardAction>,
-      rows: number,
-      columns: number,
-      savePattern: () => void,
-      active: boolean,
-      round: number
-    } = useBoardContext();
+  const { savePattern } = useGameRunner()
+  const setBoard = useBoundStore(state => state.dispatchBoard)
+  const {started, setStarted, round, setRound, loaded, setLoaded, active, setActive, columns, rows} = useBoundStore(state => state)
 
   const onClear = () => {
     initBoard(setBoard, {height: rows, width: columns});
@@ -44,7 +21,6 @@ const ButtonGroup = () => {
     setActive(true);
     setLoaded(false)
   }
-
 
   return (
     <>
