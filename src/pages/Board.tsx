@@ -54,8 +54,8 @@ const Board = () => {
 
   // initializing board
   useEffect(() => {
-    if (!started && !!rows && !!columns && !active && !loaded) {
-      initBoard(setBoard, {height: rows, width: columns})
+    if (!board && !started && !!rows && !!columns && !active && !loaded) {
+      initBoard(setBoard, { height: rows, width: columns })
     }
   }, [rows, columns, started, setBoard, active, loaded])
 
@@ -85,19 +85,19 @@ const Board = () => {
     }
   }, [started, setBoard, round, setRound, setStarted, maxRounds]);
 
-  const handleSetBoard = ({row, column}: { row: number, column: number }) => {
-    writeBoard(setBoard, {row, column})
+  const handleSetBoard = ({ row, column }: { row: number, column: number }) => {
+    writeBoard(setBoard, { row, column })
   }
 
-  const handleDrawable = useCallback(({row, column}: { row: number, column: number }) => {
+  const handleDrawable = useCallback(({ row, column }: { row: number, column: number }) => {
     if (!active) {
-      return isInDrawer({drawSize, side: rows, index: row}) && isInDrawer({drawSize, side: columns, index: column})
+      return isInDrawer({ drawSize, side: rows, index: row }) && isInDrawer({ drawSize, side: columns, index: column })
     }
     return true;
   }, [active, drawSize, rows, columns])
 
 
-  const whatIsClass = ({row, column}) => {
+  const whatIsClass = ({ row, column }) => {
     let className = 'cell-button'
 
     if (row === 0 && column + 1 === columns) {
@@ -130,20 +130,23 @@ const Board = () => {
                     <div
                       className='board-container main'
                       id={'board-container'}
-                      style={{gridTemplateColumns: `repeat(${columns}, 1fr)`, gridTemplateRows: `repeat(${rows}, 1fr)`}}
+                      style={{
+                        gridTemplateColumns: `repeat(${columns}, 1fr)`,
+                        gridTemplateRows: `repeat(${rows}, 1fr)`
+                      }}
                     >
                       <>
                         {board.map(row => (
                           row.map(cell => {
-                              const {row, col: column, value} = cell;
-                              const classNames = whatIsClass({row, column})
+                              const { row, col: column, value } = cell;
+                              const classNames = whatIsClass({ row, column })
                               return (
                                 <Cell
                                   value={value}
                                   key={`${row}-${column}`}
                                   classNames={classNames}
-                                  handleSetBoard={() => handleSetBoard({row, column})}
-                                  drawable={handleDrawable({row, column})}
+                                  handleSetBoard={() => handleSetBoard({ row, column })}
+                                  drawable={handleDrawable({ row, column })}
                                 />
                               )
                             }
