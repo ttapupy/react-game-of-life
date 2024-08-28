@@ -1,36 +1,31 @@
-import { Dispatch, SetStateAction, FC } from 'react'
+import { FC, useCallback } from 'react'
 import { useNavigate } from "react-router-dom";
-import { BoardAction, useBoardContext, loadBoard } from '../BoardContext';
 import { CellValue } from '../pages/Board';
+import { useGameRunner } from "../hooks/usegameRunner";
+import { loadBoard } from "../store/BoardSlice"
+import { useBoundStore } from "../store/useBoundStore";
+import { drawSize } from "../constants";
+
 
 interface IPatternProps {
   pattern: CellValue[][];
   index: number;
 }
 
-const Pattern: FC<IPatternProps> = ({pattern, index}) => {
-  const {drawSize, setBoard, setRound, rows, columns, setLoaded, deletePattern, setActive, setStarted}: {
-    drawSize: number,
-    setBoard: React.Dispatch<BoardAction>,
-    setRound: React.Dispatch<React.SetStateAction<number>>,
-    rows: number,
-    columns: number,
-    setLoaded: Dispatch<SetStateAction<boolean>>,
-    deletePattern: (index: number) => void,
-    setActive: React.Dispatch<React.SetStateAction<boolean>>,
-    setStarted: React.Dispatch<React.SetStateAction<boolean>>,
-  } = useBoardContext();
-
+const Pattern: FC<IPatternProps> = ({ pattern, index }) => {
+  const { deletePattern } = useGameRunner();
+  const { setRound, setLoaded, setActive, setStarted, rows, columns } = useBoundStore(state => state)
+  const setBoard = useBoundStore(state => state.dispatchBoard)
   const navigate = useNavigate();
 
-  const loadPattern = () => {
+  const loadPattern = useCallback(() => {
     setLoaded(true)
     setActive(false)
     setStarted(false)
     setRound(0)
-    loadBoard(setBoard, {boardToLoad: pattern, drawSize, height: rows, width: columns})
     navigate('/')
-  }
+    loadBoard(setBoard, { boardToLoad: pattern, height: rows, width: columns })
+  }, [columns, navigate, pattern, rows, setActive, setBoard, setLoaded, setRound, setStarted])
 
   const deleteAction = () => {
     if (window.confirm("You are to removing permanently this pattern from your collection. \n" + "Are you sure?")) {
@@ -47,7 +42,7 @@ const Pattern: FC<IPatternProps> = ({pattern, index}) => {
       <fieldset disabled={true}>
         <div
           className='board-container'
-          style={{gridTemplateColumns: `repeat(${drawSize}, 1fr)`, gridTemplateRows: `repeat(${drawSize}, 1fr)`}}
+          style={{ gridTemplateColumns: `repeat(${drawSize}, 1fr)`, gridTemplateRows: `repeat(${drawSize}, 1fr)` }}
         >
           {pattern.map((row, rowIndex) => row.map((cellValue, columnIndex) => {
             return (

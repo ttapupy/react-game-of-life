@@ -37,7 +37,7 @@ export default (fixed = true) => {
       }
 
       if (!disabledDimensions) {
-        setDimensions({width: calcDimension(width), height: calcDimension(height)});
+        setDimensions(() => ({width: calcDimension(width), height: calcDimension(height)}));
       }
     });
     if (boardRef?.current) {

@@ -1,3 +1,4 @@
+// !This component is not used, its kept for reference purposes only!
 import { useCallback } from "react";
 import { FC } from 'react';
 import { CellValue } from '../pages/Board';

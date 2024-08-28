@@ -1,50 +1,41 @@
 import { Link } from 'react-router-dom';
-import { BoardAction, useBoardContext, initBoard } from '../BoardContext';
+import { initBoard } from '../store/BoardSlice';
+import { useGameRunner } from "../hooks/usegameRunner";
+import { useBoundStore } from "../store/useBoundStore";
+import { useShallow } from "zustand/react/shallow";
 
 
 const ButtonGroup = () => {
+  const { saveSelectedPattern, saveDraw } = useGameRunner()
+  const setBoard = useBoundStore(state => state.dispatchBoard)
   const {
     started,
     setStarted,
+    round,
     setRound,
-    setLoaded,
     loaded,
-    setActive,
-    setBoard,
-    rows,
-    columns,
-    savePattern,
+    setLoaded,
     active,
-    round
-  }:
-    {
-      started: boolean,
-      setStarted: React.Dispatch<React.SetStateAction<boolean>>,
-      setActive: React.Dispatch<React.SetStateAction<boolean>>,
-      setRound: React.Dispatch<React.SetStateAction<number>>,
-      setLoaded: React.Dispatch<React.SetStateAction<boolean>>,
-      loaded: boolean,
-      setBoard: React.Dispatch<BoardAction>,
-      rows: number,
-      columns: number,
-      savePattern: () => void,
-      active: boolean,
-      round: number
-    } = useBoardContext();
+    setActive,
+    columns,
+    rows
+  } = useBoundStore(useShallow(state => state))
 
   const onClear = () => {
-    initBoard(setBoard, {height: rows, width: columns});
+    initBoard(setBoard, { height: rows, width: columns });
     setActive(false)
     setRound(0)
     setLoaded(false)
   }
 
   const runner = () => {
+    if (!started && !active && !loaded) {
+      saveDraw()
+    }
     setStarted(!started);
     setActive(true);
     setLoaded(false)
   }
-
 
   return (
     <>
@@ -61,7 +52,7 @@ const ButtonGroup = () => {
       <div>
         <button
           disabled={started || !active}
-          onClick={() => savePattern()}
+          onClick={() => saveSelectedPattern()}
         >
           {'Save initial pattern'}
         </button>
@@ -82,7 +73,7 @@ const ButtonGroup = () => {
           {`${started ? 'Pause' : active && !loaded ? 'Continue' : 'Start'}`}
         </button>
       </div>
-      <div style={{textAlign: 'center'}}>
+      <div style={{ textAlign: 'center' }}>
         <span className='counter'>{round}</span>
       </div>
     </>

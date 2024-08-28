@@ -23,7 +23,6 @@ export interface BoardAction {
     column?: number;
     row?: number;
     value?: CellValue;
-    drawSize?: number;
     boardToLoad?: number[][];
   };
 }
@@ -49,10 +48,10 @@ const BoardProvider = ({children}: { children: React.ReactNode }) => {
   const [boardToSave, setBoardToSave] = React.useState<number[][] | null>(null);
   const [savedPatterns, setSavedPatterns] = useLocalStorage("GOLSavedPatterns", []);
   const [round, setRound] = React.useState(0);
-  const maxRounds = 20;
+  const maxRounds = 5; // ToDo: visszaírni 20-ra
   const drawSize = 16;
 
-  const drawedBoard = React.useCallback(() => {
+  const saveDraw = React.useCallback(() => {
     if (!active && [board, rows, columns].every((e) => e != null)) {
       setBoardToSave(() => calcDrawer({table: board, rows, columns, drawSize}));
     }
@@ -60,9 +59,9 @@ const BoardProvider = ({children}: { children: React.ReactNode }) => {
 
   React.useEffect(() => {
     if (!active) {
-      drawedBoard();
+      saveDraw();
     }
-  }, [active, drawedBoard, board]);
+  }, [active, saveDraw, board]);
 
   React.useEffect(() => {
     if (started || (loaded && previousLoaded) || active) {

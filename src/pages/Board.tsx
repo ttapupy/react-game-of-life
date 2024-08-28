@@ -1,3 +1,4 @@
+// !This component is not used, its kept for reference purposes only!
 import { useEffect, useCallback, MutableRefObject, Dispatch, SetStateAction, useRef } from 'react';
 import Cell from '../components/Cell';
 import Spinner from '../components/Spinner';
@@ -10,7 +11,8 @@ import { isInDrawer } from '../drawer';
 
 export enum CellValue {
   ZERO = 0,
-  ONE = 1
+  ONE = 1,
+  NONE = -1
 }
 
 export interface ICell {
