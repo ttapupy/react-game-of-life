@@ -4,7 +4,7 @@ import { useCallback, useEffect, useState } from "react";
 import { stepBoard } from "../store/BoardSlice";
 import { calcDrawer } from "../drawer";
 import { maxRounds, drawSize } from "../constants";
-import { CellValue } from "../pages/Board";
+import { CellValue } from "../pages/SmartBoard";
 
 
 export const useGameRunner = () => {

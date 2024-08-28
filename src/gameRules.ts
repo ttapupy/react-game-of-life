@@ -1,4 +1,4 @@
-import { ICell } from './pages/Board';
+import { ICell } from './pages/SmartBoard';
 
 const adjacent = (ref: ICell, other: ICell): boolean => {
   return (ref.col !== other.col || ref.row !== other.row)
@@ -8,7 +8,7 @@ const adjacent = (ref: ICell, other: ICell): boolean => {
 export const adjacentValues = (cell: ICell, table: ICell[][]): number => {
   // At the time of creating this file, the flat() method showed a very bad performance in chrome, so I decided to write a custom solution instead.
   const flattenedSlice = [];
-  const {row, col} = cell;
+  const { row, col } = cell;
   const rowMin = Math.max(row - 1, 0)
   const rowMax = Math.min(row + 1, table.length - 1)
   const colMin = Math.max(col - 1, 0)

@@ -1,6 +1,6 @@
 import { FC, useCallback } from 'react'
 import { useNavigate } from "react-router-dom";
-import { CellValue } from '../pages/Board';
+import { CellValue } from '../pages/SmartBoard';
 import { useGameRunner } from "../hooks/usegameRunner";
 import { loadBoard } from "../store/BoardSlice"
 import { useBoundStore } from "../store/useBoundStore";
