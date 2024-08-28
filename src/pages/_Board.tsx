@@ -1,6 +1,6 @@
 // !This component is not used, its kept for reference purposes only!
 import { useEffect, useCallback, MutableRefObject, Dispatch, SetStateAction, useRef } from 'react';
-import Cell from '../components/Cell';
+import Cell from '../components/_Cell';
 import Spinner from '../components/Spinner';
 import { BoardAction, useBoardContext, initBoard, stepBoard, writeBoard } from '../BoardContext';
 import MainSide from '../components/MainSide';

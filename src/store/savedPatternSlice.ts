@@ -1,6 +1,5 @@
 import { StateCreator } from 'zustand'
-
-import { CellValue } from "../pages/Board";
+import { CellValue } from "../pages/SmartBoard";
 
 
 export interface SavedPatternSliceType {
