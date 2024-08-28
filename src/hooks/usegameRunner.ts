@@ -1,35 +1,33 @@
 import { useBoundStore } from "../store/useBoundStore";
 import { useShallow } from "zustand/react/shallow";
-import useBoardRect from "./useBoardRect";
 import { useCallback, useEffect, useState } from "react";
 import { stepBoard } from "../store/BoardSlice";
-import useLocalStorage from "./useLocalStorage";
 import { calcDrawer } from "../drawer";
 import { maxRounds, drawSize } from "../constants";
+import { CellValue } from "../pages/Board";
 
 
 export const useGameRunner = () => {
-  const [, setSavedPatterns] = useLocalStorage("GOLSavedPatterns", []);
-  const [boardToSave, setBoardToSave] = useState<number[][] | null>(null);
-  const {board, started, active, round, setStarted, setRound} = useBoundStore(state => state)
-  const setBoard = useBoundStore(useShallow(state => state.dispatchBoard))
-
+  const [boardToSave, setBoardToSave] = useState<CellValue[][] | null>(null);
   const {
-    dimensions: {width: columns, height: rows}
-  } = useBoardRect(active);
+    board,
+    started,
+    round,
+    setStarted,
+    setRound,
+    savePattern,
+    deletePattern,
+    rows,
+    columns
+  } = useBoundStore(state => state)
+  const setBoard = useBoundStore(useShallow(state => state.dispatchBoard))
 
 
   const saveDraw = useCallback(() => {
-    if (!active && [board, rows, columns].every((e) => e != null)) {
-      setBoardToSave(() => calcDrawer({table: board, rows, columns, drawSize}));
+    if ([board, rows, columns].every((e) => e != null)) {
+      setBoardToSave(() => calcDrawer({ table: board, rows, columns, drawSize }));
     }
-  }, [active, board, columns, rows]);
-
-  useEffect(() => {
-    if (!active) {
-      saveDraw();
-    }
-  }, [active, saveDraw, board]);
+  }, [board, columns, rows]);
 
   // running the calculation of next cycle
   useEffect(() => {
@@ -54,21 +52,16 @@ export const useGameRunner = () => {
     }
   }, [started, setBoard, round, setRound, setStarted]);
 
-  const savePattern = useCallback(() => {
-    setSavedPatterns((prevCollection) => [boardToSave, ...(prevCollection || [])]);
+  const saveSelectedPattern = useCallback(() => {
+    savePattern(boardToSave);
     alert("Pattern has been saved.");
-  }, [boardToSave, setSavedPatterns]);
+  }, [boardToSave, savePattern]);
 
-  const deletePattern = useCallback(
-    (index: number) => {
-      setSavedPatterns((prevCollection) => prevCollection.filter((_, i) => i !== index));
-    },
-    [setSavedPatterns]
-  );
 
   return ({
-    savePattern,
-    deletePattern
+    saveSelectedPattern,
+    deletePattern,
+    saveDraw
   })
 
 }

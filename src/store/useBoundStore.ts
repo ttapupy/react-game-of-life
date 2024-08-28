@@ -1,17 +1,24 @@
 import { create } from 'zustand'
-import { subscribeWithSelector } from 'zustand/middleware';
-import { createBoardSlice } from './BoardSlice'
-import type { BoardSliceType } from './BoardSlice'
-import {createGameSlice} from "./GameSlice";
-import type {GameSliceType} from "./GameSlice";
+import { createJSONStorage, persist, subscribeWithSelector } from 'zustand/middleware'
+import { createBoardSlice, BoardSliceType } from './BoardSlice'
+import { createGameSlice, GameSliceType } from "./GameSlice";
+import { createSavedPatternSlice, SavedPatternSliceType } from "./savedPatternSlice";
 
 
-
-export const useBoundStore = create<BoardSliceType & GameSliceType>()(subscribeWithSelector((set, get, store) => {
+export const useBoundStore = create<SavedPatternSliceType & BoardSliceType & GameSliceType>()(subscribeWithSelector((...props) => {
 
     return ({
-      ...createBoardSlice(set, get, store),
-      ...createGameSlice(set, get, store),
+      ...createBoardSlice(...props),
+      ...createGameSlice(...props),
+      ...persist<SavedPatternSliceType>(createSavedPatternSlice, {
+        name: 'GOLSavedPatterns',
+        storage: createJSONStorage(() => localStorage),
+        partialize: (state) => ({
+          savedPatterns: state.savedPatterns,
+          savePattern: state.savePattern,
+          deletePattern: state.deletePattern
+        }),
+      },)(...props)
     })
   }
 ))

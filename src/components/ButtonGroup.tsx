@@ -2,21 +2,36 @@ import { Link } from 'react-router-dom';
 import { initBoard } from '../store/BoardSlice';
 import { useGameRunner } from "../hooks/usegameRunner";
 import { useBoundStore } from "../store/useBoundStore";
+import { useShallow } from "zustand/react/shallow";
 
 
 const ButtonGroup = () => {
-  const { savePattern } = useGameRunner()
+  const { saveSelectedPattern, saveDraw } = useGameRunner()
   const setBoard = useBoundStore(state => state.dispatchBoard)
-  const {started, setStarted, round, setRound, loaded, setLoaded, active, setActive, columns, rows} = useBoundStore(state => state)
+  const {
+    started,
+    setStarted,
+    round,
+    setRound,
+    loaded,
+    setLoaded,
+    active,
+    setActive,
+    columns,
+    rows
+  } = useBoundStore(useShallow(state => state))
 
   const onClear = () => {
-    initBoard(setBoard, {height: rows, width: columns});
+    initBoard(setBoard, { height: rows, width: columns });
     setActive(false)
     setRound(0)
     setLoaded(false)
   }
 
   const runner = () => {
+    if (!started && !active && !loaded) {
+      saveDraw()
+    }
     setStarted(!started);
     setActive(true);
     setLoaded(false)
@@ -37,7 +52,7 @@ const ButtonGroup = () => {
       <div>
         <button
           disabled={started || !active}
-          onClick={() => savePattern()}
+          onClick={() => saveSelectedPattern()}
         >
           {'Save initial pattern'}
         </button>
@@ -58,7 +73,7 @@ const ButtonGroup = () => {
           {`${started ? 'Pause' : active && !loaded ? 'Continue' : 'Start'}`}
         </button>
       </div>
-      <div style={{textAlign: 'center'}}>
+      <div style={{ textAlign: 'center' }}>
         <span className='counter'>{round}</span>
       </div>
     </>

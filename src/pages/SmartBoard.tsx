@@ -1,22 +1,21 @@
 import { MutableRefObject, useEffect, useMemo } from 'react';
-import { useLocation } from 'react-router-dom';
 import Spinner from '../components/Spinner';
 import MainSide from '../components/MainSide';
 import { Row, Col } from 'react-bootstrap';
 import Description from '../components/Description';
 import SmartCell from "../components/SmartCell";
-import { initBoard, loadBoard } from "../store/BoardSlice";
+import { initBoard } from "../store/BoardSlice";
 import { useBoundStore } from "../store/useBoundStore";
 import useBoardRect, { DimensionsType } from "../hooks/useBoardRect";
 import * as React from "react";
 import usePrevious from "../hooks/usePrevious";
-// import { useShallow } from "zustand/react/shallow";
 import { drawSize } from "../constants";
 
 
 export enum CellValue {
   ZERO = 0,
-  ONE = 1
+  ONE = 1,
+  NONE = -1
 }
 
 export interface ICell {
@@ -25,10 +24,14 @@ export interface ICell {
   value: CellValue;
 }
 
-
 const SmartBoard = () => {
-  const location = useLocation();
-  const { started, active, loaded, columns, rows } = useBoundStore(state => state)
+  const started = useBoundStore(state => state.started)
+  const active = useBoundStore(state => state.active)
+  const loaded = useBoundStore(state => state.loaded)
+  const columns = useBoundStore(state => state.columns)
+  const rows = useBoundStore(state => state.rows)
+  const initialized = useBoundStore(state => state.initialized)
+  const setInitialized = useBoundStore(state => state.setInitialized)
   const setBoard = useBoundStore(state => state.dispatchBoard)
   const setDimensions = useBoundStore(state => state.setDimensions)
   const previousLoaded = usePrevious(loaded);
@@ -45,7 +48,7 @@ const SmartBoard = () => {
 
   useEffect(() => {
     if (width && height) {
-      setDimensions({columns: width, rows: height})
+      setDimensions({ columns: width, rows: height })
     }
   }, [width, height, setDimensions])
 
@@ -60,13 +63,11 @@ const SmartBoard = () => {
 
   /* initializing board */
   useEffect(() => {
-    if (!started && !!rows && !!columns && !active && !loaded) {
-      initBoard(setBoard, { height: rows, width: columns })
+    if (!started && !!rows && !!columns && !active && !loaded && !initialized) {
+      initBoard(setBoard, { height: rows, width: columns });
+      setInitialized(true);
     }
-    if (loaded && location.state) {
-        loadBoard(setBoard, { boardToLoad: location.state.boardToLoad, height: rows, width: columns })
-    }
-  }, [rows, columns, loaded, started, active, location.state, setBoard])
+  }, [rows, columns, loaded, started, active, setBoard, initialized, setInitialized])
 
   /**
    * The intention with this empty Array was to not to use the 2 dimensional board array, which changes on every step.

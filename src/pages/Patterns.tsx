@@ -1,12 +1,11 @@
 import PatternSide from "../components/PatternsSide";
 import Pattern from "../components/Pattern";
 import { Row, Col } from "react-bootstrap";
-import useLocalStorage from "../hooks/useLocalStorage";
 import { useBoundStore } from "../store/useBoundStore";
 import { useLayoutEffect } from "react";
 
 export default function Patterns() {
-  const [savedPatterns] = useLocalStorage("GOLSavedPatterns", []);
+  const { savedPatterns } = useBoundStore(state => state)
   const setStarted = useBoundStore(state => state.setStarted)
 
   useLayoutEffect(() => {

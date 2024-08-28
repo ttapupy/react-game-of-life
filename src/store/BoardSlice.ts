@@ -1,5 +1,5 @@
 import { StateCreator } from 'zustand';
-import { CellValue, ICell } from "../pages/Board";
+import { CellValue, ICell } from "../pages/SmartBoard";
 import boardReducer from "../boardReducer";
 
 
@@ -30,7 +30,10 @@ export interface BoardSliceType {
   columns: number | null;
   rows: number | null;
   dispatchBoard: (args: BoardAction) => void;
-  setDimensions: ({columns, rows}: { columns: number, rows: number }) => void;
+  setDimensions: ({ columns, rows }: { columns: number, rows: number }) => void;
+  initialized: boolean;
+  setInitialized: (initialized: boolean) => void;
+  getCell: (row: number, column: number) => ICell;
 }
 
 const initialState: ICell[][] | null = null;
@@ -44,11 +47,11 @@ export const stepBoard = (dispatch: (args: BoardAction) => void) => {
 export const writeBoard = (dispatch: (args: BoardAction) => void, payload: Payload) => {
   dispatch({ type: BoardActionKind.WRITE, payload });
 };
-export const loadBoard = (dispatch: (args: BoardAction ) => void, payload: Payload) => {
+export const loadBoard = (dispatch: (args: BoardAction) => void, payload: Payload) => {
   dispatch({ type: BoardActionKind.LOAD, payload });
 };
 
-export const createBoardSlice: StateCreator<BoardSliceType | null, [], [], BoardSliceType> = ((set) => {
+export const createBoardSlice: StateCreator<BoardSliceType | null, [], [], BoardSliceType> = ((set, get) => {
     return (
       {
         board: initialState,
@@ -56,7 +59,17 @@ export const createBoardSlice: StateCreator<BoardSliceType | null, [], [], Board
         rows: null,
         dispatchBoard: (args) =>
           set((state) => ({ board: boardReducer(state.board, args) })),
-        setDimensions: ({columns, rows}: { columns: number, rows: number }) => set({ columns, rows }),
+        setDimensions: ({ columns, rows }: { columns: number, rows: number }) => set({ columns, rows }),
+        initialized: false,
+        setInitialized: (initialized: boolean) => set({ initialized }),
+        getCell: (row: number, column: number) => {
+          if (get().board?.[row] != null && get().board[row][column] != null) {
+            return get().board[row][column]
+          }
+          return {
+            row: 0, col: 0, value: CellValue.NONE
+          }
+        }
       }
     )
   }

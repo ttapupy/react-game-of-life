@@ -1,9 +1,10 @@
-import { FC, useCallback, useEffect, useMemo, useState } from "react";
+import { FC, useCallback, useMemo } from "react";
 import { writeBoard } from "../store/BoardSlice";
 import { isInDrawer } from "../drawer";
 import { useBoundStore } from '../store/useBoundStore'
 import { drawSize } from "../constants";
-import { CellValue } from "../pages/Board";
+import { CellValue } from "../pages/SmartBoard";
+import { useShallow } from "zustand/react/shallow";
 
 
 export interface ISmartCellProps {
@@ -12,26 +13,12 @@ export interface ISmartCellProps {
 }
 
 const SmartCell: FC<ISmartCellProps> = ({ rowIndex, columnIndex }) => {
-  const [cell, setCell] = useState({ row: 0, col: 0, value: CellValue.NONE })
-  const { row, col, value } = cell;
-  const { active, started, columns, rows } = useBoundStore(state => state)
-  const setBoard = useBoundStore(state => state.dispatchBoard)
-
-  const unsub = useBoundStore.subscribe(
-    state => {
-      if (state.board?.[rowIndex] != null && state.board[rowIndex][columnIndex] != null) {
-        return state.board[rowIndex][columnIndex]
-      }
-      return { row: 0, col: 0, value: CellValue.NONE }
-    } ,
-    (state) => {
-      setCell(state)
-    },
-  )
-
-  useEffect(()=> {
-    return () => unsub();
-  }, [unsub]);
+  const { row, col, value } = useBoundStore(useShallow(state => state.getCell(rowIndex, columnIndex)));
+  const started = useBoundStore(state => state.started)
+  const active = useBoundStore(state => state.active)
+  const columns = useBoundStore(state => state.columns)
+  const rows = useBoundStore(state => state.rows)
+  const setBoard = useBoundStore(useShallow(state => state.dispatchBoard))
 
   const whatIsClass = useMemo(() => {
     let className = 'cell-button'
@@ -53,7 +40,7 @@ const SmartCell: FC<ISmartCellProps> = ({ rowIndex, columnIndex }) => {
       })
     }
     return true;
-  }, [row, col, active, rows, columns, rowIndex, columnIndex])
+  }, [active, rows, columns, rowIndex, columnIndex])
 
   const selectCell = useCallback((pressure = 0, pressEvent = null) => {
     if (!started && isDrawable && pressure > 0) {
@@ -72,7 +59,7 @@ const SmartCell: FC<ISmartCellProps> = ({ rowIndex, columnIndex }) => {
   return (
     <>
       <button
-        data-state={`${isDrawable ? value : -1}`}
+        data-state={`${isDrawable ? value : CellValue.NONE}`}
         disabled={!isDrawable}
         className={whatIsClass}
         onPointerDown={(e) => selectCell(e.pressure, e)}
