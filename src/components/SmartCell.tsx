@@ -5,6 +5,7 @@ import { useBoundStore } from '../store/useBoundStore'
 import { drawSize } from "../constants";
 import { CellValue } from "../pages/SmartBoard";
 import { useShallow } from "zustand/react/shallow";
+import { isMobile } from 'react-device-detect';
 
 
 export interface ISmartCellProps {
@@ -62,7 +63,9 @@ const SmartCell: FC<ISmartCellProps> = ({ rowIndex, columnIndex }) => {
         data-state={`${isDrawable ? value : CellValue.NONE}`}
         disabled={!isDrawable}
         className={whatIsClass}
-        onPointerDown={(e) => selectCell(e.pressure, e)}
+        onPointerDown={(e) => {
+          selectCell(isMobile ? 0 : e.pressure, e)
+        }}
         onPointerEnter={(e) => selectCell(e.pressure)}
       />
     </>

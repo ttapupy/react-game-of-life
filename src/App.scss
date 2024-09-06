@@ -53,8 +53,8 @@
     text-align: center;
 
     button {
-      @include button-3d;
       background-color: whitesmoke;
+      @include button-3d;
     }
 
     a {
@@ -217,15 +217,15 @@
 }
 
 .sidebar-wrapper {
-  aside {
-    margin: 40px 0;
-  }
-
   display: flex;
   flex-direction: column;
   justify-content: space-around;
   align-items: center;
   flex: 2 1 auto;
+
+  aside {
+    margin: 40px 0;
+  }
 }
 
 .description {
@@ -271,11 +271,11 @@ span.counter {
   margin: 6px 0 0;
 
   button {
-    @include button-3d;
-
     flex: 0 0 45%;
     height: 2em;
     font-size: 0.8em;
+
+    @include button-3d;
 
     &.load {
       background-color: rgba(245, 245, 245, 0.88);
