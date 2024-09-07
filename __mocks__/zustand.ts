@@ -1,9 +1,9 @@
-// Todo: write new tests and use this mock
 import * as zustand from 'zustand'
 import { act } from '@testing-library/react'
+import { vi } from "vitest";
 
 const { create: actualCreate, createStore: actualCreateStore } =
-  jest.requireActual<typeof zustand>('zustand')
+  await vi.importActual<typeof zustand>('zustand')
 
 // a variable to hold reset functions for all stores declared in the app
 export const storeResetFns = new Set<() => void>()

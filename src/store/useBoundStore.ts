@@ -5,9 +5,8 @@ import { createGameSlice, GameSliceType } from "./GameSlice";
 import { createSavedPatternSlice, SavedPatternSliceType } from "./savedPatternSlice";
 
 
-export const useBoundStore = create<SavedPatternSliceType & BoardSliceType & GameSliceType>()(subscribeWithSelector((...props) => {
+export const useBoundStore = create<SavedPatternSliceType & BoardSliceType & GameSliceType>()(subscribeWithSelector((...props) => ({
 
-    return ({
       ...createBoardSlice(...props),
       ...createGameSlice(...props),
       ...persist<SavedPatternSliceType>(createSavedPatternSlice, {
@@ -20,5 +19,5 @@ export const useBoundStore = create<SavedPatternSliceType & BoardSliceType & Gam
         }),
       },)(...props)
     })
-  }
-))
+  )
+)

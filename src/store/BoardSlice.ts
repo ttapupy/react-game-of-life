@@ -51,26 +51,22 @@ export const loadBoard = (dispatch: (args: BoardAction) => void, payload: Payloa
   dispatch({ type: BoardActionKind.LOAD, payload });
 };
 
-export const createBoardSlice: StateCreator<BoardSliceType | null, [], [], BoardSliceType> = ((set, get) => {
-    return (
-      {
-        board: initialState,
-        columns: null,
-        rows: null,
-        dispatchBoard: (args) =>
-          set((state) => ({ board: boardReducer(state.board, args) })),
-        setDimensions: ({ columns, rows }: { columns: number, rows: number }) => set({ columns, rows }),
-        initialized: false,
-        setInitialized: (initialized: boolean) => set({ initialized }),
-        getCell: (row: number, column: number) => {
-          if (get().board?.[row] != null && get().board[row][column] != null) {
-            return get().board[row][column]
-          }
-          return {
-            row: 0, col: 0, value: CellValue.NONE
-          }
-        }
-      }
-    )
+export const createBoardSlice: StateCreator<BoardSliceType | null, [], [], BoardSliceType> = (set, get) => ({
+
+  board: initialState,
+  columns: null,
+  rows: null,
+  dispatchBoard: (args) =>
+    set((state) => ({ board: boardReducer(state.board, args) })),
+  setDimensions: ({ columns, rows }: { columns: number, rows: number }) => set({ columns, rows }),
+  initialized: false,
+  setInitialized: (initialized: boolean) => set({ initialized }),
+  getCell: (row: number, column: number) => {
+    if (get().board?.[row] != null && get().board[row][column] != null) {
+      return get().board[row][column]
+    }
+    return {
+      row: 0, col: 0, value: CellValue.NONE
+    }
   }
-)
+})

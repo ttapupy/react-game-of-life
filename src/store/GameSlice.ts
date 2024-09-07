@@ -12,14 +12,14 @@ export interface GameSliceType {
   setRound: (round: number) => void;
 }
 
-export const createGameSlice: StateCreator<GameSliceType | null, [], [], GameSliceType> = ((set) => ({
-    active: false,
-    setActive: (active: boolean) => set({active}),
-    loaded: false,
-    setLoaded: (loaded: boolean) => set({loaded}),
-    started: false,
-    setStarted: (started: boolean) => set({started}),
-    round: 0,
-    setRound: (round: number) => set({round}),
-  })
-)
+export const createGameSlice: StateCreator<GameSliceType | null, [], [], GameSliceType> = (set) => ({
+  active: false,
+  setActive: (active: boolean) => set({ active }),
+  loaded: false,
+  setLoaded: (loaded: boolean) => set({ loaded }),
+  started: false,
+  setStarted: (started: boolean) => set({ started }),
+  round: 0,
+  setRound: (round: number) => set({ round }),
+})
+
