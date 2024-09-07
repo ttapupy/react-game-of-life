@@ -1,5 +1,5 @@
 import { ICell, CellValue } from "./pages/SmartBoard";
-import { BoardAction } from "./BoardContext";
+import { BoardAction } from "./store/BoardSlice";
 import { isInDrawer } from "./drawer";
 import { nextValue } from "./gameRules";
 import { drawSize } from "./constants";
