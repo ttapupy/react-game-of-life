@@ -18,7 +18,7 @@ describe("testing a Cell", () => {
         ({
           row: r,
           col: c,
-          value: 3,
+          value: 0 as CellValue,
         }) satisfies ICell,
     ),
   );
