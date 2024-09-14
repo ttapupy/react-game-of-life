@@ -49,7 +49,12 @@
     "src"
   ],
   "exclude": [
-    "**/*.yml"
+    "**/*.yml",
+    "**/*.yaml",
+    "**/*.md",
+    "**/*.json",
+    "**/*.*js",
+    "**/*.jsx"
   ],
   "references": [
     {

@@ -12,11 +12,15 @@ describe("testing a Cell", () => {
   const boardSize = 24;
   const initialStoreState = useBoundStore.getState();
   const initboard: ICell[][] = Array.from({ length: boardSize }, (_, r) =>
-    Array.from({ length: boardSize }, (_, c) => ({
-      row: r,
-      col: c,
-      value: 0,
-    })),
+    Array.from(
+      { length: boardSize },
+      (_, c) =>
+        ({
+          row: r,
+          col: c,
+          value: 0,
+        }) satisfies ICell,
+    ),
   );
   beforeAll(() => {
     useBoundStore.setState(

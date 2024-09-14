@@ -14,13 +14,15 @@ export default tseslint.config(
       "eslint.config.mjs",
       "__mocks__/**",
       "setup-vitest.ts",
+      "vite.config.ts",
+      "babel.config.cjs",
     ],
   },
   eslintConfigPrettier,
   {
     languageOptions: {
       parserOptions: {
-        project: true,
+        projectService: true,
       },
       globals: {
         ...globals.browser,
