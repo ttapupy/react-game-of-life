@@ -46,13 +46,7 @@
     }
   },
   "include": [
-    "src",
-    "public",
-    "vite.*.ts",
-    "vitest.*.ts",
-    "vitest.*.tsx",
-    "vite.*.ts",
-    "vite.*.mjs"
+    "src"
   ],
   "exclude": [
     "**/*.yml"
