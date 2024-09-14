@@ -1,4 +1,5 @@
-import { adjacentValues } from "../gameRules";
+import { adjacentValues } from "@/gameRules";
+import { ICell } from "@/pages/SmartBoard";
 
 const table = [
   [
@@ -16,7 +17,7 @@ const table = [
     { row: 2, col: 1, value: 0 },
     { row: 2, col: 2, value: 0 },
   ],
-];
+] satisfies ICell[][];
 
 test("adjacentValues: cell has no filled adjacents", () => {
   const result = adjacentValues({ row: 1, col: 1, value: 1 }, table);
