@@ -13,7 +13,18 @@
     "build": "tsc && vite build",
     "lint": "eslint src",
     "preview": "vite preview",
-    "test": "vitest"
+    "test": "vitest",
+    "prepare": "husky install",
+    "precommit": "lint-staged && test"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "pnpm precommit"
+    }
+  },
+  "lint-staged": {
+    "src/**/*.{js,jsx,ts,tsx,json,css,scss,md}": "prettier --write",
+    "src/**/*.{ts,tsx}": "eslint"
   },
   "dependencies": {
     "bootstrap": "^5.3.3",
@@ -52,7 +63,9 @@
     "eslint-plugin-react-hooks": "^4.6.2",
     "eslint-plugin-react-refresh": "^0.4.11",
     "eslint-plugin-vitest": "~0.5.4",
+    "husky": "^9.1.6",
     "identity-obj-proxy": "^3.0.0",
+    "lint-staged": "^15.2.10",
     "prettier": "^3.3.2",
     "sass": "^1.77.8",
     "typescript": "^5.5.4",

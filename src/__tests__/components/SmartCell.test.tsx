@@ -1,7 +1,7 @@
 import { render, screen } from "@testing-library/react";
 import "@testing-library/jest-dom";
 import SmartCell from "@/components/SmartCell";
-import type { ICell } from "@/pages/SmartBoard";
+import type { CellValue, ICell } from "@/pages/SmartBoard";
 import { useBoundStore } from "@/store/useBoundStore";
 
 describe("testing a Cell", () => {
@@ -18,7 +18,7 @@ describe("testing a Cell", () => {
         ({
           row: r,
           col: c,
-          value: 0,
+          value: 0 as CellValue,
         }) satisfies ICell,
     ),
   );
