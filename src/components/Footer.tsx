@@ -1,14 +1,19 @@
-import { memo } from 'react';
+import { memo } from "react";
 
 const Footer = memo(() => {
+  const copyright = String.fromCodePoint(0x00a9);
+  const year = new Date();
 
-  const copyright = String.fromCodePoint(0x00A9);
-  const year = new Date()
-
-  const notice = `${copyright} ttapu ${year.getFullYear()} All${"\u00A0"}Rights${"\u00A0"}Reserved.`
+  const notice = `${copyright} ttapu ${year.getFullYear()} All${"\u00A0"}Rights${"\u00A0"}Reserved.`;
 
   const Logo = (props) => (
-    <svg xmlns="http://www.w3.org/2000/svg" width={200} height={160} viewBox="0 -218 512 512" {...props}>
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width={200}
+      height={160}
+      viewBox="0 -218 512 512"
+      {...props}
+    >
       <path
         fillRule="evenodd"
         clipRule="evenodd"
@@ -17,18 +22,18 @@ const Footer = memo(() => {
         strokeWidth={32}
       />
     </svg>
-  )
+  );
 
   return (
     <footer className="footer">
+      <div>{notice}</div>
       <div>
-        {notice}
-      </div>
-      <div>
-        <a href='https://github.com/ttapupy' target='_blank' rel="noreferrer"><Logo/></a>
+        <a href="https://github.com/ttapupy" target="_blank" rel="noreferrer">
+          <Logo />
+        </a>
       </div>
     </footer>
-  )
-})
+  );
+});
 
 export default Footer;

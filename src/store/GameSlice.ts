@@ -1,5 +1,4 @@
-import { StateCreator } from 'zustand'
-
+import { StateCreator } from "zustand";
 
 export interface GameSliceType {
   active: boolean;
@@ -12,7 +11,12 @@ export interface GameSliceType {
   setRound: (round: number) => void;
 }
 
-export const createGameSlice: StateCreator<GameSliceType | null, [], [], GameSliceType> = (set) => ({
+export const createGameSlice: StateCreator<
+  GameSliceType | null,
+  [],
+  [],
+  GameSliceType
+> = (set) => ({
   active: false,
   setActive: (active: boolean) => set({ active }),
   loaded: false,
@@ -21,5 +25,4 @@ export const createGameSlice: StateCreator<GameSliceType | null, [], [], GameSli
   setStarted: (started: boolean) => set({ started }),
   round: 0,
   setRound: (round: number) => set({ round }),
-})
-
+});

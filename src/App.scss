@@ -8,7 +8,7 @@
   padding: 0;
   margin: 0;
   background-color: $background-color;
-  font-family: 'Poppins Medium', 'Poppins', sans-serif;
+  font-family: "Poppins Medium", "Poppins", sans-serif;
 }
 
 .wrapper {
@@ -133,12 +133,12 @@
 .cell-button {
   @include cell-button;
 
-  &[data-state='0'] {
+  &[data-state="0"] {
     filter: opacity(95%);
     background-color: $background-color;
   }
 
-  &[data-state='1'] {
+  &[data-state="1"] {
     background-color: $react-turkiz;
     backdrop-filter: blur(4px);
     filter: opacity(75%);
@@ -148,7 +148,7 @@
 .board-wrapper {
   width: 100%;
 
-  .cell-button[data-state='-1'] {
+  .cell-button[data-state="-1"] {
     background-color: $my-gray;
   }
 
@@ -287,8 +287,7 @@ span.counter {
   }
 }
 
-@media (max-width: 991px),
-(max-height: 722px) {
+@media (max-width: 991px), (max-height: 722px) {
   .patterns-wrapper {
     flex: 100%;
 

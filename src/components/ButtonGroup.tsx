@@ -1,13 +1,12 @@
-import { Link } from 'react-router-dom';
-import { initBoard } from '../store/BoardSlice';
-import { useGameRunner } from "../hooks/usegameRunner";
-import { useBoundStore } from "../store/useBoundStore";
+import { Link } from "react-router-dom";
 import { useShallow } from "zustand/react/shallow";
-
+import { useGameRunner } from "@/hooks/usegameRunner";
+import { initBoard } from "@/store/BoardSlice";
+import { useBoundStore } from "@/store/useBoundStore";
 
 const ButtonGroup = () => {
-  const { saveSelectedPattern, saveDraw } = useGameRunner()
-  const setBoard = useBoundStore(state => state.dispatchBoard)
+  const { saveSelectedPattern, saveDraw } = useGameRunner();
+  const setBoard = useBoundStore((state) => state.dispatchBoard);
   const {
     started,
     setStarted,
@@ -18,34 +17,33 @@ const ButtonGroup = () => {
     active,
     setActive,
     columns,
-    rows
-  } = useBoundStore(useShallow(state => state))
+    rows,
+  } = useBoundStore(useShallow((state) => state));
 
   const onClear = () => {
     initBoard(setBoard, { height: rows, width: columns });
-    setActive(false)
-    setRound(0)
-    setLoaded(false)
-  }
+    setActive(false);
+    setRound(0);
+    setLoaded(false);
+  };
 
   const runner = () => {
     if (!started && !active && !loaded) {
-      saveDraw()
+      saveDraw();
     }
     setStarted(!started);
     setActive(true);
-    setLoaded(false)
-  }
+    setLoaded(false);
+  };
 
   return (
     <>
       <div>
         <span>
-          <Link
-            className={'active-page'}
-            to={'/patterns'}
-          >
-            <button onClick={() => setStarted(false)}>{'Saved patterns'}</button>
+          <Link className={"active-page"} to={"/patterns"}>
+            <button onClick={() => setStarted(false)}>
+              {"Saved patterns"}
+            </button>
           </Link>
         </span>
       </div>
@@ -54,30 +52,24 @@ const ButtonGroup = () => {
           disabled={started || !active}
           onClick={() => saveSelectedPattern()}
         >
-          {'Save initial pattern'}
+          {"Save initial pattern"}
         </button>
       </div>
       <div>
-        <button
-          disabled={started}
-          onClick={() => onClear()}
-        >
-          {'Clear / reset'}
+        <button disabled={started} onClick={() => onClear()}>
+          {"Clear / reset"}
         </button>
       </div>
       <div>
-        <button
-          className={`${started ? 'started' : 'iddle'}`}
-          onClick={runner}
-        >
-          {`${started ? 'Pause' : active && !loaded ? 'Continue' : 'Start'}`}
+        <button className={`${started ? "started" : "iddle"}`} onClick={runner}>
+          {`${started ? "Pause" : active && !loaded ? "Continue" : "Start"}`}
         </button>
       </div>
-      <div style={{ textAlign: 'center' }}>
-        <span className='counter'>{round}</span>
+      <div style={{ textAlign: "center" }}>
+        <span className="counter">{round}</span>
       </div>
     </>
-  )
-}
+  );
+};
 
-export default ButtonGroup
+export default ButtonGroup;

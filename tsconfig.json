@@ -4,11 +4,12 @@
     "lib": [
       "DOM",
       "DOM.Iterable",
-      "ESNext"
+      "ESNext",
+      "dom"
     ],
     "module": "ESNext",
     "skipLibCheck": true,
-    "baseUrl": "./src",
+    "baseUrl": ".",
     /* Bundler mode */
     "moduleResolution": "node",
     "allowImportingTsExtensions": true,
@@ -18,12 +19,43 @@
     "jsx": "react-jsx",
     /* Linting */
     "strict": false,
+    "strictNullChecks": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
-    "noFallthroughCasesInSwitch": true
+    "noFallthroughCasesInSwitch": true,
+    "outDir": "dist",
+    "paths": {
+      "@/pages/*": [
+        "src/pages/*"
+      ],
+      "@/components/*": [
+        "src/components/*"
+      ],
+      "@/hooks/*": [
+        "src/hooks/*"
+      ],
+      "@/store/*": [
+        "src/store/*"
+      ],
+      "@/styles/*": [
+        "src/styles/*"
+      ],
+      "@/*": [
+        "src/*"
+      ]
+    }
   },
   "include": [
-    "src"
+    "src",
+    "public",
+    "vite.*.ts",
+    "vitest.*.ts",
+    "vitest.*.tsx",
+    "vite.*.ts",
+    "vite.*.mjs"
+  ],
+  "exclude": [
+    "**/*.yml"
   ],
   "references": [
     {
@@ -32,7 +64,6 @@
   ],
   "types": [
     "node",
-    "jest",
-    "@testing-library/jest-dom"
+    "vitest/globals"
   ]
 }

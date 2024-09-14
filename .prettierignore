@@ -1,0 +1,10 @@
+pnpm-lock.yaml
+node_modules
+.idea
+.git
+.npmrc*
+.gitignore
+.dockerignore
+.nvmrc
+.prettierignore
+.env*
