@@ -36,15 +36,13 @@ export default function boardReducer(
       return Array.from({ length: height || 0 }, (_, r) =>
         Array.from({ length: width || 0 }, (_, c) => {
           const currentValue =
-            isInDrawer({ drawSize, side: height, index: r }) &&
+            isInDrawer({ drawSize, side: height || 0, index: r }) &&
             isInDrawer({
               drawSize,
-              side: width,
+              side: width || 0,
               index: c,
             })
-              ? boardToLoad[r - (height - drawSize) / 2][
-                  c - (width - drawSize) / 2
-                ]
+              ? boardToLoad[r - ((height || 0) - drawSize) / 2][c - ((width || 0) - drawSize) / 2]
               : 0;
 
           return { row: r, col: c, value: currentValue } as ICell;
