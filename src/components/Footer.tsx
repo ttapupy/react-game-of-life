@@ -1,4 +1,5 @@
-import { memo } from "react";
+import { memo, SVGProps } from "react";
+import { JSX } from "react/jsx-runtime";
 
 const Footer = memo(() => {
   const copyright = String.fromCodePoint(0x00a9);
@@ -6,7 +7,7 @@ const Footer = memo(() => {
 
   const notice = `${copyright} ttapu ${year.getFullYear()} All${"\u00A0"}Rights${"\u00A0"}Reserved.`;
 
-  const Logo = (props) => (
+  const Logo = (props: JSX.IntrinsicAttributes & SVGProps<SVGSVGElement>) => (
     <svg
       xmlns="http://www.w3.org/2000/svg"
       width={200}
