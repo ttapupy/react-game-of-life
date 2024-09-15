@@ -16,8 +16,9 @@ export default (fixed = true) => {
   });
   const [debouncedDimensions] = useDebounce(dimensions, 1000);
   // @ts-expect-error - TS2322: Type 'MutableRefObject<HTMLDivElement | HTMLFieldSetElement>' is not assignable to type 'MutableRefObject<HTMLDivElement>'.
-  const boardRef: React.MutableRefObject<HTMLDivElement | HTMLFieldSetElement> =
-    useRef<HTMLDivElement | HTMLFieldSetElement>(null);
+  const boardRef: React.MutableRefObject<HTMLDivElement | HTMLFieldSetElement> = useRef<
+    HTMLDivElement | HTMLFieldSetElement
+  >(null);
   const { smallCell, bigCell } = scssVariables;
   const widthThreshold = 991;
   const heightThreshold = 772;
@@ -38,8 +39,7 @@ export default (fixed = true) => {
       }
 
       const calcDimension = (size: number): number => {
-        const cellSize =
-          largeWidth && largeHeight ? parseInt(smallCell) : parseInt(bigCell);
+        const cellSize = largeWidth && largeHeight ? parseInt(smallCell) : parseInt(bigCell);
         return Math.floor(size / (2 * cellSize)) * 2;
       };
 
