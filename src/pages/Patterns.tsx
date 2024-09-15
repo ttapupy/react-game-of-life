@@ -1,15 +1,18 @@
 import { useLayoutEffect } from "react";
 import { Row, Col } from "react-bootstrap";
+import { useDispatch, useSelector } from "react-redux";
 import Pattern from "../components/Pattern";
 import PatternSide from "../components/PatternsSide";
-import { useBoundStore } from "../store/useBoundStore";
+import { setStarted } from "@/store/gameSlice";
+import type { RootState } from "@/store/store";
 
 export default function Patterns() {
-  const { savedPatterns } = useBoundStore((state) => state);
-  const setStarted = useBoundStore((state) => state.setStarted);
+  const dispatch = useDispatch();
+
+  const savedPatterns = useSelector((state: RootState) => state.savedPatterns);
 
   useLayoutEffect(() => {
-    setStarted(false);
+    dispatch(setStarted(false));
   }, [setStarted]);
 
   return (
@@ -20,9 +23,7 @@ export default function Patterns() {
         </Col>
         <Col xs={12} lg={9} className="patterns-wrapper">
           {savedPatterns.map((pattern, index) =>
-            pattern ? (
-              <Pattern key={index} pattern={pattern} index={index} />
-            ) : null,
+            pattern ? <Pattern key={index} pattern={pattern} index={index} /> : null,
           )}
         </Col>
       </Row>

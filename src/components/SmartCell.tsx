@@ -1,10 +1,11 @@
 import { FC, useCallback, useMemo } from "react";
 import { isMobile } from "react-device-detect";
-import { useShallow } from "zustand/react/shallow";
+import { useDispatch, useSelector } from "react-redux";
 import { drawSize } from "@/constants";
 import { isInDrawer } from "@/drawer";
-import { writeBoard } from "@/store/BoardSlice";
-import { useBoundStore } from "@/store/useBoundStore";
+import { makeSelectCellByPosition } from "@/store/boardSlice";
+import { writeBoard } from "@/store/boardSlice";
+import type { RootState } from "@/store/store";
 
 export interface ISmartCellProps {
   rowIndex: number;
@@ -12,13 +13,16 @@ export interface ISmartCellProps {
 }
 
 const SmartCell: FC<ISmartCellProps> = ({ rowIndex, columnIndex }) => {
-  const cell = useBoundStore(useShallow((state) => state.getCell(rowIndex, columnIndex)) || null);
-  const { row, col, value } = cell ?? { row: null, cell: null, value: -1 };
-  const started = useBoundStore((state) => state.started);
-  const active = useBoundStore((state) => state.active);
-  const columns = useBoundStore((state) => state.columns);
-  const rows = useBoundStore((state) => state.rows);
-  const setBoard = useBoundStore(useShallow((state) => state.dispatchBoard));
+  const selectCurrentCell = useCallback(makeSelectCellByPosition(), []);
+  const currentCell = useSelector((state) =>
+    selectCurrentCell(state, { row: rowIndex, column: columnIndex }),
+  );
+  const { row, col, value } = currentCell ?? { row: null, cell: null, value: -1 };
+  const started = useSelector((state: RootState) => state.game.started);
+  const active = useSelector((state: RootState) => state.game.active);
+  const columns = useSelector((state: RootState) => state.game.columns);
+  const rows = useSelector((state: RootState) => state.game.rows);
+  const dispatch = useDispatch();
 
   const whatIsClass = useMemo(() => {
     let className = "cell-button";
@@ -54,13 +58,13 @@ const SmartCell: FC<ISmartCellProps> = ({ rowIndex, columnIndex }) => {
   const selectCell = useCallback(
     (pressure = 0, pressEvent: React.PointerEvent | null = null) => {
       if (row && col && !started && isDrawable && pressure > 0) {
-        writeBoard(setBoard, { row: row, column: col });
+        dispatch(writeBoard({ row: row, column: col }));
       }
       if (pressEvent) {
         pressEvent.currentTarget.releasePointerCapture(pressEvent.pointerId);
       }
     },
-    [started, isDrawable, setBoard, row, col],
+    [started, isDrawable, row, col],
   );
 
   if (row == null || col == null) {

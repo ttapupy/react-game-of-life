@@ -1,42 +1,40 @@
-import { render, screen } from "@testing-library/react";
+import { screen } from "@testing-library/react";
 import "@testing-library/jest-dom";
 import SmartCell from "@/components/SmartCell";
 import type { CellValue, ICell } from "@/pages/SmartBoard";
-import { useBoundStore } from "@/store/useBoundStore";
+import { store as appStore } from "@/store/store";
+import { renderWithStore } from "@/utils/test-utils";
+
+const boardSize = 24;
+
+const initboard: ICell[][] = Array.from({ length: boardSize }, (_, r) =>
+  Array.from(
+    { length: boardSize },
+    (_, c) =>
+      ({
+        row: r,
+        col: c,
+        value: 0 as CellValue,
+      }) satisfies ICell,
+  ),
+);
+let testStore = appStore.getState();
+testStore = {
+  ...testStore,
+  board: initboard,
+  game: {
+    ...testStore.game,
+    columns: boardSize,
+    rows: boardSize,
+    initialized: true,
+  },
+};
 
 describe("testing a Cell", () => {
-  const renderCell = (rowIndex: number, columnIndex: number) => {
-    return render(<SmartCell rowIndex={rowIndex} columnIndex={columnIndex} />);
-  };
-
-  const boardSize = 24;
-  const initialStoreState = useBoundStore.getState();
-  const initboard: ICell[][] = Array.from({ length: boardSize }, (_, r) =>
-    Array.from(
-      { length: boardSize },
-      (_, c) =>
-        ({
-          row: r,
-          col: c,
-          value: 0 as CellValue,
-        }) satisfies ICell,
-    ),
-  );
-  beforeAll(() => {
-    useBoundStore.setState(
-      {
-        ...initialStoreState,
-        board: initboard,
-        columns: boardSize,
-        rows: boardSize,
-        initialized: true,
-      },
-      true,
-    );
-  });
-
   test("should render disabled empty cell", () => {
-    renderCell(2, 3);
+    renderWithStore(<SmartCell rowIndex={2} columnIndex={3} />, {
+      preloadedState: testStore,
+    });
     const cell = screen.getByRole("button");
     expect(cell).toBeInTheDocument();
     expect(cell).toHaveClass("cell-button");
@@ -45,7 +43,10 @@ describe("testing a Cell", () => {
   });
 
   test("should render writable empty cell", () => {
-    renderCell(6, 6);
+    renderWithStore(<SmartCell rowIndex={6} columnIndex={6} />, {
+      preloadedState: testStore,
+    });
+
     const cell = screen.getByRole("button");
     expect(cell).toBeInTheDocument();
     expect(cell).toHaveClass("cell-button");
@@ -55,8 +56,11 @@ describe("testing a Cell", () => {
 
   test("should render written cell", () => {
     initboard[6][6].value = 1;
-    renderCell(6, 6);
-    const cell = screen.getByRole("button");
+    testStore.board = initboard;
+    renderWithStore(<SmartCell rowIndex={6} columnIndex={6} />, {
+      preloadedState: testStore,
+    });
+    const cell = screen.getByRole("button", { hidden: true });
     expect(cell).toHaveClass("cell-button");
     const attributeValue = cell.getAttribute("data-state");
     expect(attributeValue).toBe("1");

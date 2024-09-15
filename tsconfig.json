@@ -1,12 +1,7 @@
 {
   "compilerOptions": {
     "target": "ESNext",
-    "lib": [
-      "DOM",
-      "DOM.Iterable",
-      "ESNext",
-      "dom"
-    ],
+    "lib": ["DOM", "DOM.Iterable", "ESNext", "dom"],
     "module": "ESNext",
     "skipLibCheck": true,
     "baseUrl": ".",
@@ -25,44 +20,21 @@
     "noFallthroughCasesInSwitch": true,
     "outDir": "dist",
     "paths": {
-      "@/pages/*": [
-        "src/pages/*"
-      ],
-      "@/components/*": [
-        "src/components/*"
-      ],
-      "@/hooks/*": [
-        "src/hooks/*"
-      ],
-      "@/store/*": [
-        "src/store/*"
-      ],
-      "@/styles/*": [
-        "src/styles/*"
-      ],
-      "@/*": [
-        "src/*"
-      ]
-    }
+      "@/pages/*": ["src/pages/*"],
+      "@/components/*": ["src/components/*"],
+      "@/hooks/*": ["src/hooks/*"],
+      "@/store/*": ["src/store/*"],
+      "@/styles/*": ["src/styles/*"],
+      "@/*": ["src/*"]
+    },
+    "allowSyntheticDefaultImports": true
   },
-  "include": [
-    "src"
-  ],
-  "exclude": [
-    "**/*.yml",
-    "**/*.yaml",
-    "**/*.md",
-    "**/*.json",
-    "**/*.*js",
-    "**/*.jsx"
-  ],
+  "include": ["src"],
+  "exclude": ["**/*.yml", "**/*.yaml", "**/*.md", "**/*.json", "**/*.*js", "**/*.jsx"],
   "references": [
     {
       "path": "./tsconfig.node.json"
     }
   ],
-  "types": [
-    "node",
-    "vitest/globals"
-  ]
+  "types": ["node", "vitest/globals"]
 }

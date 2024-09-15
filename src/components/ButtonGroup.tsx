@@ -1,39 +1,31 @@
+import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
-import { useShallow } from "zustand/react/shallow";
 import { useGameRunner } from "@/hooks/usegameRunner";
-import { initBoard } from "@/store/BoardSlice";
-import { useBoundStore } from "@/store/useBoundStore";
+import { initBoard } from "@/store/boardSlice";
+import { setRound, setStarted, setLoaded, setActive } from "@/store/gameSlice";
+import type { RootState } from "@/store/store";
 
 const ButtonGroup = () => {
   const { saveSelectedPattern, saveDraw } = useGameRunner();
-  const setBoard = useBoundStore((state) => state.dispatchBoard);
-  const {
-    started,
-    setStarted,
-    round,
-    setRound,
-    loaded,
-    setLoaded,
-    active,
-    setActive,
-    columns,
-    rows,
-  } = useBoundStore(useShallow((state) => state));
+  const dispatch = useDispatch();
+  const { started, round, loaded, active, columns, rows } = useSelector(
+    (state: RootState) => state.game,
+  );
 
   const onClear = () => {
-    initBoard(setBoard, { height: rows, width: columns });
-    setActive(false);
-    setRound(0);
-    setLoaded(false);
+    dispatch(initBoard({ height: rows, width: columns }));
+    dispatch(setActive(false));
+    dispatch(setRound(0));
+    dispatch(setLoaded(false));
   };
 
   const runner = () => {
     if (!started && !active && !loaded) {
       saveDraw();
     }
-    setStarted(!started);
-    setActive(true);
-    setLoaded(false);
+    dispatch(setStarted(!started));
+    dispatch(setActive(true));
+    dispatch(setLoaded(false));
   };
 
   return (
@@ -41,17 +33,12 @@ const ButtonGroup = () => {
       <div>
         <span>
           <Link className={"active-page"} to={"/patterns"}>
-            <button onClick={() => setStarted(false)}>
-              {"Saved patterns"}
-            </button>
+            <button onClick={() => dispatch(setStarted(false))}>{"Saved patterns"}</button>
           </Link>
         </span>
       </div>
       <div>
-        <button
-          disabled={started || !active}
-          onClick={() => saveSelectedPattern()}
-        >
+        <button disabled={started || !active} onClick={() => saveSelectedPattern()}>
           {"Save initial pattern"}
         </button>
       </div>
