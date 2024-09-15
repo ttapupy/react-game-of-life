@@ -21,7 +21,7 @@ const initBoard: ICell[][] = Array.from({ length: boardSize }, (_, r) =>
 let testStore = appStore.getState();
 testStore = {
   ...testStore,
-  board: initBoard,
+  board: { board: initBoard, previousEqual: false },
   game: {
     ...testStore.game,
     columns: boardSize,
@@ -56,7 +56,7 @@ describe("testing a Cell", () => {
 
   test("should render written cell", () => {
     initBoard[6][6].value = 1;
-    testStore.board = initBoard;
+    testStore.board.board = initBoard;
     renderWithStore(<SmartCell rowIndex={6} columnIndex={6} />, {
       preloadedState: testStore,
     });
