@@ -1,10 +1,12 @@
 import { FC, useCallback } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { drawSize } from "@/constants";
 import { useGameRunner } from "@/hooks/usegameRunner";
 import { CellValue } from "@/pages/SmartBoard";
-import { loadBoard } from "@/store/BoardSlice";
-import { useBoundStore } from "@/store/useBoundStore";
+import { loadBoard } from "@/store/boardSlice";
+import { setRound, setStarted, setLoaded, setActive } from "@/store/gameSlice";
+import type { RootState } from "@/store/store";
 
 interface IPatternProps {
   pattern: CellValue[][];
@@ -12,39 +14,28 @@ interface IPatternProps {
 }
 
 const Pattern: FC<IPatternProps> = ({ pattern, index }) => {
-  const { deletePattern } = useGameRunner();
-  const { setRound, setLoaded, setActive, setStarted, rows, columns } =
-    useBoundStore((state) => state);
-  const setBoard = useBoundStore((state) => state.dispatchBoard);
+  const { deleteSelectedPattern } = useGameRunner();
+  const columns = useSelector((state: RootState) => state.game.columns);
+  const rows = useSelector((state: RootState) => state.game.rows);
+  const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const loadPattern = useCallback(() => {
-    setLoaded(true);
-    setActive(false);
-    setStarted(false);
-    setRound(0);
+    dispatch(setLoaded(true));
+    dispatch(setActive(false));
+    dispatch(setStarted(false));
+    dispatch(setRound(0));
     navigate("/");
-    loadBoard(setBoard, { boardToLoad: pattern, height: rows, width: columns });
-  }, [
-    columns,
-    navigate,
-    pattern,
-    rows,
-    setActive,
-    setBoard,
-    setLoaded,
-    setRound,
-    setStarted,
-  ]);
+    dispatch(loadBoard({ boardToLoad: pattern, height: rows, width: columns }));
+  }, [columns, navigate, pattern, rows, setActive, setLoaded, setRound, setStarted]);
 
   const deleteAction = () => {
     if (
       window.confirm(
-        "You are to removing permanently this pattern from your collection. \n" +
-          "Are you sure?",
+        "You are to removing permanently this pattern from your collection. \n" + "Are you sure?",
       )
     ) {
-      deletePattern(index);
+      deleteSelectedPattern(index);
     }
   };
 

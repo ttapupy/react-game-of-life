@@ -2,7 +2,14 @@ import { drawSize } from "./constants";
 import { isInDrawer } from "./drawer";
 import { nextValue } from "./gameRules";
 import type { ICell } from "./pages/SmartBoard";
-import type { BoardAction } from "./store/BoardSlice";
+import { Payload } from "@/store/boardSlice";
+
+export type BoardActionKind = "INIT" | "WRITE" | "STEP" | "LOAD";
+
+export interface BoardAction {
+  type: BoardActionKind;
+  payload?: Payload;
+}
 
 export default function boardReducer(
   board: ICell[][] | null,

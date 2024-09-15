@@ -1,15 +1,17 @@
 import { MutableRefObject, useEffect, useMemo } from "react";
 import * as React from "react";
 import { Row, Col } from "react-bootstrap";
+import { useSelector, useDispatch } from "react-redux";
 import Description from "../components/Description";
 import MainSide from "../components/MainSide";
 import SmartCell from "../components/SmartCell";
 import Spinner from "../components/Spinner";
-import { drawSize } from "../constants";
 import useBoardRect, { DimensionsType } from "../hooks/useBoardRect";
 import usePrevious from "../hooks/usePrevious";
-import { initBoard } from "../store/BoardSlice";
-import { useBoundStore } from "../store/useBoundStore";
+import { drawSize } from "@/constants";
+import { initBoard } from "@/store/boardSlice";
+import { setInitialized, setDimensions } from "@/store/gameSlice";
+import type { RootState } from "@/store/store";
 
 export type CellValue = 0 | 1 | -1;
 
@@ -20,15 +22,13 @@ export interface ICell {
 }
 
 const SmartBoard = () => {
-  const started = useBoundStore((state) => state.started);
-  const active = useBoundStore((state) => state.active);
-  const loaded = useBoundStore((state) => state.loaded);
-  const columns = useBoundStore((state) => state.columns);
-  const rows = useBoundStore((state) => state.rows);
-  const initialized = useBoundStore((state) => state.initialized);
-  const setInitialized = useBoundStore((state) => state.setInitialized);
-  const setBoard = useBoundStore((state) => state.dispatchBoard);
-  const setDimensions = useBoundStore((state) => state.setDimensions);
+  const dispatch = useDispatch();
+  const started = useSelector((state: RootState) => state.game.started);
+  const active = useSelector((state: RootState) => state.game.active);
+  const loaded = useSelector((state: RootState) => state.game.loaded);
+  const columns = useSelector((state: RootState) => state.game.columns);
+  const rows = useSelector((state: RootState) => state.game.rows);
+  const initialized = useSelector((state: RootState) => state.game.initialized);
   const previousLoaded = usePrevious(loaded);
 
   const {
@@ -43,7 +43,7 @@ const SmartBoard = () => {
 
   useEffect(() => {
     if (width && height) {
-      setDimensions({ columns: width, rows: height });
+      dispatch(setDimensions({ columns: width, rows: height }));
     }
   }, [width, height, setDimensions]);
 
@@ -58,10 +58,10 @@ const SmartBoard = () => {
   /* initializing board */
   useEffect(() => {
     if (!started && !!rows && !!columns && !active && !loaded && !initialized) {
-      initBoard(setBoard, { height: rows, width: columns });
-      setInitialized(true);
+      dispatch(initBoard({ height: rows, width: columns }));
+      dispatch(setInitialized(true));
     }
-  }, [rows, columns, loaded, started, active, setBoard, initialized, setInitialized]);
+  }, [rows, columns, loaded, started, active, initialized, setInitialized]);
 
   /**
    * The intention with this empty Array was to not use the 2-dimensional board array, which changes on every step.
