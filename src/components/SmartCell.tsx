@@ -15,7 +15,7 @@ export interface ISmartCellProps {
 const SmartCell: FC<ISmartCellProps> = ({ rowIndex, columnIndex }) => {
   const selectCurrentCell = useCallback(makeSelectCellByPosition(), []);
   const currentCell = useSelector(
-    (state) => selectCurrentCell(state, { row: rowIndex, column: columnIndex }),
+    (state: RootState) => selectCurrentCell(state.board, { row: rowIndex, column: columnIndex }),
     shallowEqual,
   );
   const { row, col, value } = currentCell ?? { row: null, cell: null, value: -1 };
@@ -24,10 +24,6 @@ const SmartCell: FC<ISmartCellProps> = ({ rowIndex, columnIndex }) => {
   const columns = useSelector((state: RootState) => state.game.columns);
   const rows = useSelector((state: RootState) => state.game.rows);
   const dispatch = useDispatch();
-
-  if (rowIndex == 1 && columnIndex == 1) {
-    console.log("szia");
-  }
 
   const whatIsClass = useMemo(() => {
     let className = "cell-button";
