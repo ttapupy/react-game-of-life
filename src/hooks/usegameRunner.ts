@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { maxRounds, drawSize } from "@/constants";
 import { calcDrawer } from "@/drawer";
 import { CellValue } from "@/pages/SmartBoard";
-import { stepBoard } from "@/store/boardSlice";
+import { stepBoard, sumBoard } from "@/store/boardSlice";
 import { setRound, setStarted } from "@/store/gameSlice";
 import { savePattern, deletePattern } from "@/store/savedPatternSlice";
 import type { RootState } from "@/store/store";
@@ -16,6 +16,7 @@ export const useGameRunner = () => {
   const rows = useSelector((state: RootState) => state.game.rows);
   const columns = useSelector((state: RootState) => state.game.columns);
   const dispatch = useDispatch();
+  const [emptied, setEmptied] = useState(false);
 
   const saveDraw = useCallback(() => {
     if ([board, rows, columns].every((e) => e != null)) {
@@ -25,6 +26,12 @@ export const useGameRunner = () => {
       );
     }
   }, [board, columns, rows]);
+
+  const boardValueSum = useSelector((state) => sumBoard(state));
+  const stopGame = () => {
+    dispatch(setStarted(false));
+    dispatch(setRound(0));
+  };
 
   // running the calculation of next cycle
   useEffect(() => {
@@ -36,21 +43,32 @@ export const useGameRunner = () => {
         return prevRound;
       }
     };
-
-    if (round === maxRounds) {
-      dispatch(setStarted(false));
-      dispatch(setRound(0));
+    if (started && boardValueSum) {
+      if (round === maxRounds) {
+        stopGame();
+      } else {
+        const intervalId = setInterval(
+          () => dispatch(setRound(step(round))),
+          round === 0 ? 800 : 500,
+        );
+        return () => {
+          clearInterval(intervalId);
+        };
+      }
     } else if (started) {
-      const intervalId = setInterval(
-        () => {
-          dispatch(setRound(step(round)));
-        },
-        round === 0 ? 800 : 500,
-      );
-
-      return () => clearInterval(intervalId);
+      stopGame();
+      setEmptied(true);
+    } else if (!started && boardValueSum) {
+      setEmptied(false);
     }
-  }, [started, round, setRound, setStarted]);
+  }, [started, round, setRound, setStarted, boardValueSum]);
+
+  useEffect(() => {
+    if (emptied) {
+      alert("The board is empty :(");
+      return () => setEmptied(false);
+    }
+  }, [emptied]);
 
   const saveSelectedPattern = useCallback(() => {
     if (boardToSave) {
@@ -67,5 +85,6 @@ export const useGameRunner = () => {
     saveSelectedPattern,
     deleteSelectedPattern,
     saveDraw,
+    emptied,
   };
 };

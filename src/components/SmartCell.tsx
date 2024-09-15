@@ -1,6 +1,6 @@
 import { FC, useCallback, useMemo } from "react";
 import { isMobile } from "react-device-detect";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch, useSelector, shallowEqual } from "react-redux";
 import { drawSize } from "@/constants";
 import { isInDrawer } from "@/drawer";
 import { makeSelectCellByPosition } from "@/store/boardSlice";
@@ -14,8 +14,9 @@ export interface ISmartCellProps {
 
 const SmartCell: FC<ISmartCellProps> = ({ rowIndex, columnIndex }) => {
   const selectCurrentCell = useCallback(makeSelectCellByPosition(), []);
-  const currentCell = useSelector((state) =>
-    selectCurrentCell(state, { row: rowIndex, column: columnIndex }),
+  const currentCell = useSelector(
+    (state) => selectCurrentCell(state, { row: rowIndex, column: columnIndex }),
+    shallowEqual,
   );
   const { row, col, value } = currentCell ?? { row: null, cell: null, value: -1 };
   const started = useSelector((state: RootState) => state.game.started);
@@ -23,6 +24,10 @@ const SmartCell: FC<ISmartCellProps> = ({ rowIndex, columnIndex }) => {
   const columns = useSelector((state: RootState) => state.game.columns);
   const rows = useSelector((state: RootState) => state.game.rows);
   const dispatch = useDispatch();
+
+  if (rowIndex == 1 && columnIndex == 1) {
+    console.log("szia");
+  }
 
   const whatIsClass = useMemo(() => {
     let className = "cell-button";

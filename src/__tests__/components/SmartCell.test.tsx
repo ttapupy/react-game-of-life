@@ -7,7 +7,7 @@ import { renderWithStore } from "@/utils/test-utils";
 
 const boardSize = 24;
 
-const initboard: ICell[][] = Array.from({ length: boardSize }, (_, r) =>
+const initBoard: ICell[][] = Array.from({ length: boardSize }, (_, r) =>
   Array.from(
     { length: boardSize },
     (_, c) =>
@@ -21,7 +21,7 @@ const initboard: ICell[][] = Array.from({ length: boardSize }, (_, r) =>
 let testStore = appStore.getState();
 testStore = {
   ...testStore,
-  board: initboard,
+  board: initBoard,
   game: {
     ...testStore.game,
     columns: boardSize,
@@ -55,12 +55,12 @@ describe("testing a Cell", () => {
   });
 
   test("should render written cell", () => {
-    initboard[6][6].value = 1;
-    testStore.board = initboard;
+    initBoard[6][6].value = 1;
+    testStore.board = initBoard;
     renderWithStore(<SmartCell rowIndex={6} columnIndex={6} />, {
       preloadedState: testStore,
     });
-    const cell = screen.getByRole("button", { hidden: true });
+    const cell = screen.getByRole("button");
     expect(cell).toHaveClass("cell-button");
     const attributeValue = cell.getAttribute("data-state");
     expect(attributeValue).toBe("1");
