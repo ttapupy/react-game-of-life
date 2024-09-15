@@ -6,7 +6,7 @@ import { setRound, setStarted, setLoaded, setActive } from "@/store/gameSlice";
 import type { RootState } from "@/store/store";
 
 const ButtonGroup = () => {
-  const { saveSelectedPattern, saveDraw } = useGameRunner();
+  const { saveSelectedPattern, saveDraw, emptied } = useGameRunner();
   const dispatch = useDispatch();
   const { started, round, loaded, active, columns, rows } = useSelector(
     (state: RootState) => state.game,
@@ -20,7 +20,7 @@ const ButtonGroup = () => {
   };
 
   const runner = () => {
-    if (!started && !active && !loaded) {
+    if (!started && !active) {
       saveDraw();
     }
     dispatch(setStarted(!started));
@@ -48,7 +48,7 @@ const ButtonGroup = () => {
         </button>
       </div>
       <div>
-        <button className={`${started ? "started" : "iddle"}`} onClick={runner}>
+        <button className={`${started ? "started" : "iddle"}`} onClick={runner} disabled={emptied}>
           {`${started ? "Pause" : active && !loaded ? "Continue" : "Start"}`}
         </button>
       </div>

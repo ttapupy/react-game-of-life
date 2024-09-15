@@ -14,9 +14,9 @@ export type Payload = {
   boardToLoad?: number[][];
 };
 
-export type BoardType = ICell[][] | null;
+export type BoardType = { board: ICell[][] | null; previousEqual: boolean };
 
-const initialState = null as BoardType;
+const initialState = { board: null, previousEqual: false } as BoardType;
 
 type WithRequired<T, K extends keyof T> = T & { [P in K]-?: T[P] };
 
@@ -24,9 +24,9 @@ export const boardSlice = createSlice({
   name: "board",
   initialState,
   reducers: {
-    initBoard: (_state, action: PayloadAction<Payload>) => {
+    initBoard: (state, action: PayloadAction<Payload>) => {
       const { height, width } = action.payload;
-      return Array.from({ length: height || 0 }, (_, r) =>
+      state.board = Array.from({ length: height || 0 }, (_, r) =>
         Array.from(
           { length: width || 0 },
           (_, c) =>
@@ -37,10 +37,11 @@ export const boardSlice = createSlice({
             }) as ICell,
         ),
       );
+      state.previousEqual = false;
     },
-    loadBoard: (_state, action: PayloadAction<WithRequired<Payload, "boardToLoad">>) => {
+    loadBoard: (state, action: PayloadAction<WithRequired<Payload, "boardToLoad">>) => {
       const { boardToLoad, height, width } = action.payload;
-      return Array.from({ length: height || 0 }, (_, r) =>
+      state.board = Array.from({ length: height || 0 }, (_, r) =>
         Array.from({ length: width || 0 }, (_, c) => {
           const currentValue =
             isInDrawer({ drawSize, side: height || 0, index: r }) &&
@@ -51,21 +52,27 @@ export const boardSlice = createSlice({
           return { row: r, col: c, value: currentValue } as ICell;
         }),
       );
+      state.previousEqual = false;
     },
     writeBoard: (state, action: PayloadAction<WithRequired<Payload, "row" | "column">>) => {
       const { row, column } = action.payload;
-      if (state && row != null && column != null) {
-        state[row][column].value = state[row][column].value === 0 ? 1 : 0;
+      if (state.board && row != null && column != null) {
+        state.board[row][column].value = state.board[row][column]?.value === 0 ? 1 : 0;
       }
+      state.previousEqual = false;
     },
     stepBoard: (state) => {
-      return (
-        state?.map((currentRow: ICell[]) => {
-          return currentRow.map((cell: ICell) => {
-            return { ...cell, value: nextValue(cell, state) };
-          });
-        }) || null
-      );
+      const oldBoard = JSON.stringify(state.board);
+
+      const newBoard = state.board
+        ? state.board?.map((currentRow: ICell[]) => {
+            return currentRow.map((cell: ICell) => {
+              return { ...cell, value: nextValue(cell, state.board!) };
+            });
+          })
+        : null;
+      state.board = newBoard;
+      state.previousEqual = oldBoard == JSON.stringify(newBoard);
     },
   },
 });
@@ -77,6 +84,14 @@ export const makeSelectCellByPosition = () => {
       board?.[position.row][position.column] || null,
   );
 };
+
+export const sumBoard = createSelector([(state) => state.board], (board: ICell[][] | null) => {
+  const sum: number =
+    board?.reduce((acc, row) => {
+      return acc + row.reduce((acc, cell) => acc + cell.value, 0);
+    }, 0) || 0;
+  return sum;
+});
 
 export const { initBoard, loadBoard, stepBoard, writeBoard } = boardSlice.actions;
 export default boardSlice.reducer;
