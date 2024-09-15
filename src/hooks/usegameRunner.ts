@@ -44,6 +44,9 @@ export const useGameRunner = () => {
         dispatch(setStarted(false));
       };
     }
+    if (!previousEqual) {
+      alerted.current = false;
+    }
   }, [previousEqual, started, round, alerted.current]);
 
   // running the calculation of next cycle
