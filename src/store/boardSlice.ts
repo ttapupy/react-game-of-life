@@ -85,13 +85,24 @@ export const makeSelectCellByPosition = () => {
   );
 };
 
-export const sumBoard = createSelector([(state) => state.board], (board: ICell[][] | null) => {
-  const sum: number =
+const sumBoardValues = (board: ICell[][] | null) => {
+  return (
     board?.reduce((acc, row) => {
       return acc + row.reduce((acc, cell) => acc + cell.value, 0);
-    }, 0) || 0;
-  return sum;
+    }, 0) || 0
+  );
+};
+
+export const sumBoard = createSelector([(state) => state.board], (board: ICell[][] | null) => {
+  return sumBoardValues(board);
 });
+
+export const bordHasValueBool = createSelector(
+  [(state) => state.board],
+  (board: ICell[][] | null) => {
+    return sumBoardValues(board) > 0;
+  },
+);
 
 export const { initBoard, loadBoard, stepBoard, writeBoard } = boardSlice.actions;
 export default boardSlice.reducer;
