@@ -9,7 +9,7 @@ import Spinner from "../components/Spinner";
 import useBoardRect, { DimensionsType } from "../hooks/useBoardRect";
 import usePrevious from "../hooks/usePrevious";
 import { drawSize } from "@/constants";
-import { initBoard } from "@/store/boardSlice";
+import { bordHasValueBool, initBoard } from "@/store/boardSlice";
 import { setInitialized, setDimensions } from "@/store/gameSlice";
 import type { RootState } from "@/store/store";
 
@@ -28,7 +28,7 @@ const SmartBoard = () => {
   const loaded = useSelector((state: RootState) => state.game.loaded);
   const columns = useSelector((state: RootState) => state.game.columns);
   const rows = useSelector((state: RootState) => state.game.rows);
-  const initialized = useSelector((state: RootState) => state.game.initialized);
+  const bordHasValue = useSelector((state: RootState) => bordHasValueBool(state.board));
   const previousLoaded = usePrevious(loaded);
 
   const {
@@ -57,11 +57,11 @@ const SmartBoard = () => {
 
   /* initializing board */
   useEffect(() => {
-    if (!started && !!rows && !!columns && !active && !loaded && !initialized) {
+    if (!started && !!rows && !!columns && !active && !loaded && !bordHasValue) {
       dispatch(initBoard({ height: rows, width: columns }));
       dispatch(setInitialized(true));
     }
-  }, [rows, columns, loaded, started, active, initialized, setInitialized]);
+  }, [rows, columns, loaded, started, active, bordHasValue, setInitialized]);
 
   /**
    * The intention with this empty Array was to not use the 2-dimensional board array, which changes on every step.

@@ -27,7 +27,7 @@ const SmartCell: FC<ISmartCellProps> = ({ rowIndex, columnIndex }) => {
 
   const whatIsClass = useMemo(() => {
     let className = "cell-button";
-    if (!row || !col) {
+    if (row == null || col == null) {
       return className;
     }
     if (row === 0 && col + 1 === columns) {
