@@ -1,4 +1,4 @@
-import { FC, useCallback, useMemo } from "react";
+import { FC, memo, useCallback, useMemo } from "react";
 import { isMobile } from "react-device-detect";
 import { useDispatch, useSelector, shallowEqual } from "react-redux";
 import { drawSize } from "@/constants";
@@ -12,7 +12,7 @@ export interface ISmartCellProps {
   columnIndex: number;
 }
 
-const SmartCell: FC<ISmartCellProps> = ({ rowIndex, columnIndex }) => {
+const SmartCell: FC<ISmartCellProps> = memo(({ rowIndex, columnIndex }) => {
   const selectCurrentCell = useCallback(makeSelectCellByPosition(), []);
   const currentCell = useSelector(
     (state: RootState) => selectCurrentCell(state.board, { row: rowIndex, column: columnIndex }),
@@ -73,22 +73,21 @@ const SmartCell: FC<ISmartCellProps> = ({ rowIndex, columnIndex }) => {
   }
 
   return (
-    <>
-      <button
-        data-state={`${isDrawable ? value : -1}`}
-        disabled={!isDrawable}
-        className={whatIsClass}
-        onPointerDown={(e) => {
-          selectCell(isMobile ? 0 : e.pressure, e);
-        }}
-        onPointerEnter={(e) => {
-          if (e.pressure) {
-            selectCell(e.pressure);
-          }
-        }}
-      />
-    </>
+    <button
+      data-state={`${isDrawable ? value : -1}`}
+      disabled={!isDrawable}
+      className={whatIsClass}
+      onPointerDown={(e) => {
+        if (isMobile) selectCell(0, e);
+        else selectCell(e.pressure, e);
+      }}
+      onPointerEnter={(e) => {
+        if (e.pressure) {
+          selectCell(e.pressure);
+        }
+      }}
+    />
   );
-};
+});
 
 export default SmartCell;
