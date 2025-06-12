@@ -2,7 +2,7 @@ import type { PayloadAction } from "@reduxjs/toolkit";
 import { createSelector, createSlice } from "@reduxjs/toolkit";
 import { drawSize } from "@/constants";
 import { isInDrawer } from "@/drawer";
-import { nextValue } from "@/gameRules";
+import { adjacentValues } from "@/gameRules";
 import type { CellValue, ICell } from "@/pages/SmartBoard";
 
 export type Payload = {
@@ -62,17 +62,36 @@ export const boardSlice = createSlice({
       state.previousEqual = false;
     },
     stepBoard: (state) => {
-      const oldBoard = JSON.stringify(state.board);
+      if (!state.board) return;
 
-      const newBoard = state.board
-        ? state.board?.map((currentRow: ICell[]) => {
-            return currentRow.map((cell: ICell) => {
-              return { ...cell, value: nextValue(cell, state.board!) };
-            });
-          })
-        : null;
+      const newBoard = state.board.map((row) =>
+        row.map((cell) => {
+          const neighbors = adjacentValues(cell, state.board!);
+          const isAlive = cell.value === 1;
+          const newValue = isAlive
+            ? neighbors === 2 || neighbors === 3
+              ? 1
+              : 0
+            : neighbors === 3
+              ? 1
+              : 0;
+
+          if (newValue === cell.value) {
+            return cell;
+          }
+
+          return {
+            ...cell,
+            value: newValue as 0 | 1,
+          };
+        }),
+      );
+
+      state.previousEqual = state.board.every((row, r) =>
+        row.every((cell, c) => cell.value === newBoard[r][c].value),
+      );
+
       state.board = newBoard;
-      state.previousEqual = oldBoard == JSON.stringify(newBoard);
     },
   },
 });
