@@ -2,7 +2,6 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { shallowEqual, useDispatch, useSelector } from "react-redux";
 import { maxRounds, drawSize } from "@/constants";
 import { calcDrawer } from "@/drawer";
-// import usePrevious from "@/hooks/usePrevious";
 import { CellValue } from "@/pages/SmartBoard";
 import { stepBoard, sumBoard } from "@/store/boardSlice";
 import { setRound, setStarted } from "@/store/gameSlice";

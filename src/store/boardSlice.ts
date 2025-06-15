@@ -2,7 +2,7 @@ import type { PayloadAction } from "@reduxjs/toolkit";
 import { createSelector, createSlice } from "@reduxjs/toolkit";
 import { drawSize } from "@/constants";
 import { isInDrawer } from "@/drawer";
-import { adjacentValues } from "@/gameRules";
+import { adjacentValues, survive } from "@/gameRules";
 import type { CellValue, ICell } from "@/pages/SmartBoard";
 
 export type Payload = {
@@ -67,14 +67,7 @@ export const boardSlice = createSlice({
       const newBoard = state.board.map((row) =>
         row.map((cell) => {
           const neighbors = adjacentValues(cell, state.board!);
-          const isAlive = cell.value === 1;
-          const newValue = isAlive
-            ? neighbors === 2 || neighbors === 3
-              ? 1
-              : 0
-            : neighbors === 3
-              ? 1
-              : 0;
+          const newValue = survive(cell, neighbors) ? 1 : 0;
 
           if (newValue === cell.value) {
             return cell;
