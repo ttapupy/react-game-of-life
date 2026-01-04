@@ -1,7 +1,5 @@
-@import "./styles/variables";
-@import "./styles/mixins";
-@import "./styles/spinner";
-@import "./index.scss";
+@use "./styles" as *;
+@use "./index.scss";
 
 .root {
   overflow: hidden;

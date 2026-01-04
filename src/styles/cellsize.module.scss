@@ -1,6 +1,6 @@
-@import "./variables";
+@use "./variables" as v;
 
 :export {
-  smallCell: $small-cell;
-  bigCell: $big-cell;
+  smallCell: v.$small-cell;
+  bigCell: v.$big-cell;
 }

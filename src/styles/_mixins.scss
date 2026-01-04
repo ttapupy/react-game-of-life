@@ -1,10 +1,12 @@
+@use "./variables" as v;
+
 @mixin cell-button {
-  width: $cell_size;
-  height: $cell_size;
+  width: v.$cell_size;
+  height: v.$cell_size;
   padding: 0;
   margin: 0;
   touch-action: none;
-  box-shadow: 0 0 0 1px $my-gray;
+  box-shadow: 0 0 0 1px v.$my-gray;
 }
 
 @mixin button-3d {
@@ -37,4 +39,10 @@
     transform: translateX(2px) translateY(3px);
     box-shadow: 0px 1px 1px 0 rgba(152, 148, 148, 0.67);
   }
+}
+
+@mixin center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }

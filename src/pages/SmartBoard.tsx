@@ -38,7 +38,7 @@ const SmartBoard = () => {
   }: {
     dimensions: DimensionsType;
     setDisabledDimensions: React.Dispatch<React.SetStateAction<boolean>>;
-    boardRef: React.MutableRefObject<HTMLDivElement | HTMLFieldSetElement>;
+    boardRef: React.MutableRefObject<HTMLDivElement | HTMLFieldSetElement | null>;
   } = useBoardRect(active);
 
   useEffect(() => {
